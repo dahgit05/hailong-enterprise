@@ -1,0 +1,94 @@
+# 🚀 HƯỚNG DẪN SỬ DỤNG BMAD_LITE TEMPLATE
+
+> Template dự án với Stateful Single-Agent Workflow v5.0
+> 📅 Updated: 2026-01-10
+
+---
+
+## 🏢 HỆ SINH THÁI HẢI LONG ENTERPRISE
+
+### 📦 3 Apps Đang Phát Triển:
+
+| # | App | Mô tả |
+|---|-----|-------|
+| 1 | **🏭 Nhà Máy** | Quản lý sản xuất, kho vật tư, xuất nhập hàng |
+| 2 | **👥 HRM** | Quản lý nhân sự, chấm công, lương thưởng |
+| 3 | **⚙️ Quản Lý Máy Móc** | Quản lý thiết bị, bảo trì, lịch sử hoạt động |
+
+---
+
+## ⚡ Bước 1: Thiết lập
+
+1. **Đọc STARTER.md** - Hiểu tổng quan template
+2. **Điền about.md** - Thông tin dự án của bạn
+
+---
+
+## 🚀 Bước 2: Bắt đầu dự án
+
+Nói với AI:
+```
+"Tôi muốn làm [mô tả dự án của bạn]"
+```
+
+**Ví dụ cho Hải Long:**
+- "Tôi muốn làm app Nhà Máy - quản lý sản xuất và kho vật tư"
+- "Tôi muốn làm app HRM - quản lý nhân sự và chấm công"
+- "Tôi muốn làm app Quản Lý Máy Móc - theo dõi thiết bị và bảo trì"
+
+---
+
+## 🔄 Bước 3: Sau restart / session mới
+
+Nói với AI:
+```
+"Đọc context.md và tiếp tục"
+```
+
+AI sẽ tự động:
+- Đọc trạng thái dự án
+- Hiểu specs đã tạo
+- Báo cáo tiến độ
+- Đề xuất task tiếp theo
+
+---
+
+## ▶️ Bước 4: Làm task tiếp theo
+
+Nói với AI:
+```
+"Tiếp tục"
+```
+
+hoặc
+
+```
+"Next"
+```
+
+---
+
+## 📋 Commands khác
+
+| Command | Mô tả |
+|---------|-------|
+| "Status" | Xem tiến độ dự án |
+| "Fix bug [X]" | Quick Flow cho bug nhỏ |
+| "Quick: [task]" | Quick Flow cho task nhỏ |
+| "Analyze codebase" | Phân tích code có sẵn |
+| "Dừng" | Kết thúc session |
+
+---
+
+## 📁 Files quan trọng
+
+| File | Mục đích |
+|------|----------|
+| `context.md` | Trạng thái dự án (AI đọc đầu tiên) |
+| `task-queue.md` | Danh sách tasks |
+| `workflow.md` | Quy trình làm việc chi tiết |
+| `docs/` | Các tài liệu specs |
+
+---
+
+> 💡 Sau khi hiểu, bạn có thể xóa file này
