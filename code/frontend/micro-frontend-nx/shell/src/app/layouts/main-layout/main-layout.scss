@@ -1,0 +1,15 @@
+/* Main Layout Styles */
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+/* Sidebar active state */
+.sidebar-item-active {
+  @apply bg-primary/10 text-primary;
+}
+
+/* Card styles */
+.card-menu-item {
+  @apply bg-white rounded-2xl p-5 border-none shadow-ultra-soft hover:shadow-premium transition-all duration-300 cursor-pointer;
+}

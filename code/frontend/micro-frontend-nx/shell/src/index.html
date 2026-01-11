@@ -1,13 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>shell</title>
-    <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  </head>
-  <body>
-    <app-root></app-root>
-  </body>
+<html class="light" lang="vi">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Admin Hub - Cấu hình Hệ thống 2026</title>
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+  <!-- Tailwind CSS CDN with plugins -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#204E4A",
+            "surface": "#FFFFFF",
+            "background": "#F8FAFB",
+            "accent": "#204E4A",
+          },
+          fontFamily: {
+            "sans": ["Inter", "sans-serif"]
+          },
+          boxShadow: {
+            'ultra-soft': '0 4px 20px -2px rgba(0, 0, 0, 0.03), 0 2px 12px -4px rgba(0, 0, 0, 0.02)',
+            'premium': '0 10px 30px -5px rgba(32, 78, 74, 0.04), 0 4px 12px -2px rgba(0, 0, 0, 0.01)'
+          }
+        },
+      },
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer base {
+        body {
+          @apply bg-background text-slate-900 antialiased;
+          font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+        }
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+      }
+      .sidebar-item-active {
+        @apply bg-primary/10 text-primary;
+      }
+      .card-menu-item {
+        @apply bg-white rounded-2xl p-5 border-none shadow-ultra-soft hover:shadow-premium transition-all duration-300 cursor-pointer;
+      }
+      .tab-indicator {
+        @apply relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:scale-x-100 after:transition-transform;
+      }
+    </style>
+</head>
+
+<body class="min-h-screen overflow-x-hidden">
+  <app-root></app-root>
+</body>
+
 </html>

@@ -1,1 +1,53 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles for shell app */
+
+/* Material Symbols icon styling */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+}
+
+/* Sidebar active state */
+.sidebar-item-active {
+    background-color: rgba(32, 78, 74, 0.1);
+    color: #204E4A;
+}
+
+/* Card menu item */
+.card-menu-item {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1.25rem;
+    border: none;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03), 0 2px 12px -4px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.card-menu-item:hover {
+    box-shadow: 0 10px 30px -5px rgba(32, 78, 74, 0.04), 0 4px 12px -2px rgba(0, 0, 0, 0.01);
+}
+
+/* Tab indicator */
+.tab-indicator {
+    position: relative;
+}
+
+.tab-indicator::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0.125rem;
+    background-color: #204E4A;
+    transform: scaleX(1);
+    transition: transform 0.3s;
+}
+
+/* Premium shadow utilities */
+.shadow-ultra-soft {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03), 0 2px 12px -4px rgba(0, 0, 0, 0.02);
+}
+
+.shadow-premium {
+    box-shadow: 0 10px 30px -5px rgba(32, 78, 74, 0.04), 0 4px 12px -2px rgba(0, 0, 0, 0.01);
+}

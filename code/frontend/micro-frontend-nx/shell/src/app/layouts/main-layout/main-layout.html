@@ -1,0 +1,99 @@
+<div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside
+        class="w-20 border-r border-slate-100 bg-white hidden md:flex flex-col shrink-0 z-30 transition-all duration-300 hover:w-20 group">
+        <!-- Logo -->
+        <div class="h-20 flex items-center justify-center">
+            <div
+                class="size-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                <span class="material-symbols-outlined !text-[24px]">settings_input_component</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 px-3 py-4 space-y-4">
+            @for (item of navItems; track item.path) {
+            <a [routerLink]="item.path" routerLinkActive="sidebar-item-active"
+                class="flex items-center justify-center size-14 rounded-2xl text-slate-400 hover:bg-slate-50 hover:text-primary transition-all"
+                [title]="item.title">
+                <span class="material-symbols-outlined !text-[24px]">{{ item.icon }}</span>
+            </a>
+            }
+        </nav>
+
+        <!-- User Avatar -->
+        <div class="p-4 mb-4">
+            <div class="flex flex-col items-center gap-4">
+                <div class="relative">
+                    <img alt="User Avatar" class="size-10 rounded-xl object-cover ring-2 ring-white shadow-md"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ9PrfXlb2NuhXPZOeLBttBExunArTynZ6eJfsR0UJpg6qYhGm5HJprLhtXbkE_spvxjFVwM229owh7VG3iAgksuZdEWxjPsmZx-2PbYP0NxU2U1jKuzNO2WwTIL35aasuqD_M8J_ohU9RCNCejSRkCpBdGkVc2O7SrZTAjBrQrwCkkXe-7b1hNZYz17T54SJdKTpn0PT0oOVzMhX9msBnmp_czk_NXmIs2VGczU4eq99N5jGa0rj2AjUHOzOXJ2zMjY8WXZdQbFA" />
+                    <div class="absolute -bottom-1 -right-1 size-3 bg-emerald-500 border-2 border-white rounded-full">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto">
+        <div class="p-10 max-w-7xl mx-auto">
+            <!-- Header -->
+            <header class="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div>
+                    <div
+                        class="flex items-center gap-2 text-slate-400 text-xs font-semibold uppercase tracking-[0.2em] mb-3">
+                        <span>Hệ thống</span>
+                        <span class="material-symbols-outlined !text-[12px]">chevron_right</span>
+                        <span class="text-primary/70">Cấu hình</span>
+                    </div>
+                    <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 mb-2">Admin Hub</h1>
+                    <p class="text-slate-400 font-medium">Thiết lập cấu trúc hệ thống Industrial Premium {{ currentYear
+                        }}</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button
+                        class="flex items-center gap-2.5 px-6 py-3 rounded-xl bg-white border border-slate-100 font-bold text-[13px] text-slate-600 hover:bg-slate-50 transition-all shadow-sm">
+                        <span class="material-symbols-outlined !text-[20px]">file_download</span>
+                        Xuất báo cáo
+                    </button>
+                    <button
+                        class="flex items-center gap-2.5 px-6 py-3 bg-primary text-white rounded-xl font-bold text-[13px] hover:shadow-lg hover:shadow-primary/25 transition-all">
+                        <span class="material-symbols-outlined !text-[20px]">publish</span>
+                        Đồng bộ Hệ thống
+                    </button>
+                </div>
+            </header>
+
+            <!-- Module Cards -->
+            <div class="mb-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+                @for (card of moduleCards; track card.path) {
+                <a [routerLink]="card.path"
+                    class="group flex flex-col p-6 rounded-3xl border-none transition-all duration-300 text-left"
+                    [class]="card.isActive
+              ? 'bg-primary shadow-xl shadow-primary/20'
+              : 'bg-white shadow-ultra-soft hover:shadow-premium'">
+                    @if (card.isActive) {
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <span class="material-symbols-outlined !text-[80px]">{{ card.icon }}</span>
+                    </div>
+                    }
+                    <div class="size-12 rounded-2xl flex items-center justify-center mb-6"
+                        [class]="card.isActive ? 'bg-white/20 text-white' : card.bgColor + ' ' + card.iconColor + ' group-hover:scale-110 transition-transform'">
+                        <span class="material-symbols-outlined !text-[28px]" [class.!fill-1]="card.isActive">{{
+                            card.icon }}</span>
+                    </div>
+                    <p class="text-base font-bold mb-1" [class]="card.isActive ? 'text-white' : 'text-slate-900'">{{
+                        card.title }}</p>
+                    <p class="text-xs leading-relaxed" [class]="card.isActive ? 'text-white/70' : 'text-slate-400'">{{
+                        card.description }}</p>
+                </a>
+                }
+            </div>
+
+            <!-- Router Outlet for Remote Apps -->
+            <div class="bg-white rounded-3xl shadow-ultra-soft p-6 min-h-[400px]">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </main>
+</div>

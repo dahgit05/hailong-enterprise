@@ -9,14 +9,26 @@
     "experimentalDecorators": true,
     "target": "ES2020",
     "module": "ESNext",
-    "lib": ["ES2020", "DOM"],
+    "lib": [
+      "ES2020",
+      "DOM"
+    ],
     "skipLibCheck": true,
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "factory/Routes": ["factory/src/app/remote-entry/entry.routes.ts"],
-      "hrm/Routes": ["hrm/src/app/remote-entry/entry.routes.ts"],
-      "machine/Routes": ["machine/src/app/remote-entry/entry.routes.ts"]
+      "factory/Routes": [
+        "factory/src/app/remote-entry/entry.routes.ts"
+      ],
+      "hrm/Routes": [
+        "hrm/src/app/remote-entry/entry.routes.ts"
+      ],
+      "machine/Routes": [
+        "machine/src/app/remote-entry/entry.routes.ts"
+      ],
+      "admin/Routes": [
+        "admin/src/app/remote-entry/entry.routes.ts"
+      ]
     }
   }
 }
