@@ -1,4 +1,4 @@
-import { Component, signal, effect } from '@angular/core';
+import { Component, signal, effect, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -15,8 +15,11 @@ interface NavItem {
     templateUrl: './sidebar.component.html',
 })
 export class AdminSidebarComponent {
-    /** Sidebar toggle state */
+    /** Sidebar toggle state for desktop */
     isExpanded = signal<boolean>(true);
+
+    /** Mobile sidebar open state */
+    isMobileOpen = signal<boolean>(false);
 
     /** Navigation items matching user snippet */
     navItems: NavItem[] = [
@@ -39,8 +42,44 @@ export class AdminSidebarComponent {
         });
     }
 
-    /** Toggle sidebar */
+    /** Toggle sidebar (desktop) */
     toggleSidebar(): void {
         this.isExpanded.update(v => !v);
+    }
+
+    /** Open mobile sidebar */
+    openMobileSidebar(): void {
+        this.isMobileOpen.set(true);
+        document.body.style.overflow = 'hidden';
+    }
+
+    /** Close mobile sidebar */
+    closeMobileSidebar(): void {
+        this.isMobileOpen.set(false);
+        document.body.style.overflow = '';
+    }
+
+    /** Toggle mobile sidebar */
+    toggleMobileSidebar(): void {
+        if (this.isMobileOpen()) {
+            this.closeMobileSidebar();
+        } else {
+            this.openMobileSidebar();
+        }
+    }
+
+    /** Close mobile sidebar on route change */
+    onNavClick(): void {
+        if (this.isMobileOpen()) {
+            this.closeMobileSidebar();
+        }
+    }
+
+    /** Close on Escape key */
+    @HostListener('document:keydown.escape')
+    onEscapeKey(): void {
+        if (this.isMobileOpen()) {
+            this.closeMobileSidebar();
+        }
     }
 }

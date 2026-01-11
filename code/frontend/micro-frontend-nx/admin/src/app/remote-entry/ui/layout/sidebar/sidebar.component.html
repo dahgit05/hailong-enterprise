@@ -1,3 +1,93 @@
+<!-- Mobile Header -->
+<header
+    class="md:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-slate-200 flex items-center px-4 z-40">
+    <!-- Hamburger Menu Button -->
+    <button (click)="toggleMobileSidebar()"
+        class="size-10 flex items-center justify-center rounded-xl text-slate-500 hover:bg-slate-50 hover:text-primary transition-all -ml-2">
+        <span class="material-symbols-outlined !text-[24px]">menu</span>
+    </button>
+
+    <!-- Logo -->
+    <div class="flex items-center ml-2">
+        <div
+            class="size-8 bg-primary rounded-lg flex items-center justify-center text-white shadow-md shadow-primary/20">
+            <span class="material-symbols-outlined !text-[18px]">settings_input_component</span>
+        </div>
+        <div class="ml-2">
+            <h2 class="font-extrabold text-slate-900 text-sm leading-none">HUB</h2>
+            <p class="text-[8px] text-slate-400 font-bold tracking-widest uppercase">Industrial</p>
+        </div>
+    </div>
+
+    <!-- Right side actions -->
+    <div class="ml-auto flex items-center gap-2">
+        <button
+            class="size-9 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-50 hover:text-primary transition-all">
+            <span class="material-symbols-outlined !text-[20px]">notifications</span>
+        </button>
+        <img alt="Nguyễn Xuân Hoàng" class="size-8 rounded-lg object-cover ring-2 ring-white shadow-sm"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ9PrfXlb2NuhXPZOeLBttBExunArTynZ6eJfsR0UJpg6qYhGm5HJprLhtXbkE_spvxjFVwM229owh7VG3iAgksuZdEWxjPsmZx-2PbYP0NxU2U1jKuzNO2WwTIL35aasuqD_M8J_ohU9RCNCejSRkCpBdGkVc2O7SrZTAjBrQrwCkkXe-7b1hNZYz17T54SJdKTpn0PT0oOVzMhX9msBnmp_czk_NXmIs2VGczU4eq99N5jGa0rj2AjUHOzOXJ2zMjY8WXZdQbFA" />
+    </div>
+</header>
+
+<!-- Mobile Overlay -->
+<div *ngIf="isMobileOpen()" (click)="closeMobileSidebar()"
+    class="md:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
+    [class.opacity-100]="isMobileOpen()" [class.opacity-0]="!isMobileOpen()">
+</div>
+
+<!-- Mobile Sidebar Drawer -->
+<aside *ngIf="isMobileOpen()"
+    class="md:hidden fixed top-0 left-0 bottom-0 w-72 bg-white z-50 flex flex-col shadow-2xl transition-transform duration-300 transform"
+    [class.translate-x-0]="isMobileOpen()" [class.-translate-x-full]="!isMobileOpen()">
+
+    <!-- Mobile Sidebar Header -->
+    <div class="h-14 flex items-center px-4 border-b border-slate-100 shrink-0">
+        <div class="flex items-center flex-1">
+            <div
+                class="size-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20 shrink-0">
+                <span class="material-symbols-outlined !text-[24px]">settings_input_component</span>
+            </div>
+            <div class="ml-3">
+                <h2 class="font-extrabold text-slate-900 text-lg leading-none">HUB</h2>
+                <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Industrial</p>
+            </div>
+        </div>
+        <button (click)="closeMobileSidebar()"
+            class="size-9 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-50 hover:text-red-500 transition-all">
+            <span class="material-symbols-outlined !text-[22px]">close</span>
+        </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <a *ngFor="let item of navItems; let first = first" [routerLink]="item.route" (click)="onNavClick()"
+            routerLinkActive="sidebar-item-active" [routerLinkActiveOptions]="{exact: first}"
+            class="flex items-center h-12 px-4 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-primary transition-all">
+            <span class="material-symbols-outlined !text-[22px] shrink-0">{{ item.icon }}</span>
+            <span class="ml-4 text-sm font-semibold">{{ item.tooltip }}</span>
+        </a>
+    </nav>
+
+    <!-- Mobile User Profile -->
+    <div class="p-4 border-t border-slate-100 shrink-0">
+        <div class="flex items-center px-2 py-2 rounded-xl hover:bg-slate-50 transition-all">
+            <div class="relative shrink-0">
+                <img alt="Nguyễn Xuân Hoàng" class="size-10 rounded-xl object-cover ring-2 ring-white shadow-md"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ9PrfXlb2NuhXPZOeLBttBExunArTynZ6eJfsR0UJpg6qYhGm5HJprLhtXbkE_spvxjFVwM229owh7VG3iAgksuZdEWxjPsmZx-2PbYP0NxU2U1jKuzNO2WwTIL35aasuqD_M8J_ohU9RCNCejSRkCpBdGkVc2O7SrZTAjBrQrwCkkXe-7b1hNZYz17T54SJdKTpn0PT0oOVzMhX9msBnmp_czk_NXmIs2VGczU4eq99N5jGa0rj2AjUHOzOXJ2zMjY8WXZdQbFA" />
+                <div class="absolute -bottom-0.5 -right-0.5 size-3 bg-emerald-500 border-2 border-white rounded-full">
+                </div>
+            </div>
+            <div class="ml-3 min-w-0">
+                <p class="text-[13px] font-semibold text-slate-800 leading-tight truncate">Nguyễn Xuân Hoàng</p>
+                <p class="text-[10px] text-slate-400 font-medium tracking-wide uppercase">Quản trị viên</p>
+            </div>
+            <span class="material-symbols-outlined !text-[18px] text-slate-300 ml-auto">chevron_right</span>
+        </div>
+    </div>
+</aside>
+
+<!-- Desktop Sidebar -->
 <aside [class.w-64]="isExpanded()" [class.w-20]="!isExpanded()"
     class="h-full border-r border-slate-200 bg-white hidden md:flex flex-col shrink-0 z-30 transition-all duration-300 relative"
     id="sidebar">
