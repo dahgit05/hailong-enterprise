@@ -1,68 +1,62 @@
-<aside
-    [class]="'border-r border-slate-200 bg-white hidden md:flex flex-col shrink-0 z-30 h-screen sticky top-0 transition-all duration-300 ease-in-out ' + sidebarWidth()">
+<aside [class.w-64]="isExpanded()" [class.w-20]="!isExpanded()"
+    class="h-full border-r border-slate-200 bg-white hidden md:flex flex-col shrink-0 z-30 transition-all duration-300 relative"
+    id="sidebar">
 
-    <!-- Header with Toggle -->
-    <div class="p-4 border-b border-slate-100 flex items-center" [class.justify-center]="!isExpanded()"
-        [class.gap-3]="isExpanded()">
-        <div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white shrink-0">
-            <span class="material-symbols-outlined !text-[20px]">settings_input_component</span>
+    <!-- Logo Section with Toggle Button -->
+    <div class="h-16 flex items-center shrink-0 relative border-b border-slate-100">
+        <!-- Logo Container - Centered in collapsed state -->
+        <div class="flex items-center transition-all duration-300" [class.px-5]="isExpanded()"
+            [class.justify-center]="!isExpanded()" [class.w-full]="!isExpanded()">
+            <div
+                class="size-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20 shrink-0">
+                <span class="material-symbols-outlined !text-[24px]">settings_input_component</span>
+            </div>
+            <div class="ml-3 min-w-0 transition-all duration-300" [class.opacity-0]="!isExpanded()"
+                [class.w-0]="!isExpanded()" [class.ml-0]="!isExpanded()" [class.hidden]="!isExpanded()">
+                <h2 class="font-extrabold text-slate-900 text-lg leading-none">HUB</h2>
+                <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Industrial</p>
+            </div>
         </div>
-        <h2 *ngIf="isExpanded()"
-            class="text-lg font-bold tracking-tight text-primary whitespace-nowrap overflow-hidden transition-opacity duration-200"
-            [class.opacity-100]="isExpanded()" [class.opacity-0]="!isExpanded()">
-            Admin Hub
-        </h2>
+
+        <!-- Toggle Button - Positioned at center of logo section -->
         <button (click)="toggleSidebar()"
-            class="ml-auto size-7 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-all text-slate-400 hover:text-primary"
-            [class.ml-0]="!isExpanded()" [class.ml-auto]="isExpanded()"
-            [attr.title]="isExpanded() ? 'Thu gọn' : 'Mở rộng'">
-            <span class="material-symbols-outlined !text-[18px] transition-transform duration-300"
-                [class.rotate-180]="!isExpanded()">
-                chevron_left
-            </span>
+            class="absolute -right-3 top-1/2 -translate-y-1/2 size-6 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-md hover:text-primary hover:border-primary/50 transition-all z-50 cursor-pointer text-slate-400">
+            <span class="material-symbols-outlined !text-[14px] transition-transform duration-300"
+                [class.rotate-180]="!isExpanded()">chevron_left</span>
         </button>
     </div>
 
     <!-- Navigation -->
-    <nav class="flex-1 p-3 space-y-1 overflow-y-auto overflow-x-hidden">
+    <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto overflow-x-hidden">
         <a *ngFor="let item of navItems; let first = first" [routerLink]="item.route"
             routerLinkActive="sidebar-item-active" [routerLinkActiveOptions]="{exact: first}"
-            class="group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-primary transition-all cursor-pointer"
-            [class.justify-center]="!isExpanded()">
+            class="flex items-center h-11 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-primary transition-all group"
+            [class.px-3]="isExpanded()" [class.justify-center]="!isExpanded()"
+            [attr.title]="!isExpanded() ? item.tooltip : ''">
 
-            <!-- Icon -->
             <span class="material-symbols-outlined !text-[22px] shrink-0">{{ item.icon }}</span>
-
-            <!-- Label (visible when expanded) -->
-            <span *ngIf="isExpanded()"
-                class="text-sm font-medium whitespace-nowrap overflow-hidden transition-opacity duration-200">
-                {{ item.label }}
-            </span>
-
-            <!-- Tooltip (visible when collapsed) -->
-            <div *ngIf="!isExpanded()" class="absolute left-full ml-3 px-3 py-1.5 bg-slate-900 text-white text-xs font-medium rounded-lg 
-                        opacity-0 invisible group-hover:opacity-100 group-hover:visible 
-                        transition-all duration-200 whitespace-nowrap z-50 shadow-lg
-                        before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 
-                        before:border-4 before:border-transparent before:border-r-slate-900">
+            <span class="ml-3 text-sm font-semibold whitespace-nowrap overflow-hidden transition-all duration-300"
+                [class.opacity-0]="!isExpanded()" [class.w-0]="!isExpanded()" [class.ml-0]="!isExpanded()"
+                [class.hidden]="!isExpanded()">
                 {{ item.tooltip }}
-            </div>
+            </span>
         </a>
     </nav>
 
-    <!-- User Profile Section -->
-    <div class="p-3 border-t border-slate-100">
-        <div class="flex items-center gap-3 p-2.5 bg-slate-50 rounded-xl transition-all"
-            [class.justify-center]="!isExpanded()">
+    <!-- User Profile -->
+    <div class="p-3 border-t border-slate-100 shrink-0">
+        <div class="flex items-center rounded-xl transition-all duration-300" [class.px-2]="isExpanded()"
+            [class.py-2]="isExpanded()" [class.hover:bg-slate-50]="isExpanded()" [class.justify-center]="!isExpanded()">
             <div class="relative shrink-0">
-                <img alt="Quản trị viên" class="size-8 rounded-full object-cover ring-2 ring-white shadow-sm"
+                <img alt="Nguyễn Xuân Hoàng" class="size-9 rounded-lg object-cover ring-2 ring-white shadow-md"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ9PrfXlb2NuhXPZOeLBttBExunArTynZ6eJfsR0UJpg6qYhGm5HJprLhtXbkE_spvxjFVwM229owh7VG3iAgksuZdEWxjPsmZx-2PbYP0NxU2U1jKuzNO2WwTIL35aasuqD_M8J_ohU9RCNCejSRkCpBdGkVc2O7SrZTAjBrQrwCkkXe-7b1hNZYz17T54SJdKTpn0PT0oOVzMhX9msBnmp_czk_NXmIs2VGczU4eq99N5jGa0rj2AjUHOzOXJ2zMjY8WXZdQbFA" />
                 <div class="absolute -bottom-0.5 -right-0.5 size-2.5 bg-emerald-500 border-2 border-white rounded-full">
                 </div>
             </div>
-            <div *ngIf="isExpanded()" class="flex-1 overflow-hidden transition-opacity duration-200">
-                <p class="text-xs font-bold truncate text-slate-900">Quản trị viên</p>
-                <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Super Admin</p>
+            <div class="ml-3 min-w-0 overflow-hidden transition-all duration-300" [class.opacity-0]="!isExpanded()"
+                [class.w-0]="!isExpanded()" [class.ml-0]="!isExpanded()" [class.hidden]="!isExpanded()">
+                <p class="text-[13px] font-semibold text-slate-800 leading-tight truncate">Nguyễn Xuân Hoàng</p>
+                <p class="text-[10px] text-slate-400 font-medium tracking-wide uppercase">Quản trị viên</p>
             </div>
         </div>
     </div>

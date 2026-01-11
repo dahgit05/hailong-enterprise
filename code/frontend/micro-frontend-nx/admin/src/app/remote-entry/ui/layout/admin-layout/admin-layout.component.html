@@ -1,14 +1,8 @@
-<div class="flex min-h-screen bg-background text-slate-900 font-sans antialiased">
+<div class="flex h-screen bg-background text-slate-900 font-sans antialiased">
     <app-admin-sidebar></app-admin-sidebar>
-    <main class="flex-1 overflow-y-auto h-screen">
-        <div class="p-10 max-w-7xl mx-auto flex flex-col min-h-full">
-            <app-admin-header></app-admin-header>
-
-            <div class="flex-1">
-                <router-outlet></router-outlet>
-            </div>
-
-            <app-admin-footer></app-admin-footer>
+    <main class="flex-1 overflow-y-auto transition-all duration-300">
+        <div class="p-10 max-w-7xl mx-auto">
+            <router-outlet></router-outlet>
         </div>
     </main>
 </div>

@@ -40,5 +40,45 @@
 }
 
 .sidebar-item-active {
-    @apply bg-primary/5 text-primary font-semibold;
+    @apply bg-primary/10 text-primary;
+}
+
+.sidebar-expanded {
+    @apply w-64;
+}
+
+.sidebar-collapsed {
+    @apply w-20;
+}
+
+.nav-label {
+    @apply transition-all duration-300 whitespace-nowrap overflow-hidden;
+}
+
+.sidebar-collapsed .nav-label {
+    @apply opacity-0 w-0;
+}
+
+.sidebar-expanded .nav-label {
+    @apply opacity-100 w-auto ml-4;
+}
+
+.user-details {
+    @apply transition-all duration-300 whitespace-nowrap overflow-hidden;
+}
+
+.sidebar-collapsed .user-details {
+    @apply opacity-0 w-0;
+}
+
+.sidebar-expanded .user-details {
+    @apply opacity-100 w-auto ml-3;
+}
+
+.sidebar-collapsed .logo-text {
+    @apply hidden;
+}
+
+.sidebar-expanded .logo-text {
+    @apply block ml-3;
 }
