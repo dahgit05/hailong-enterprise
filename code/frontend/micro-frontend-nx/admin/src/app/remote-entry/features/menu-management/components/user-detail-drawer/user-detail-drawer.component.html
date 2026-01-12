@@ -1,0 +1,157 @@
+<div *ngIf="isOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 modal-blur transition-opacity duration-300" (click)="onClose()"></div>
+
+    <!-- Modal Content -->
+    <div
+        class="relative bg-white dark:bg-slate-900 w-full max-w-4xl max-h-[90vh] rounded-4xl shadow-premium flex flex-col overflow-hidden border border-white/50 dark:border-slate-800 animate-in fade-in zoom-in-95 duration-200">
+        <!-- Header -->
+        <div class="px-10 py-7 flex items-center justify-between border-b border-slate-50 dark:border-slate-800/50">
+            <div class="flex items-center gap-5">
+                <div
+                    class="w-12 h-12 bg-primary/5 dark:bg-primary/20 rounded-2xl flex items-center justify-center text-primary shadow-sm">
+                    <span class="material-symbols-outlined text-2xl font-light">person_search</span>
+                </div>
+                <div>
+                    <h2
+                        class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-none uppercase">
+                        Chi tiết người dùng</h2>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mt-2">Industrial Premium
+                        2026 • Read-only View</p>
+                </div>
+            </div>
+            <button (click)="onClose()"
+                class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-300">
+                <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="flex-1 overflow-y-auto custom-scrollbar px-10 py-8 space-y-10 bg-[#F8FAFB] dark:bg-slate-900/50">
+            <!-- Profile Header Section -->
+            <section class="flex flex-col md:flex-row items-center md:items-start gap-10">
+                <div class="relative group shrink-0">
+                    <div
+                        class="absolute -inset-2 bg-gradient-to-tr from-primary/20 to-transparent rounded-full blur-lg opacity-50">
+                    </div>
+                    <div
+                        class="relative w-40 h-40 rounded-full overflow-hidden border-4 border-white dark:border-slate-800 shadow-2xl">
+                        <img [src]="user?.avatar || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGqHjvun6ooh9EZp31aKfNYL1Cyx0ZA9TGvYgOLvLmpVKv3HvsuSsEP1bxI9Zr1FqjqO5SizbjR58QUOLOqOtKWmutr6OyoZdqsH_hcJ6BfexZkA9YbtMO4SgnNW_Vh7rK1qWceQk9pxsqGJyfQWzOAXv20bdQzkrdKhwwSafmqaji_RcUuEWk70ykaOiH0i1fGAwuqh84eyyWPrRCArqMb92ZdaYKhk_pU-GKLPx-vA4komOb2pQv2qBnCorjl0M-lPky9cC5Yrw'"
+                            alt="Profile" class="w-full h-full object-cover" />
+                    </div>
+                </div>
+                <div class="flex-1 space-y-6 text-center md:text-left">
+                    <div class="space-y-2">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                            <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">{{
+                                user?.name }}</h1>
+                            <span
+                                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border"
+                                [class.bg-emerald-500/10]="user?.status === 'active'"
+                                [class.text-emerald-600]="user?.status === 'active'"
+                                [class.border-emerald-500/20]="user?.status === 'active'"
+                                [class.bg-slate-200/50]="user?.status !== 'active'"
+                                [class.text-slate-500]="user?.status !== 'active'"
+                                [class.border-slate-300/50]="user?.status !== 'active'">
+                                <span class="w-1.5 h-1.5 rounded-full animate-pulse"
+                                    [class.bg-emerald-500]="user?.status === 'active'"
+                                    [class.bg-slate-500]="user?.status !== 'active'"></span>
+                                {{ user?.status === 'active' ? 'Hoạt động' : 'Tạm khóa' }}
+                            </span>
+                        </div>
+                        <p class="text-slate-400 font-medium text-[14px]">ID: {{ user?.id }} • Thành viên từ tháng
+                            05/2023</p>
+                    </div>
+                    <div class="space-y-3">
+                        <span
+                            class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest block">Nhóm
+                            quyền hạn</span>
+                        <div class="flex flex-wrap justify-center md:justify-start gap-2">
+                            <span
+                                class="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-[13px] font-semibold border border-slate-200 dark:border-slate-700">Administrator</span>
+                            <span
+                                class="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-[13px] font-semibold border border-slate-200 dark:border-slate-700">Quản
+                                lý kho</span>
+                            <span
+                                class="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-[13px] font-semibold border border-slate-200 dark:border-slate-700">Kế
+                                toán dự án</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detailed Info Section -->
+            <section class="space-y-8 pt-6 border-t border-slate-50 dark:border-slate-800/50">
+                <div class="flex items-center gap-4">
+                    <span
+                        class="text-[12px] font-bold text-slate-900 dark:text-slate-200 uppercase tracking-[0.25em]">Thông
+                        tin chi tiết</span>
+                    <div class="flex-1 h-[1px] bg-slate-100 dark:bg-slate-800/50"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10">
+                    <div class="space-y-2.5">
+                        <label
+                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[14px]">id_card</span> Tài khoản
+                        </label>
+                        <p class="text-[15px] font-semibold text-slate-800 dark:text-slate-200 ml-5">{{
+                            user?.email?.split('@')?.[0] }}_admin</p>
+                    </div>
+                    <div class="space-y-2.5">
+                        <label
+                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[14px]">alternate_email</span> Email liên hệ
+                        </label>
+                        <p class="text-[15px] font-semibold text-slate-800 dark:text-slate-200 ml-5">{{ user?.email }}
+                        </p>
+                    </div>
+                    <div class="space-y-2.5">
+                        <label
+                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[14px]">call</span> Số điện thoại
+                        </label>
+                        <p class="text-[15px] font-semibold text-slate-800 dark:text-slate-200 ml-5">{{ user?.phone }}
+                        </p>
+                    </div>
+                    <div class="space-y-2.5">
+                        <label
+                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[14px]">calendar_today</span> Ngày sinh
+                        </label>
+                        <p class="text-[15px] font-semibold text-slate-800 dark:text-slate-200 ml-5">15/05/1992</p>
+                    </div>
+                    <div class="space-y-2.5">
+                        <label
+                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[14px]">person</span> Giới tính
+                        </label>
+                        <p class="text-[15px] font-semibold text-slate-800 dark:text-slate-200 ml-5">Nam</p>
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-3 space-y-2.5">
+                        <label
+                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[14px]">location_on</span> Địa chỉ thường trú
+                        </label>
+                        <p class="text-[15px] font-semibold text-slate-800 dark:text-slate-200 ml-5 leading-relaxed">
+                            Số 12, Duy Tân, Cầu Giấy, Hà Nội, Việt Nam
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <div
+            class="px-10 py-6 bg-slate-50/50 dark:bg-slate-800/40 border-t border-slate-100 dark:border-slate-800 flex justify-end items-center gap-4">
+            <button (click)="onClose()"
+                class="px-8 py-3.5 text-slate-500 dark:text-slate-400 text-[13px] font-bold rounded-xl hover:bg-slate-200/50 dark:hover:bg-slate-700 transition-all uppercase tracking-widest">
+                Đóng
+            </button>
+            <button (click)="onEdit()"
+                class="px-10 py-3.5 bg-primary text-white text-[13px] font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-3 uppercase tracking-widest">
+                <span class="material-symbols-outlined text-[20px]">edit_note</span>
+                Chỉnh sửa thông tin
+            </button>
+        </div>
+    </div>
+</div>

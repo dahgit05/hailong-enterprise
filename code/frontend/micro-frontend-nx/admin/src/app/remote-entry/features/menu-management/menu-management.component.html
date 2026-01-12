@@ -98,12 +98,14 @@
                         class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 !text-[18px]">search</span>
                     <input
                         class="w-full lg:w-64 pl-10 pr-4 py-2 bg-slate-50 border-none rounded-xl text-xs focus:ring-1 focus:ring-primary/20 outline-none"
-                        placeholder="Tìm kiếm menu..." type="text" />
+                        [placeholder]="activeTab() === 'users' ? 'Tìm kiếm người dùng...' : 'Tìm kiếm menu...'"
+                        type="text" />
                 </div>
-                <button (click)="openDrawer()"
+                <button (click)="activeTab() === 'users' ? openUserDrawer() : openDrawer()"
                     class="flex items-center gap-2 px-4 lg:px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all shrink-0">
                     <span class="material-symbols-outlined !text-[18px]">add</span>
-                    <span class="hidden sm:inline">Thêm Menu</span>
+                    <span class="hidden sm:inline">{{ activeTab() === 'users' ? 'Thêm Người dùng' : 'Thêm Menu'
+                        }}</span>
                 </button>
             </div>
         </div>
@@ -111,7 +113,7 @@
 
     <!-- Scrollable Content Area with Gradient Fade -->
     <div class="flex-1 overflow-hidden px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto w-full scrolling-content-wrapper">
-        <div class="h-full overflow-y-auto custom-scrollbar pb-24 pt-2">
+        <div class="h-full overflow-y-auto custom-scrollbar pb-6 pt-2">
             <!-- Menu Items (Tree Structure) -->
             <div *ngIf="activeTab() === 'menu'" class="tree-container space-y-4 px-1 md:px-2">
                 <ng-container *ngFor="let item of parentMenuItems; let isLast = last">
@@ -228,10 +230,66 @@
                 </ng-container>
             </div>
 
-            <!-- Users Tab Placeholder -->
-            <div *ngIf="activeTab() === 'users'" class="bg-white rounded-3xl shadow-ultra-soft p-8 lg:p-12 text-center">
-                <span class="material-symbols-outlined !text-[48px] text-slate-300 mb-4">group</span>
-                <p class="text-slate-400 text-sm">Quản lý người dùng sẽ được triển khai sau</p>
+            <!-- Users Tab Content -->
+            <div *ngIf="activeTab() === 'users'" class="space-y-4 px-1 md:px-2">
+                <!-- User Cards - Dynamic -->
+                <div *ngFor="let user of users; let i = index"
+                    class="card-menu-item flex items-center gap-3 lg:gap-5 cursor-pointer transition-all duration-200"
+                    [class.ring-2]="i === 0" [class.ring-primary]="i === 0" [class.bg-primary/5]="i === 0"
+                    [class.shadow-premium]="i === 0" [class.opacity-60]="user.status === 'inactive'"
+                    [class.hover:opacity-100]="user.status === 'inactive'"
+                    (contextmenu)="onUserContextMenu($event, user)">
+
+                    <!-- Avatar Icon -->
+                    <div class="relative shrink-0">
+                        <img [alt]="user.name" class="size-10 lg:size-11 rounded-xl object-cover shadow-sm"
+                            [class.grayscale]="user.status === 'inactive'" [src]="user.avatar" />
+                        <div *ngIf="user.online"
+                            class="absolute -top-1 -right-1 bg-emerald-500 size-3 rounded-full border-2 border-white">
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <h4 class="text-[14px] lg:text-[15px] font-extrabold truncate"
+                                [class.text-primary]="i === 0"
+                                [class.text-slate-900]="i !== 0 && user.status === 'active'"
+                                [class.text-slate-600]="user.status === 'inactive'">
+                                {{ user.name }}
+                            </h4>
+                            <span
+                                class="text-[9px] font-bold px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded uppercase tracking-wider">{{
+                                user.id }}</span>
+                        </div>
+                        <p class="text-[10px] lg:text-[11px] font-medium tracking-wide mt-0.5 truncate"
+                            [class.text-primary/60]="i === 0" [class.text-slate-400]="i !== 0">
+                            {{ user.email }}
+                        </p>
+                    </div>
+
+                    <!-- Phone & Status -->
+                    <div class="flex items-center gap-4 lg:gap-8 shrink-0">
+                        <div class="text-center hidden sm:block">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-0.5">Điện thoại
+                            </p>
+                            <p class="text-sm font-semibold" [class.text-slate-700]="user.status === 'active'"
+                                [class.text-slate-500]="user.status === 'inactive'">
+                                {{ user.phone }}
+                            </p>
+                        </div>
+                        <div class="size-8 rounded-full flex items-center justify-center"
+                            [class.bg-emerald-50]="user.status === 'active'"
+                            [class.text-emerald-600]="user.status === 'active'"
+                            [class.bg-slate-100]="user.status === 'inactive'"
+                            [class.text-slate-400]="user.status === 'inactive'">
+                            <span class="material-symbols-outlined !text-[18px]"
+                                [class.fill-1]="user.status === 'active'">
+                                {{ user.status === 'active' ? 'check_circle' : 'visibility_off' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Permissions Tab Placeholder -->
@@ -241,18 +299,49 @@
                 <p class="text-slate-400 text-sm">Quản lý phân quyền sẽ được triển khai sau</p>
             </div>
 
-            <!-- Footer Info -->
-            <div
-                class="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between text-slate-400 text-[10px] lg:text-[11px] font-medium uppercase tracking-[0.1em] gap-2 border-t border-slate-100 pt-6">
-                <div class="flex items-center gap-3">
-                    <span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="flex items-center gap-1.5">
-                        <span class="material-symbols-outlined !text-[14px]">mouse</span>
-                        Click chuột phải vào Menu để thực hiện tác vụ nhanh
-                    </span>
-                </div>
-                <div>Phiên bản 4.8.0 Build 2026</div>
+        </div>
+    </div>
+
+    <!-- Fixed Footer with Pagination (outside scroll area) -->
+    <div class="px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto w-full shrink-0 bg-background border-t border-slate-100">
+        <!-- Pagination for Users Tab -->
+        <div *ngIf="activeTab() === 'users'" class="py-6 flex items-center justify-between">
+            <p class="text-sm font-medium text-slate-500">
+                Hiển thị <span class="text-slate-900 font-bold">1 - 10</span> trong số <span
+                    class="text-slate-900 font-bold">1,248</span> người dùng
+            </p>
+            <div class="flex items-center gap-2">
+                <button
+                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:bg-slate-50 transition-all">
+                    <span class="material-symbols-outlined !text-[20px]">chevron_left</span>
+                </button>
+                <button
+                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20">1</button>
+                <button
+                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 font-bold transition-all">2</button>
+                <button
+                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 font-bold transition-all">3</button>
+                <span class="text-slate-400 px-2">...</span>
+                <button
+                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 font-bold transition-all">42</button>
+                <button
+                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:bg-slate-50 transition-all">
+                    <span class="material-symbols-outlined !text-[20px]">chevron_right</span>
+                </button>
             </div>
+        </div>
+
+        <!-- Footer Info -->
+        <div
+            class="py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between text-slate-400 text-[10px] lg:text-[11px] font-medium uppercase tracking-[0.1em] gap-2 border-t border-slate-100">
+            <div class="flex items-center gap-3">
+                <span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined !text-[14px]">mouse</span>
+                    Click chuột phải vào Menu để thực hiện tác vụ nhanh
+                </span>
+            </div>
+            <div>Phiên bản 4.8.0 Build 2026</div>
         </div>
     </div>
 
@@ -343,6 +432,126 @@
     </div>
 </div>
 
+<!-- User Context Menu - UI/UX Optimized -->
+<div *ngIf="userContextMenu().visible" class="context-menu-container fixed z-[9999]"
+    [style.left.px]="userContextMenu().x" [style.top.px]="userContextMenu().y">
+
+    <!-- Menu Container with Premium Styling -->
+    <div
+        class="bg-white/98 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200/60 ring-1 ring-black/5 overflow-hidden min-w-[240px]">
+
+        <!-- Menu Items Group -->
+        <div class="p-1.5">
+            <!-- Edit User Action -->
+            <button (click)="editUser()"
+                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50/50 active:scale-[0.98]">
+                <div
+                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-100/70 text-violet-600 group-hover:bg-violet-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                    <span class="material-symbols-outlined !text-[18px] !leading-none">edit_square</span>
+                </div>
+                <div class="flex-1 text-left">
+                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-violet-700">Chỉnh
+                        sửa</span>
+                    <span class="block text-[11px] text-slate-400 group-hover:text-violet-500/70">Cập nhật thông
+                        tin</span>
+                </div>
+                <span
+                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-violet-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+            </button>
+
+            <!-- View Details Action -->
+            <button (click)="viewUserDetails()"
+                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50/50 active:scale-[0.98]">
+                <div
+                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100/70 text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                    <span class="material-symbols-outlined !text-[18px] !leading-none">visibility</span>
+                </div>
+                <div class="flex-1 text-left">
+                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-blue-700">Xem chi
+                        tiết</span>
+                    <span class="block text-[11px] text-slate-400 group-hover:text-blue-500/70">Thông tin đầy đủ</span>
+                </div>
+                <span
+                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+            </button>
+
+            <!-- Reset Password Action -->
+            <button (click)="resetUserPassword()"
+                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50/50 active:scale-[0.98]">
+                <div
+                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-100/70 text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                    <span class="material-symbols-outlined !text-[18px] !leading-none">lock_reset</span>
+                </div>
+                <div class="flex-1 text-left">
+                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-amber-700">Đặt lại mật
+                        khẩu</span>
+                    <span class="block text-[11px] text-slate-400 group-hover:text-amber-500/70">Reset password</span>
+                </div>
+                <span
+                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-amber-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+            </button>
+
+            <!-- Permissions Action -->
+            <button (click)="manageUserPermissions()"
+                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50/50 active:scale-[0.98]">
+                <div
+                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                    <span class="material-symbols-outlined !text-[18px] !leading-none">admin_panel_settings</span>
+                </div>
+                <div class="flex-1 text-left">
+                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-emerald-700">Phân
+                        quyền</span>
+                    <span class="block text-[11px] text-slate-400 group-hover:text-emerald-500/70">Quản lý quyền
+                        hạn</span>
+                </div>
+                <span
+                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-emerald-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+            </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="px-3 py-1">
+            <div class="border-t border-slate-100"></div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="p-1.5">
+            <button (click)="deactivateUser()"
+                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-red-50 hover:to-rose-50/50 active:scale-[0.98]">
+                <div
+                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100/70 text-red-500 group-hover:bg-red-500 group-hover:text-white transition-all duration-200 group-hover:scale-110 group-hover:rotate-12">
+                    <span class="material-symbols-outlined !text-[18px] !leading-none">block</span>
+                </div>
+                <div class="flex-1 text-left">
+                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-red-700">Vô hiệu hóa</span>
+                    <span class="block text-[11px] text-red-400/80 group-hover:text-red-500">Khóa tài khoản</span>
+                </div>
+                <span
+                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Menu Drawer -->
 <app-menu-drawer [isOpen]="isDrawerOpen()" (close)="closeDrawer()" (save)="onSaveMenu($event)">
 </app-menu-drawer>
+
+<!-- User Drawer -->
+<app-user-drawer [isOpen]="isUserDrawerOpen()" [user]="selectedUserForEdit()" (close)="closeUserDrawer()"
+    (save)="onSaveUser($event)">
+</app-user-drawer>
+
+<!-- User Detail Drawer -->
+<app-user-detail-drawer [isOpen]="isUserDetailDrawerOpen()" [user]="selectedUserForDetail()"
+    (close)="closeUserDetailDrawer()" (edit)="onEditUserFromDetail($event)">
+</app-user-detail-drawer>
+
+<!-- Dialogs -->
+<app-reset-password-dialog [isOpen]="isResetPasswordOpen()" [user]="selectedUserForAction()"
+    (close)="closeResetPasswordDialog()" (confirm)="onResetPasswordConfirm($event)">
+</app-reset-password-dialog>
+
+<app-deactivate-user-dialog [isOpen]="isDeactivateUserOpen()" [user]="selectedUserForAction()"
+    (close)="closeDeactivateUserDialog()" (confirm)="onDeactivateUserConfirm()">
+</app-deactivate-user-dialog>

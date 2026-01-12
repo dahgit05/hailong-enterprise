@@ -1,0 +1,14 @@
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+.dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; }
+.modal-blur {
+    backdrop-filter: blur(20px);
+    background-color: rgba(15, 23, 42, 0.5);
+}
+.switch-input:checked + .switch-slider {
+    background-color: #204E4A;
+}
+.switch-input:checked + .switch-slider:before {
+    transform: translateX(20px);
+}
