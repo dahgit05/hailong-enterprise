@@ -24,6 +24,9 @@ interface MenuItem {
     standalone: true,
     imports: [CommonModule],
     templateUrl: './menu-management.component.html',
+    host: {
+        'class': 'flex flex-col flex-1 h-full overflow-hidden'
+    }
 })
 export class MenuManagementComponent {
     /** App modules */
@@ -49,7 +52,21 @@ export class MenuManagementComponent {
         { id: '2', name: 'Bảo trì & Sửa chữa', path: '/maintenance', icon: 'settings_accessibility', order: 2, visible: true, parentId: null },
         { id: '3', name: 'Danh sách thiết bị', path: '/maintenance/assets', icon: 'list_alt', order: 1, visible: true, parentId: '2' },
         { id: '4', name: 'Lịch bảo trì định kỳ', path: '/maintenance/schedule', icon: 'calendar_month', order: 2, visible: true, parentId: '2' },
-        { id: '5', name: 'Báo cáo & Thống kê', path: '/reports', icon: 'monitoring', order: 3, visible: false, parentId: null },
+        { id: '5', name: 'Lịch sử sửa chữa', path: '/maintenance/history', icon: 'history_edu', order: 3, visible: true, parentId: '2' },
+        { id: '6', name: 'Báo cáo & Phân tích', path: '/analytics', icon: 'analytics', order: 3, visible: true, parentId: null },
+        { id: '7', name: 'Báo cáo tổng hợp', path: '/analytics/summary', icon: 'summarize', order: 1, visible: true, parentId: '6' },
+        { id: '8', name: 'Biểu đồ thống kê', path: '/analytics/charts', icon: 'bar_chart', order: 2, visible: true, parentId: '6' },
+        { id: '9', name: 'Quản lý Kho vận', path: '/warehouse', icon: 'inventory_2', order: 4, visible: true, parentId: null },
+        { id: '10', name: 'Nhập kho', path: '/warehouse/import', icon: 'move_to_inbox', order: 1, visible: true, parentId: '9' },
+        { id: '11', name: 'Xuất kho', path: '/warehouse/export', icon: 'outbox', order: 2, visible: true, parentId: '9' },
+        { id: '12', name: 'Tồn kho', path: '/warehouse/inventory', icon: 'inventory', order: 3, visible: true, parentId: '9' },
+        { id: '13', name: 'Giám sát Chất lượng', path: '/quality-control', icon: 'monitoring', order: 5, visible: false, parentId: null },
+        { id: '14', name: 'Quản lý Chuỗi cung ứng', path: '/supply-chain', icon: 'hub', order: 6, visible: true, parentId: null },
+        { id: '15', name: 'Nhà cung cấp', path: '/supply-chain/suppliers', icon: 'storefront', order: 1, visible: true, parentId: '14' },
+        { id: '16', name: 'Đơn đặt hàng', path: '/supply-chain/orders', icon: 'shopping_cart', order: 2, visible: true, parentId: '14' },
+        { id: '17', name: 'Tài chính & Kế toán', path: '/finance', icon: 'payments', order: 7, visible: true, parentId: null },
+        { id: '18', name: 'Quản lý Nhân sự', path: '/hrm', icon: 'badge', order: 8, visible: true, parentId: null },
+        { id: '19', name: 'Cài đặt Hệ thống', path: '/settings', icon: 'settings', order: 9, visible: true, parentId: null },
     ];
 
     /** Context Menu State */

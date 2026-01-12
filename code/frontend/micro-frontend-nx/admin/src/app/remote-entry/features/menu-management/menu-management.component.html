@@ -1,202 +1,233 @@
-<!-- Header -->
-<header class="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-8">
-    <div>
-        <div class="flex items-center gap-2 text-slate-400 text-xs font-semibold uppercase tracking-[0.2em] mb-3">
-            <span>Hệ thống</span>
-            <span class="material-symbols-outlined !text-[12px]">chevron_right</span>
-            <span class="text-primary/70">Cấu hình</span>
+<!-- Host container for flex layout -->
+<div class="flex flex-col h-full overflow-hidden">
+
+    <!-- Fixed Header Section -->
+    <div class="px-4 sm:px-6 lg:px-10 pt-4 sm:pt-6 lg:pt-10 pb-6 max-w-7xl mx-auto w-full shrink-0 bg-background">
+        <!-- Header -->
+        <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-8">
+            <div>
+                <div
+                    class="flex items-center gap-2 text-slate-400 text-xs font-semibold uppercase tracking-[0.2em] mb-3">
+                    <span>Hệ thống</span>
+                    <span class="material-symbols-outlined !text-[12px]">chevron_right</span>
+                    <span class="text-primary/70">Cấu hình</span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 mb-2">Admin Hub</h1>
+                <p class="text-slate-400 font-medium text-sm lg:text-base">Thiết lập cấu trúc hệ thống Industrial
+                    Premium
+                    2026</p>
+            </div>
+            <div class="flex items-center gap-3 lg:gap-4">
+                <button
+                    class="flex items-center gap-2 lg:gap-2.5 px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl bg-white border border-slate-100 font-bold text-xs lg:text-[13px] text-slate-600 hover:bg-slate-50 transition-all shadow-sm">
+                    <span class="material-symbols-outlined !text-[18px] lg:!text-[20px]">file_download</span>
+                    <span class="hidden sm:inline">Xuất báo cáo</span>
+                </button>
+                <button
+                    class="flex items-center gap-2 lg:gap-2.5 px-4 lg:px-6 py-2.5 lg:py-3 bg-primary text-white rounded-xl font-bold text-xs lg:text-[13px] hover:shadow-lg hover:shadow-primary/25 transition-all">
+                    <span class="material-symbols-outlined !text-[18px] lg:!text-[20px]">publish</span>
+                    <span class="hidden sm:inline">Đồng bộ Hệ thống</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- App Selector Cards -->
+        <div class="mb-10 grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+            <button *ngFor="let app of appModules; let i = index" (click)="selectApp(app.id)"
+                class="group flex flex-col p-5 lg:p-6 rounded-2xl lg:rounded-3xl border-none transition-all duration-300 text-left relative overflow-hidden"
+                [ngClass]="app.active ? 'bg-primary shadow-xl shadow-primary/20' : 'bg-white shadow-ultra-soft hover:shadow-premium'">
+
+                <!-- Decorative background icon (visible when active) -->
+                <div *ngIf="app.active" class="absolute top-0 right-0 p-4 opacity-10">
+                    <span class="material-symbols-outlined !text-[60px] lg:!text-[80px]">{{ app.icon }}</span>
+                </div>
+
+                <!-- Icon -->
+                <div class="size-10 lg:size-12 rounded-xl lg:rounded-2xl flex items-center justify-center mb-4 lg:mb-6 transition-transform"
+                    [ngClass]="app.active ? 'bg-white/20 text-white' : getAppIconClasses(i)"
+                    [class.group-hover:scale-110]="!app.active">
+                    <span class="material-symbols-outlined !text-[24px] lg:!text-[28px]">{{ app.icon }}</span>
+                </div>
+
+                <!-- Title -->
+                <p class="text-sm lg:text-base font-bold mb-1" [ngClass]="app.active ? 'text-white' : 'text-slate-900'">
+                    {{ app.name }}
+                </p>
+
+                <!-- Description -->
+                <p class="text-xs leading-relaxed" [ngClass]="app.active ? 'text-white/70' : 'text-slate-400'">
+                    {{ app.description }}
+                </p>
+            </button>
         </div>
-        <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 mb-2">Admin Hub</h1>
-        <p class="text-slate-400 font-medium">Thiết lập cấu trúc hệ thống Industrial Premium 2026</p>
+
+        <!-- Tabs and Search -->
+        <div
+            class="flex flex-col lg:flex-row lg:items-center justify-between border-b border-slate-100 pb-0.5 gap-4 lg:gap-0">
+            <div class="flex gap-6 lg:gap-10 overflow-x-auto">
+                <button (click)="setActiveTab('menu')"
+                    class="pb-4 text-xs lg:text-sm font-semibold tracking-wide transition-colors whitespace-nowrap"
+                    [class.font-bold]="activeTab() === 'menu'" [class.text-primary]="activeTab() === 'menu'"
+                    [class.border-b-2]="activeTab() === 'menu'" [class.border-primary]="activeTab() === 'menu'"
+                    [class.text-slate-400]="activeTab() !== 'menu'"
+                    [class.hover:text-slate-600]="activeTab() !== 'menu'">
+                    MENU HỆ THỐNG
+                </button>
+                <button (click)="setActiveTab('users')"
+                    class="pb-4 text-xs lg:text-sm font-semibold tracking-wide transition-colors whitespace-nowrap"
+                    [class.font-bold]="activeTab() === 'users'" [class.text-primary]="activeTab() === 'users'"
+                    [class.border-b-2]="activeTab() === 'users'" [class.border-primary]="activeTab() === 'users'"
+                    [class.text-slate-400]="activeTab() !== 'users'"
+                    [class.hover:text-slate-600]="activeTab() !== 'users'">
+                    NGƯỜI DÙNG
+                </button>
+                <button (click)="setActiveTab('permissions')"
+                    class="pb-4 text-xs lg:text-sm font-semibold tracking-wide transition-colors whitespace-nowrap"
+                    [class.font-bold]="activeTab() === 'permissions'"
+                    [class.text-primary]="activeTab() === 'permissions'"
+                    [class.border-b-2]="activeTab() === 'permissions'"
+                    [class.border-primary]="activeTab() === 'permissions'"
+                    [class.text-slate-400]="activeTab() !== 'permissions'"
+                    [class.hover:text-slate-600]="activeTab() !== 'permissions'">
+                    PHÂN QUYỀN
+                </button>
+            </div>
+            <div class="flex items-center gap-3 lg:gap-4 mb-3 lg:mb-3">
+                <div class="relative flex-1 lg:flex-none">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 !text-[18px]">search</span>
+                    <input
+                        class="w-full lg:w-64 pl-10 pr-4 py-2 bg-slate-50 border-none rounded-xl text-xs focus:ring-1 focus:ring-primary/20 outline-none"
+                        placeholder="Tìm kiếm menu..." type="text" />
+                </div>
+                <button
+                    class="flex items-center gap-2 px-4 lg:px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all shrink-0">
+                    <span class="material-symbols-outlined !text-[18px]">add</span>
+                    <span class="hidden sm:inline">Thêm Menu mới</span>
+                </button>
+            </div>
+        </div>
     </div>
-    <div class="flex items-center gap-4">
-        <button
-            class="flex items-center gap-2.5 px-6 py-3 rounded-xl bg-white border border-slate-100 font-bold text-[13px] text-slate-600 hover:bg-slate-50 transition-all shadow-sm">
-            <span class="material-symbols-outlined !text-[20px]">file_download</span>
-            Xuất báo cáo
-        </button>
-        <button
-            class="flex items-center gap-2.5 px-6 py-3 bg-primary text-white rounded-xl font-bold text-[13px] hover:shadow-lg hover:shadow-primary/25 transition-all">
-            <span class="material-symbols-outlined !text-[20px]">publish</span>
-            Đồng bộ Hệ thống
-        </button>
+
+    <!-- Scrollable Content Area with Gradient Fade -->
+    <div class="flex-1 overflow-hidden px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto w-full scrolling-content-wrapper">
+        <div class="h-full overflow-y-auto custom-scrollbar pb-24 space-y-4 pt-2">
+            <!-- Menu Items (Card Style) -->
+            <div *ngIf="activeTab() === 'menu'" class="grid grid-cols-1 gap-3 lg:gap-4">
+                <ng-container *ngFor="let item of parentMenuItems">
+                    <!-- Parent Menu Item -->
+                    <div class="card-menu-item flex items-center gap-4 lg:gap-6"
+                        [class.bg-slate-50/30]="hasChildren(item.id)" (contextmenu)="onContextMenu($event, item)">
+                        <div class="size-10 lg:size-11 rounded-xl flex items-center justify-center shrink-0"
+                            [class.bg-primary/5]="hasChildren(item.id)" [class.text-primary]="hasChildren(item.id)"
+                            [class.bg-slate-50]="!hasChildren(item.id)" [class.text-slate-500]="!hasChildren(item.id)">
+                            <span class="material-symbols-outlined !text-[20px] lg:!text-[22px]">{{ item.icon }}</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-[14px] lg:text-[15px] font-bold text-slate-900 truncate">{{ item.name }}
+                            </h4>
+                            <p
+                                class="text-[10px] lg:text-[11px] text-slate-400 font-medium tracking-wide uppercase mt-0.5 truncate">
+                                {{ item.path }}</p>
+                        </div>
+                        <div class="flex items-center gap-4 lg:gap-8 shrink-0">
+                            <div class="text-center hidden sm:block">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-0.5">Thứ tự
+                                </p>
+                                <p class="text-sm font-semibold text-slate-700">{{ formatOrder(item.order) }}</p>
+                            </div>
+                            <div class="size-8 rounded-full flex items-center justify-center"
+                                [class.bg-emerald-50]="item.visible" [class.text-emerald-600]="item.visible"
+                                [class.bg-slate-100]="!item.visible" [class.text-slate-400]="!item.visible">
+                                <span class="material-symbols-outlined !text-[18px]" [class.fill-1]="item.visible">
+                                    {{ item.visible ? 'check_circle' : 'visibility_off' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Child Menu Items -->
+                    <div *ngFor="let child of getChildItems(item.id)"
+                        class="ml-8 lg:ml-16 card-menu-item flex items-center gap-4 lg:gap-6 relative"
+                        (contextmenu)="onContextMenu($event, child)">
+                        <div class="absolute -left-4 lg:-left-8 top-1/2 -translate-y-1/2 w-4 lg:w-8 h-px bg-slate-200">
+                        </div>
+                        <div
+                            class="size-9 lg:size-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
+                            <span class="material-symbols-outlined !text-[18px] lg:!text-[20px]">{{ child.icon }}</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-[13px] lg:text-[14px] font-semibold text-slate-700 truncate">{{ child.name
+                                }}
+                            </h4>
+                            <p
+                                class="text-[10px] lg:text-[11px] text-slate-400 font-medium tracking-wide uppercase mt-0.5 truncate">
+                                {{ child.path }}
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-4 lg:gap-8 shrink-0">
+                            <div class="text-center hidden sm:block">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-0.5">Thứ tự
+                                </p>
+                                <p class="text-sm font-semibold text-slate-500">{{ formatOrder(child.order) }}</p>
+                            </div>
+                            <div class="size-8 rounded-full flex items-center justify-center"
+                                [class.bg-emerald-50]="child.visible" [class.text-emerald-600]="child.visible"
+                                [class.bg-slate-100]="!child.visible" [class.text-slate-400]="!child.visible">
+                                <span class="material-symbols-outlined !text-[18px]" [class.fill-1]="child.visible">
+                                    {{ child.visible ? 'check_circle' : 'visibility_off' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+
+            <!-- Users Tab Placeholder -->
+            <div *ngIf="activeTab() === 'users'" class="bg-white rounded-3xl shadow-ultra-soft p-8 lg:p-12 text-center">
+                <span class="material-symbols-outlined !text-[48px] text-slate-300 mb-4">group</span>
+                <p class="text-slate-400 text-sm">Quản lý người dùng sẽ được triển khai sau</p>
+            </div>
+
+            <!-- Permissions Tab Placeholder -->
+            <div *ngIf="activeTab() === 'permissions'"
+                class="bg-white rounded-3xl shadow-ultra-soft p-8 lg:p-12 text-center">
+                <span class="material-symbols-outlined !text-[48px] text-slate-300 mb-4">admin_panel_settings</span>
+                <p class="text-slate-400 text-sm">Quản lý phân quyền sẽ được triển khai sau</p>
+            </div>
+
+            <!-- Footer Info -->
+            <div
+                class="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between text-slate-400 text-[10px] lg:text-[11px] font-medium uppercase tracking-[0.1em] gap-2">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined !text-[16px]">info</span>
+                    Chuột phải vào thẻ để chỉnh sửa hoặc xóa
+                </div>
+                <div>Cập nhật lần cuối: 12/05/2026 09:45</div>
+            </div>
+        </div>
     </div>
-</header>
 
-<!-- App Selector Cards -->
-<div class="mb-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-    <button *ngFor="let app of appModules; let i = index" (click)="selectApp(app.id)"
-        class="group flex flex-col p-6 rounded-3xl border-none transition-all duration-300 text-left relative overflow-hidden"
-        [ngClass]="app.active ? 'bg-primary shadow-xl shadow-primary/20' : 'bg-white shadow-ultra-soft hover:shadow-premium'">
+</div> <!-- End of host container -->
 
-        <!-- Decorative background icon (visible when active) -->
-        <div *ngIf="app.active" class="absolute top-0 right-0 p-4 opacity-10">
-            <span class="material-symbols-outlined !text-[80px]">{{ app.icon }}</span>
-        </div>
-
-        <!-- Icon -->
-        <div class="size-12 rounded-2xl flex items-center justify-center mb-6 transition-transform"
-            [ngClass]="app.active ? 'bg-white/20 text-white' : getAppIconClasses(i)"
-            [class.group-hover:scale-110]="!app.active">
-            <span class="material-symbols-outlined !text-[28px]">{{ app.icon }}</span>
-        </div>
-
-        <!-- Title -->
-        <p class="text-base font-bold mb-1" [ngClass]="app.active ? 'text-white' : 'text-slate-900'">
-            {{ app.name }}
-        </p>
-
-        <!-- Description -->
-        <p class="text-xs leading-relaxed" [ngClass]="app.active ? 'text-white/70' : 'text-slate-400'">
-            {{ app.description }}
-        </p>
+<!-- Context Menu -->
+<div *ngIf="contextMenu().visible"
+    class="fixed bg-white border border-slate-100 shadow-2xl rounded-2xl w-56 py-3 z-[100]"
+    [style.left.px]="contextMenu().x" [style.top.px]="contextMenu().y">
+    <button (click)="editMenu()"
+        class="w-full px-5 py-2.5 flex items-center gap-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors text-left">
+        <span class="material-symbols-outlined !text-[18px]">edit_note</span>
+        Chỉnh sửa Menu
     </button>
-</div>
-
-<!-- Menu Section -->
-<div class="space-y-8">
-    <!-- Tabs -->
-    <div class="flex items-center justify-between border-b border-slate-100 pb-0.5">
-        <div class="flex gap-10">
-            <button (click)="setActiveTab('menu')" class="pb-4 text-sm font-semibold tracking-wide transition-colors"
-                [class.font-bold]="activeTab() === 'menu'" [class.text-primary]="activeTab() === 'menu'"
-                [class.border-b-2]="activeTab() === 'menu'" [class.border-primary]="activeTab() === 'menu'"
-                [class.text-slate-400]="activeTab() !== 'menu'" [class.hover:text-slate-600]="activeTab() !== 'menu'">
-                MENU HỆ THỐNG
-            </button>
-            <button (click)="setActiveTab('users')" class="pb-4 text-sm font-semibold tracking-wide transition-colors"
-                [class.font-bold]="activeTab() === 'users'" [class.text-primary]="activeTab() === 'users'"
-                [class.border-b-2]="activeTab() === 'users'" [class.border-primary]="activeTab() === 'users'"
-                [class.text-slate-400]="activeTab() !== 'users'" [class.hover:text-slate-600]="activeTab() !== 'users'">
-                NGƯỜI DÙNG
-            </button>
-            <button (click)="setActiveTab('permissions')"
-                class="pb-4 text-sm font-semibold tracking-wide transition-colors"
-                [class.font-bold]="activeTab() === 'permissions'" [class.text-primary]="activeTab() === 'permissions'"
-                [class.border-b-2]="activeTab() === 'permissions'"
-                [class.border-primary]="activeTab() === 'permissions'"
-                [class.text-slate-400]="activeTab() !== 'permissions'"
-                [class.hover:text-slate-600]="activeTab() !== 'permissions'">
-                PHÂN QUYỀN
-            </button>
-        </div>
-        <div class="flex items-center gap-4 mb-3">
-            <div class="relative">
-                <span
-                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 !text-[18px]">search</span>
-                <input
-                    class="pl-10 pr-4 py-2 bg-slate-50 border-none rounded-xl text-xs w-64 focus:ring-1 focus:ring-primary/20 outline-none"
-                    placeholder="Tìm kiếm menu..." type="text" />
-            </div>
-            <button
-                class="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all">
-                <span class="material-symbols-outlined !text-[18px]">add</span>
-                Thêm Menu mới
-            </button>
-        </div>
-    </div>
-
-    <!-- Menu Items (Card Style) -->
-    <div *ngIf="activeTab() === 'menu'" class="grid grid-cols-1 gap-4">
-        <ng-container *ngFor="let item of parentMenuItems">
-            <!-- Parent Menu Item -->
-            <div class="card-menu-item flex items-center gap-6" [class.bg-slate-50/30]="hasChildren(item.id)"
-                (contextmenu)="onContextMenu($event, item)">
-                <div class="size-11 rounded-xl flex items-center justify-center"
-                    [class.bg-primary/5]="hasChildren(item.id)" [class.text-primary]="hasChildren(item.id)"
-                    [class.bg-slate-50]="!hasChildren(item.id)" [class.text-slate-500]="!hasChildren(item.id)">
-                    <span class="material-symbols-outlined !text-[22px]">{{ item.icon }}</span>
-                </div>
-                <div class="flex-1">
-                    <h4 class="text-[15px] font-bold text-slate-900">{{ item.name }}</h4>
-                    <p class="text-[11px] text-slate-400 font-medium tracking-wide uppercase mt-0.5">{{ item.path }}</p>
-                </div>
-                <div class="flex items-center gap-8">
-                    <div class="text-center">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-0.5">Thứ tự</p>
-                        <p class="text-sm font-semibold text-slate-700">{{ formatOrder(item.order) }}</p>
-                    </div>
-                    <div class="size-8 rounded-full flex items-center justify-center"
-                        [class.bg-emerald-50]="item.visible" [class.text-emerald-600]="item.visible"
-                        [class.bg-slate-100]="!item.visible" [class.text-slate-400]="!item.visible">
-                        <span class="material-symbols-outlined !text-[18px]" [class.fill-1]="item.visible">
-                            {{ item.visible ? 'check_circle' : 'visibility_off' }}
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Child Menu Items -->
-            <div *ngFor="let child of getChildItems(item.id)"
-                class="ml-16 card-menu-item flex items-center gap-6 relative"
-                (contextmenu)="onContextMenu($event, child)">
-                <div class="absolute -left-8 top-1/2 -translate-y-1/2 w-8 h-px bg-slate-200"></div>
-                <div class="size-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400">
-                    <span class="material-symbols-outlined !text-[20px]">{{ child.icon }}</span>
-                </div>
-                <div class="flex-1">
-                    <h4 class="text-[14px] font-semibold text-slate-700">{{ child.name }}</h4>
-                    <p class="text-[11px] text-slate-400 font-medium tracking-wide uppercase mt-0.5">{{ child.path }}
-                    </p>
-                </div>
-                <div class="flex items-center gap-8">
-                    <div class="text-center">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-0.5">Thứ tự</p>
-                        <p class="text-sm font-semibold text-slate-500">{{ formatOrder(child.order) }}</p>
-                    </div>
-                    <div class="size-8 rounded-full flex items-center justify-center"
-                        [class.bg-emerald-50]="child.visible" [class.text-emerald-600]="child.visible"
-                        [class.bg-slate-100]="!child.visible" [class.text-slate-400]="!child.visible">
-                        <span class="material-symbols-outlined !text-[18px]" [class.fill-1]="child.visible">
-                            {{ child.visible ? 'check_circle' : 'visibility_off' }}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </ng-container>
-    </div>
-
-    <!-- Users Tab Placeholder -->
-    <div *ngIf="activeTab() === 'users'" class="bg-white rounded-3xl shadow-ultra-soft p-12 text-center">
-        <span class="material-symbols-outlined !text-[48px] text-slate-300 mb-4">group</span>
-        <p class="text-slate-400 text-sm">Quản lý người dùng sẽ được triển khai sau</p>
-    </div>
-
-    <!-- Permissions Tab Placeholder -->
-    <div *ngIf="activeTab() === 'permissions'" class="bg-white rounded-3xl shadow-ultra-soft p-12 text-center">
-        <span class="material-symbols-outlined !text-[48px] text-slate-300 mb-4">admin_panel_settings</span>
-        <p class="text-slate-400 text-sm">Quản lý phân quyền sẽ được triển khai sau</p>
-    </div>
-
-    <!-- Footer Info -->
-    <div
-        class="mt-8 flex items-center justify-between text-slate-400 text-[11px] font-medium uppercase tracking-[0.1em]">
-        <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined !text-[16px]">info</span>
-            Chuột phải vào thẻ để chỉnh sửa hoặc xóa
-        </div>
-        <div>Cập nhật lần cuối: 12/05/2026 09:45</div>
-    </div>
-
-    <!-- Context Menu -->
-    <div *ngIf="contextMenu().visible"
-        class="fixed bg-white border border-slate-100 shadow-2xl rounded-2xl w-56 py-3 z-[100]"
-        [style.left.px]="contextMenu().x" [style.top.px]="contextMenu().y">
-        <button (click)="editMenu()"
-            class="w-full px-5 py-2.5 flex items-center gap-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors text-left">
-            <span class="material-symbols-outlined !text-[18px]">edit_note</span>
-            Chỉnh sửa Menu
-        </button>
-        <button (click)="addSubMenu()"
-            class="w-full px-5 py-2.5 flex items-center gap-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors text-left">
-            <span class="material-symbols-outlined !text-[18px]">add_circle</span>
-            Thêm menu con
-        </button>
-        <div class="my-2 border-t border-slate-50"></div>
-        <button (click)="deleteMenu()"
-            class="w-full px-5 py-2.5 flex items-center gap-3 text-sm text-red-500 hover:bg-red-50 transition-colors text-left">
-            <span class="material-symbols-outlined !text-[18px]">delete</span>
-            Xóa vĩnh viễn
-        </button>
-    </div>
+    <button (click)="addSubMenu()"
+        class="w-full px-5 py-2.5 flex items-center gap-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors text-left">
+        <span class="material-symbols-outlined !text-[18px]">add_circle</span>
+        Thêm menu con
+    </button>
+    <div class="my-2 border-t border-slate-50"></div>
+    <button (click)="deleteMenu()"
+        class="w-full px-5 py-2.5 flex items-center gap-3 text-sm text-red-500 hover:bg-red-50 transition-colors text-left">
+        <span class="material-symbols-outlined !text-[18px]">delete</span>
+        Xóa vĩnh viễn
+    </button>
 </div>

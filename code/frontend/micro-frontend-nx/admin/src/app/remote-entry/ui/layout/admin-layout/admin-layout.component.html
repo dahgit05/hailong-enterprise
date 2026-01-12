@@ -1,9 +1,9 @@
-<div class="flex h-screen bg-background text-slate-900 font-sans antialiased">
+<div class="flex h-screen bg-background text-slate-900 font-sans antialiased overflow-hidden">
     <app-admin-sidebar></app-admin-sidebar>
     <!-- Main content - add top padding on mobile for fixed header -->
-    <main class="flex-1 overflow-y-auto transition-all duration-300 pt-14 md:pt-0">
-        <!-- Responsive padding: smaller on mobile, larger on tablet/desktop -->
-        <div class="p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto">
+    <main class="flex-1 flex flex-col h-full overflow-hidden transition-all duration-300 pt-14 md:pt-0">
+        <!-- Container for router outlet - takes full height and manages overflow -->
+        <div class="flex-1 flex flex-col overflow-hidden">
             <router-outlet></router-outlet>
         </div>
     </main>

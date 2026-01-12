@@ -3,15 +3,19 @@ package com.enterprise.admin.controller;
 import com.enterprise.admin.config.KeycloakGrantedAuthoritiesConverter;
 import com.enterprise.admin.dto.ApiResponse;
 import com.enterprise.admin.dto.MenuAccessResponse;
+import com.enterprise.admin.dto.MenuBySoftwareRequest;
+import com.enterprise.admin.dto.MenuTreeItemResponse;
 import com.enterprise.admin.service.UserMenuAccessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -109,5 +113,55 @@ public class UserAccessController {
         List<String> permissions = userMenuAccessService.getUserPermissions(groups, applicationCode);
         boolean hasPermission = permissions.contains(permissionCode);
         return ApiResponse.success(hasPermission);
+    }
+
+    /**
+     * Get menu tree by software code with optional permission filtering
+     *
+     * Request body:
+     * {
+     * "softwareCode": "factory",
+     * "requirePermission": true
+     * }
+     *
+     * Response:
+     * {
+     * "status": 200,
+     * "message": "Success",
+     * "data": [
+     * {
+     * "id": "uuid",
+     * "code": "WAREHOUSE",
+     * "name": "Kho vật tư",
+     * "path": "/warehouse",
+     * "icon": "warehouse",
+     * "sortOrder": 1,
+     * "children": [...]
+     * }
+     * ]
+     * }
+     */
+    @PostMapping("/by-software")
+    @Operation(summary = "Get menu tree by software code", description = "Returns hierarchical menu tree for an application. "
+            +
+            "If requirePermission=true, filters by current user's groups. " +
+            "If requirePermission=false, returns all menus without permission filtering.")
+    public ApiResponse<List<MenuTreeItemResponse>> getMenuBySoftware(
+            @AuthenticationPrincipal Jwt jwt,
+            @Valid @RequestBody MenuBySoftwareRequest request) {
+
+        List<String> groups = Boolean.TRUE.equals(request.getRequirePermission())
+                ? KeycloakGrantedAuthoritiesConverter.getGroupCodes(jwt)
+                : Collections.emptyList();
+
+        log.info("Getting menu tree for software: {}, requirePermission: {}, groups: {}",
+                request.getSoftwareCode(), request.getRequirePermission(), groups);
+
+        List<MenuTreeItemResponse> menus = userMenuAccessService.getMenuTreeBySoftware(
+                request.getSoftwareCode(),
+                request.getRequirePermission(),
+                groups);
+
+        return ApiResponse.success(menus);
     }
 }
