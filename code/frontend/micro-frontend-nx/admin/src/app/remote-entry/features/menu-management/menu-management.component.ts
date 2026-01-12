@@ -46,6 +46,12 @@ export class MenuManagementComponent {
     /** Active tab */
     activeTab = signal<'menu' | 'users' | 'permissions'>('menu');
 
+    /** Expanded state for parent menu items */
+    expandedItems = signal<Set<string>>(new Set(['2', '6', '9', '14']));
+
+    /** Selected menu item ID */
+    selectedItem = signal<string | null>(null);
+
     /** Menu items */
     menuItems: MenuItem[] = [
         { id: '1', name: 'Bảng điều khiển', path: '/dashboard', icon: 'space_dashboard', order: 1, visible: true, parentId: null },
@@ -81,17 +87,44 @@ export class MenuManagementComponent {
 
     /** Get parent menu items */
     get parentMenuItems(): MenuItem[] {
-        return this.menuItems.filter(item => !item.parentId);
+        return this.menuItems.filter(item => !item.parentId).sort((a, b) => a.order - b.order);
     }
 
     /** Get child menu items */
     getChildItems(parentId: string): MenuItem[] {
-        return this.menuItems.filter(item => item.parentId === parentId);
+        return this.menuItems.filter(item => item.parentId === parentId).sort((a, b) => a.order - b.order);
     }
 
     /** Has children */
     hasChildren(itemId: string): boolean {
         return this.menuItems.some(item => item.parentId === itemId);
+    }
+
+    /** Check if item is expanded */
+    isExpanded(itemId: string): boolean {
+        return this.expandedItems().has(itemId);
+    }
+
+    /** Toggle expand/collapse */
+    toggleExpand(itemId: string, event: Event): void {
+        event.stopPropagation();
+        const expanded = new Set(this.expandedItems());
+        if (expanded.has(itemId)) {
+            expanded.delete(itemId);
+        } else {
+            expanded.add(itemId);
+        }
+        this.expandedItems.set(expanded);
+    }
+
+    /** Check if item is selected */
+    isSelected(itemId: string): boolean {
+        return this.selectedItem() === itemId;
+    }
+
+    /** Select item */
+    selectMenuItem(itemId: string): void {
+        this.selectedItem.set(itemId);
     }
 
     /** Get app icon classes based on index */
@@ -117,10 +150,12 @@ export class MenuManagementComponent {
     /** Handle right click on menu item */
     onContextMenu(event: MouseEvent, item: MenuItem): void {
         event.preventDefault();
+        event.stopPropagation();
+        this.selectedItem.set(item.id);
         this.contextMenu.set({
             visible: true,
-            x: event.pageX,
-            y: event.pageY,
+            x: event.clientX,
+            y: event.clientY,
             item: item
         });
     }
@@ -135,6 +170,14 @@ export class MenuManagementComponent {
                 y: 0,
                 item: null
             });
+        }
+    }
+
+    /** Copy path to clipboard */
+    copyPath(): void {
+        const item = this.contextMenu().item;
+        if (item) {
+            navigator.clipboard.writeText(item.path);
         }
     }
 

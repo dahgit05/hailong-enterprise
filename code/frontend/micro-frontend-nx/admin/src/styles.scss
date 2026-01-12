@@ -123,3 +123,130 @@
     pointer-events: none;
     z-index: 10;
 }
+
+/* Tree Structure Styles */
+.tree-container {
+    @apply relative;
+}
+
+.tree-branch {
+    @apply relative;
+}
+
+.tree-children {
+    @apply relative;
+}
+
+.tree-vertical-line {
+    @apply absolute left-[21px] top-0 w-px h-full bg-slate-200 z-0;
+}
+
+.tree-node-child {
+    @apply relative;
+}
+
+.tree-node-child::before {
+    content: '';
+    @apply absolute -left-[18px] top-1/2 -translate-y-1/2 w-[16px] h-px bg-slate-200;
+}
+
+/* Context Menu Container Animation */
+.context-menu-container {
+    animation: contextMenuIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    transform-origin: top left;
+}
+
+@keyframes contextMenuIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Context Menu Shadow */
+.shadow-context-menu {
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.03),
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 10px 15px -3px rgba(0, 0, 0, 0.08),
+        0 20px 25px -5px rgba(0, 0, 0, 0.06),
+        0 30px 60px -15px rgba(0, 0, 0, 0.15);
+}
+
+/* Context Menu Item Styles */
+.context-menu-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer;
+}
+
+.context-menu-item:hover {
+    background: linear-gradient(135deg, rgba(248, 250, 251, 0.8), rgba(241, 245, 249, 0.9));
+    transform: translateX(4px);
+}
+
+.context-menu-item:active {
+    transform: translateX(4px) scale(0.98);
+}
+
+/* Grid Item Styles */
+.context-menu-item-grid {
+    @apply flex flex-col items-center justify-center p-2 rounded-xl border border-slate-100/50 bg-slate-50/30 transition-all duration-200 cursor-pointer;
+}
+
+.context-menu-item-grid:hover {
+    @apply bg-white border-slate-200 shadow-sm;
+    transform: translateY(-2px);
+}
+
+.context-menu-item-grid:active {
+    transform: translateY(-2px) scale(0.96);
+}
+
+/* Context Menu Danger Item */
+.context-menu-item-danger {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer;
+}
+
+.context-menu-item-danger:hover {
+    background: linear-gradient(135deg, rgba(254, 242, 242, 0.9), rgba(254, 226, 226, 0.9));
+    transform: translateX(4px);
+}
+
+.context-menu-item-danger:active {
+    transform: translateX(4px) scale(0.98);
+}
+
+/* Smooth transitions for tree items */
+.card-menu-item {
+    @apply bg-white rounded-2xl p-5 border-none shadow-ultra-soft hover:shadow-premium transition-all duration-300 ease-out;
+}
+
+.card-menu-item:hover {
+    transform: translateY(-2px);
+}
+
+/* Tree children animation */
+.tree-children {
+    animation: expandIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes expandIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Smooth rotation for expand/collapse arrow */
+.material-symbols-outlined.transition-transform {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
