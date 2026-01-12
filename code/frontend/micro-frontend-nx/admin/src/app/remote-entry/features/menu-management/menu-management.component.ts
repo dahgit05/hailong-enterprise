@@ -1,5 +1,6 @@
 import { Component, signal, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MenuDrawerComponent } from './components/menu-drawer/menu-drawer.component';
 
 interface AppModule {
     id: string;
@@ -22,7 +23,7 @@ interface MenuItem {
 @Component({
     selector: 'app-menu-management',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, MenuDrawerComponent],
     templateUrl: './menu-management.component.html',
     host: {
         'class': 'flex flex-col flex-1 h-full overflow-hidden'
@@ -181,13 +182,32 @@ export class MenuManagementComponent {
         }
     }
 
+    /** Drawer State */
+    isDrawerOpen = signal(false);
+
+    openDrawer(): void {
+        this.isDrawerOpen.set(true);
+    }
+
+    closeDrawer(): void {
+        this.isDrawerOpen.set(false);
+    }
+
+    onSaveMenu(data: any): void {
+        console.log('Saving menu:', data);
+        // Implement save logic here
+        this.closeDrawer();
+    }
+
     /** Context menu actions */
     editMenu(): void {
         console.log('Edit menu:', this.contextMenu().item);
+        this.openDrawer(); // For demo, reuse drawer for edit
     }
 
     addSubMenu(): void {
         console.log('Add submenu for:', this.contextMenu().item);
+        this.openDrawer(); // Open drawer for add submenu
     }
 
     deleteMenu(): void {

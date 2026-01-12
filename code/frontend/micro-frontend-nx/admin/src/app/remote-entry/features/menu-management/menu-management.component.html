@@ -100,10 +100,10 @@
                         class="w-full lg:w-64 pl-10 pr-4 py-2 bg-slate-50 border-none rounded-xl text-xs focus:ring-1 focus:ring-primary/20 outline-none"
                         placeholder="Tìm kiếm menu..." type="text" />
                 </div>
-                <button
+                <button (click)="openDrawer()"
                     class="flex items-center gap-2 px-4 lg:px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all shrink-0">
                     <span class="material-symbols-outlined !text-[18px]">add</span>
-                    <span class="hidden sm:inline">Thêm Menu mới</span>
+                    <span class="hidden sm:inline">Thêm Menu</span>
                 </button>
             </div>
         </div>
@@ -259,87 +259,90 @@
 </div> <!-- End of host container -->
 
 <!-- Context Menu (Premium Glassmorphism Style) -->
+<!-- Context Menu - UI/UX Optimized -->
 <div *ngIf="contextMenu().visible" class="context-menu-container fixed z-[9999]" [style.left.px]="contextMenu().x"
     [style.top.px]="contextMenu().y">
 
-    <!-- Glass Background -->
+    <!-- Menu Container with Premium Styling -->
     <div
-        class="bg-white/95 backdrop-blur-xl border border-white/20 shadow-context-menu rounded-[20px] w-72 overflow-hidden">
+        class="bg-white/98 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200/60 ring-1 ring-black/5 overflow-hidden min-w-[220px]">
 
-        <!-- Menu Header with selected item info -->
-        <div class="px-5 pt-4 pb-3 bg-gradient-to-r from-slate-50/80 to-transparent border-b border-slate-100/50">
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] mb-1">Tùy chọn Menu</p>
-            <p class="text-sm font-bold text-slate-800 truncate">{{ contextMenu().item?.name }}</p>
+        <!-- Menu Items Group -->
+        <div class="p-1.5">
+            <!-- Edit Action -->
+            <button (click)="editMenu()"
+                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50/50 active:scale-[0.98]">
+                <div
+                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-100/70 text-violet-600 group-hover:bg-violet-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                    <span class="material-symbols-outlined !text-[18px] !leading-none">edit_square</span>
+                </div>
+                <div class="flex-1 text-left">
+                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-violet-700">Điều
+                        chỉnh</span>
+                    <span class="block text-[11px] text-slate-400 group-hover:text-violet-500/70">Chỉnh sửa menu</span>
+                </div>
+                <span
+                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-violet-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+            </button>
+
+            <!-- View Details Action -->
+            <button (click)="editMenu()"
+                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50/50 active:scale-[0.98]">
+                <div
+                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100/70 text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                    <span class="material-symbols-outlined !text-[18px] !leading-none">visibility</span>
+                </div>
+                <div class="flex-1 text-left">
+                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-blue-700">Xem chi
+                        tiết</span>
+                    <span class="block text-[11px] text-slate-400 group-hover:text-blue-500/70">Thông tin đầy đủ</span>
+                </div>
+                <span
+                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+            </button>
+
+            <!-- Add Submenu Action -->
+            <button (click)="addSubMenu()"
+                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50/50 active:scale-[0.98]">
+                <div
+                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                    <span class="material-symbols-outlined !text-[18px] !leading-none">add_circle</span>
+                </div>
+                <div class="flex-1 text-left">
+                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-emerald-700">Thêm menu
+                        con</span>
+                    <span class="block text-[11px] text-slate-400 group-hover:text-emerald-500/70">Tạo mục con
+                        mới</span>
+                </div>
+                <span
+                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-emerald-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+            </button>
         </div>
 
-        <!-- Menu Actions -->
-        <div class="p-2 space-y-2">
-            <!-- Row 1: Properties (Grid) -->
-            <div class="grid grid-cols-2 gap-2">
-                <button (click)="editMenu()" class="context-menu-item-grid group">
-                    <div
-                        class="size-9 rounded-xl bg-blue-50 text-blue-500 group-hover:bg-blue-500 group-hover:text-white flex items-center justify-center transition-all duration-200 shrink-0 mb-1">
-                        <span class="material-symbols-outlined !text-[20px]">edit_note</span>
-                    </div>
-                    <span class="text-xs font-semibold text-slate-600 group-hover:text-slate-800">Chỉnh sửa</span>
-                </button>
-
-                <button class="context-menu-item-grid group">
-                    <div
-                        class="size-9 rounded-xl bg-amber-50 text-amber-500 group-hover:bg-amber-500 group-hover:text-white flex items-center justify-center transition-all duration-200 shrink-0 mb-1">
-                        <span class="material-symbols-outlined !text-[20px]">admin_panel_settings</span>
-                    </div>
-                    <span class="text-xs font-semibold text-slate-600 group-hover:text-slate-800">Phân quyền</span>
-                </button>
-            </div>
-
-            <div class="space-y-1">
-                <!-- Row 2: Structural Action -->
-                <button (click)="addSubMenu()" class="context-menu-item group hover:bg-emerald-50/50">
-                    <div
-                        class="size-9 rounded-xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white flex items-center justify-center transition-all duration-200 shrink-0">
-                        <span class="material-symbols-outlined !text-[20px]">add_circle</span>
-                    </div>
-                    <div class="flex-1 text-left">
-                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-slate-900">Thêm Menu
-                            con</span>
-                        <span class="block text-[10px] text-slate-400 group-hover:text-emerald-600/70">Tạo cấp dưới
-                            mới</span>
-                    </div>
-                    <span
-                        class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-emerald-500 transition-colors">chevron_right</span>
-                </button>
-
-                <!-- Row 3: Utilities -->
-                <button (click)="copyPath()" class="context-menu-item group hover:bg-slate-50">
-                    <div
-                        class="size-9 rounded-xl bg-slate-100 text-slate-500 group-hover:bg-slate-600 group-hover:text-white flex items-center justify-center transition-all duration-200 shrink-0">
-                        <span class="material-symbols-outlined !text-[20px]">copy_all</span>
-                    </div>
-                    <div class="flex-1 text-left">
-                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-slate-900">Sao chép
-                            đường dẫn</span>
-                    </div>
-                </button>
-            </div>
+        <!-- Divider -->
+        <div class="px-3 py-1">
+            <div class="border-t border-slate-100"></div>
         </div>
 
         <!-- Danger Zone -->
-        <div class="px-2 pb-2 mt-1">
-            <div class="px-3 py-1 mb-1 border-t border-slate-100/50 pt-2">
-                <span class="text-[9px] font-bold text-red-400 uppercase tracking-[0.1em] opacity-80">Vùng nguy
-                    hiểm</span>
-            </div>
-            <button (click)="deleteMenu()" class="context-menu-item-danger group">
+        <div class="p-1.5">
+            <button (click)="deleteMenu()"
+                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-red-50 hover:to-rose-50/50 active:scale-[0.98]">
                 <div
-                    class="size-9 rounded-xl bg-red-50 text-red-500 group-hover:bg-red-500 group-hover:text-white flex items-center justify-center transition-all duration-200 shrink-0">
-                    <span class="material-symbols-outlined !text-[20px]">delete</span>
+                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100/70 text-red-500 group-hover:bg-red-500 group-hover:text-white transition-all duration-200 group-hover:scale-110 group-hover:rotate-12">
+                    <span class="material-symbols-outlined !text-[18px] !leading-none">delete</span>
                 </div>
                 <div class="flex-1 text-left">
-                    <span class="block text-sm font-semibold text-red-600 group-hover:text-red-700">Xóa vĩnh viễn</span>
-                    <span class="block text-[10px] text-red-400/80">Không thể hoàn tác</span>
+                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-red-700">Xóa menu</span>
+                    <span class="block text-[11px] text-red-400/80 group-hover:text-red-500">Không thể hoàn tác</span>
                 </div>
+                <span
+                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
             </button>
         </div>
     </div>
 </div>
+
+<!-- Menu Drawer -->
+<app-menu-drawer [isOpen]="isDrawerOpen()" (close)="closeDrawer()" (save)="onSaveMenu($event)">
+</app-menu-drawer>
