@@ -18,6 +18,11 @@
                     2026</p>
             </div>
             <div class="flex items-center gap-3 lg:gap-4">
+                <button *ngIf="activeTab() === 'permissions'" (click)="toggleLibrarySidebar()"
+                    class="flex items-center gap-2 lg:gap-2.5 px-4 lg:px-6 py-2.5 lg:py-3 bg-white dark:bg-slate-800 text-primary dark:text-emerald-400 rounded-xl font-bold text-xs lg:text-[13px] border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all">
+                    <span class="material-symbols-outlined !text-[18px] lg:!text-[20px]">inventory_2</span>
+                    <span class="hidden sm:inline">Kho quyền hạn</span>
+                </button>
                 <button
                     class="flex items-center gap-2 lg:gap-2.5 px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl bg-white border border-slate-100 font-bold text-xs lg:text-[13px] text-slate-600 hover:bg-slate-50 transition-all shadow-sm">
                     <span class="material-symbols-outlined !text-[18px] lg:!text-[20px]">file_download</span>
@@ -101,7 +106,8 @@
                         [placeholder]="activeTab() === 'users' ? 'Tìm kiếm người dùng...' : 'Tìm kiếm menu...'"
                         type="text" />
                 </div>
-                <button (click)="activeTab() === 'users' ? openUserDrawer() : openDrawer()"
+                <button *ngIf="activeTab() !== 'permissions'"
+                    (click)="activeTab() === 'users' ? openUserDrawer() : openDrawer()"
                     class="flex items-center gap-2 px-4 lg:px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all shrink-0">
                     <span class="material-symbols-outlined !text-[18px]">add</span>
                     <span class="hidden sm:inline">{{ activeTab() === 'users' ? 'Thêm Người dùng' : 'Thêm Menu'
@@ -292,266 +298,387 @@
                 </div>
             </div>
 
-            <!-- Permissions Tab Placeholder -->
-            <div *ngIf="activeTab() === 'permissions'"
-                class="bg-white rounded-3xl shadow-ultra-soft p-8 lg:p-12 text-center">
-                <span class="material-symbols-outlined !text-[48px] text-slate-300 mb-4">admin_panel_settings</span>
-                <p class="text-slate-400 text-sm">Quản lý phân quyền sẽ được triển khai sau</p>
+            <!-- Permissions Tab Content -->
+            <div *ngIf="activeTab() === 'permissions'" class="space-y-8 pb-10">
+
+
+                <!-- Permission Groups Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div *ngFor="let group of permissionGroups"
+                        class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 p-6 rounded-2xl cursor-pointer"
+                        (contextmenu)="onPermissionContextMenu($event, group)">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center"
+                                [ngClass]="[group.iconBg, group.iconColor]">
+                                <span class="material-symbols-outlined text-xl">{{ group.icon }}</span>
+                            </div>
+                            <button
+                                class="p-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg text-slate-400 transition-colors">
+                                <span class="material-symbols-outlined text-lg">more_horiz</span>
+                            </button>
+                        </div>
+                        <h4 class="font-bold text-slate-800 dark:text-white mb-2">{{ group.name }}</h4>
+                        <p class="text-[12px] text-slate-400 leading-relaxed mb-6 line-clamp-2">{{ group.description }}
+                        </p>
+
+                        <div class="pt-4 border-t border-slate-50 dark:border-slate-800 flex items-center gap-4">
+                            <div class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm text-slate-400">key</span>
+                                <span class="text-[11px] font-bold text-slate-600 dark:text-slate-400">{{
+                                    group.permissionsCount }} Quyền</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm text-slate-400">group</span>
+                                <span class="text-[11px] font-bold text-slate-600 dark:text-slate-400">{{
+                                    group.membersCount }} Thành viên</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Create New Button -->
+                    <div (click)="openCreateGroupDialog()"
+                        class="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer group">
+                        <div
+                            class="w-12 h-12 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-colors mb-3">
+                            <span class="material-symbols-outlined text-2xl">add</span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-1">Tạo nhóm quyền mới</h4>
+                        <p class="text-[12px] text-slate-400">Thiết lập & phân quyền</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Fixed Footer with Pagination (outside scroll area) -->
+        <div class="px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto w-full shrink-0 bg-background border-t border-slate-100">
+            <!-- Pagination for Users Tab -->
+            <div *ngIf="activeTab() === 'users'" class="py-6 flex items-center justify-between">
+                <p class="text-sm font-medium text-slate-500">
+                    Hiển thị <span class="text-slate-900 font-bold">1 - 10</span> trong số <span
+                        class="text-slate-900 font-bold">1,248</span> người dùng
+                </p>
+                <div class="flex items-center gap-2">
+                    <button
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:bg-slate-50 transition-all">
+                        <span class="material-symbols-outlined !text-[20px]">chevron_left</span>
+                    </button>
+                    <button
+                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20">1</button>
+                    <button
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 font-bold transition-all">2</button>
+                    <button
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 font-bold transition-all">3</button>
+                    <span class="text-slate-400 px-2">...</span>
+                    <button
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 font-bold transition-all">42</button>
+                    <button
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:bg-slate-50 transition-all">
+                        <span class="material-symbols-outlined !text-[20px]">chevron_right</span>
+                    </button>
+                </div>
             </div>
 
-        </div>
-    </div>
-
-    <!-- Fixed Footer with Pagination (outside scroll area) -->
-    <div class="px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto w-full shrink-0 bg-background border-t border-slate-100">
-        <!-- Pagination for Users Tab -->
-        <div *ngIf="activeTab() === 'users'" class="py-6 flex items-center justify-between">
-            <p class="text-sm font-medium text-slate-500">
-                Hiển thị <span class="text-slate-900 font-bold">1 - 10</span> trong số <span
-                    class="text-slate-900 font-bold">1,248</span> người dùng
-            </p>
-            <div class="flex items-center gap-2">
-                <button
-                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:bg-slate-50 transition-all">
-                    <span class="material-symbols-outlined !text-[20px]">chevron_left</span>
-                </button>
-                <button
-                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20">1</button>
-                <button
-                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 font-bold transition-all">2</button>
-                <button
-                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 font-bold transition-all">3</button>
-                <span class="text-slate-400 px-2">...</span>
-                <button
-                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 font-bold transition-all">42</button>
-                <button
-                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:bg-slate-50 transition-all">
-                    <span class="material-symbols-outlined !text-[20px]">chevron_right</span>
-                </button>
+            <!-- Footer Info -->
+            <div
+                class="py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between text-slate-400 text-[10px] lg:text-[11px] font-medium uppercase tracking-[0.1em] gap-2 border-t border-slate-100">
+                <div class="flex items-center gap-3">
+                    <span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined !text-[14px]">mouse</span>
+                        Click chuột phải vào Menu để thực hiện tác vụ nhanh
+                    </span>
+                </div>
+                <div>Phiên bản 4.8.0 Build 2026</div>
             </div>
         </div>
 
-        <!-- Footer Info -->
+    </div> <!-- End of host container -->
+
+    <!-- Context Menu (Premium Glassmorphism Style) -->
+    <!-- Context Menu - UI/UX Optimized -->
+    <div *ngIf="contextMenu().visible" class="context-menu-container fixed z-[9999]" [style.left.px]="contextMenu().x"
+        [style.top.px]="contextMenu().y">
+
+        <!-- Menu Container with Premium Styling -->
         <div
-            class="py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between text-slate-400 text-[10px] lg:text-[11px] font-medium uppercase tracking-[0.1em] gap-2 border-t border-slate-100">
-            <div class="flex items-center gap-3">
-                <span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span class="flex items-center gap-1.5">
-                    <span class="material-symbols-outlined !text-[14px]">mouse</span>
-                    Click chuột phải vào Menu để thực hiện tác vụ nhanh
-                </span>
+            class="bg-white/98 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200/60 ring-1 ring-black/5 overflow-hidden min-w-[220px]">
+
+            <!-- Menu Items Group -->
+            <div class="p-1.5">
+                <!-- Edit Action -->
+                <button (click)="editMenu()"
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50/50 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-100/70 text-violet-600 group-hover:bg-violet-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">edit_square</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-violet-700">Điều
+                            chỉnh</span>
+                        <span class="block text-[11px] text-slate-400 group-hover:text-violet-500/70">Chỉnh sửa
+                            menu</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-violet-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+                </button>
+
+                <!-- View Details Action -->
+                <button (click)="editMenu()"
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50/50 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100/70 text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">visibility</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-blue-700">Xem chi
+                            tiết</span>
+                        <span class="block text-[11px] text-slate-400 group-hover:text-blue-500/70">Thông tin đầy
+                            đủ</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+                </button>
+
+                <!-- Add Submenu Action -->
+                <button (click)="addSubMenu()"
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50/50 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">add_circle</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-emerald-700">Thêm menu
+                            con</span>
+                        <span class="block text-[11px] text-slate-400 group-hover:text-emerald-500/70">Tạo mục con
+                            mới</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-emerald-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+                </button>
             </div>
-            <div>Phiên bản 4.8.0 Build 2026</div>
+
+            <!-- Divider -->
+            <div class="px-3 py-1">
+                <div class="border-t border-slate-100"></div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="p-1.5">
+                <button (click)="deleteMenu()"
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-red-50 hover:to-rose-50/50 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100/70 text-red-500 group-hover:bg-red-500 group-hover:text-white transition-all duration-200 group-hover:scale-110 group-hover:rotate-12">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">delete</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-red-700">Xóa
+                            menu</span>
+                        <span class="block text-[11px] text-red-400/80 group-hover:text-red-500">Không thể hoàn
+                            tác</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+                </button>
+            </div>
         </div>
     </div>
 
-</div> <!-- End of host container -->
+    <!-- User Context Menu - UI/UX Optimized -->
+    <div *ngIf="userContextMenu().visible" class="context-menu-container fixed z-[9999]"
+        [style.left.px]="userContextMenu().x" [style.top.px]="userContextMenu().y">
 
-<!-- Context Menu (Premium Glassmorphism Style) -->
-<!-- Context Menu - UI/UX Optimized -->
-<div *ngIf="contextMenu().visible" class="context-menu-container fixed z-[9999]" [style.left.px]="contextMenu().x"
-    [style.top.px]="contextMenu().y">
+        <!-- Menu Container with Premium Styling -->
+        <div
+            class="bg-white/98 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200/60 ring-1 ring-black/5 overflow-hidden min-w-[240px]">
 
-    <!-- Menu Container with Premium Styling -->
-    <div
-        class="bg-white/98 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200/60 ring-1 ring-black/5 overflow-hidden min-w-[220px]">
+            <!-- Menu Items Group -->
+            <div class="p-1.5">
+                <!-- Edit User Action -->
+                <button (click)="editUser()"
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50/50 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-100/70 text-violet-600 group-hover:bg-violet-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">edit_square</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-violet-700">Chỉnh
+                            sửa</span>
+                        <span class="block text-[11px] text-slate-400 group-hover:text-violet-500/70">Cập nhật thông
+                            tin</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-violet-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+                </button>
 
-        <!-- Menu Items Group -->
-        <div class="p-1.5">
-            <!-- Edit Action -->
-            <button (click)="editMenu()"
-                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50/50 active:scale-[0.98]">
-                <div
-                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-100/70 text-violet-600 group-hover:bg-violet-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
-                    <span class="material-symbols-outlined !text-[18px] !leading-none">edit_square</span>
-                </div>
-                <div class="flex-1 text-left">
-                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-violet-700">Điều
-                        chỉnh</span>
-                    <span class="block text-[11px] text-slate-400 group-hover:text-violet-500/70">Chỉnh sửa menu</span>
-                </div>
-                <span
-                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-violet-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
-            </button>
+                <!-- View Details Action -->
+                <button (click)="viewUserDetails()"
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50/50 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100/70 text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">visibility</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-blue-700">Xem chi
+                            tiết</span>
+                        <span class="block text-[11px] text-slate-400 group-hover:text-blue-500/70">Thông tin đầy
+                            đủ</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+                </button>
 
-            <!-- View Details Action -->
-            <button (click)="editMenu()"
-                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50/50 active:scale-[0.98]">
-                <div
-                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100/70 text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
-                    <span class="material-symbols-outlined !text-[18px] !leading-none">visibility</span>
-                </div>
-                <div class="flex-1 text-left">
-                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-blue-700">Xem chi
-                        tiết</span>
-                    <span class="block text-[11px] text-slate-400 group-hover:text-blue-500/70">Thông tin đầy đủ</span>
-                </div>
-                <span
-                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
-            </button>
+                <!-- Reset Password Action -->
+                <button (click)="resetUserPassword()"
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50/50 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-100/70 text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">lock_reset</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-amber-700">Đặt lại mật
+                            khẩu</span>
+                        <span class="block text-[11px] text-slate-400 group-hover:text-amber-500/70">Reset
+                            password</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-amber-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+                </button>
 
-            <!-- Add Submenu Action -->
-            <button (click)="addSubMenu()"
-                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50/50 active:scale-[0.98]">
-                <div
-                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
-                    <span class="material-symbols-outlined !text-[18px] !leading-none">add_circle</span>
-                </div>
-                <div class="flex-1 text-left">
-                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-emerald-700">Thêm menu
-                        con</span>
-                    <span class="block text-[11px] text-slate-400 group-hover:text-emerald-500/70">Tạo mục con
-                        mới</span>
-                </div>
-                <span
-                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-emerald-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
-            </button>
-        </div>
+                <!-- Permissions Action -->
+                <button (click)="manageUserPermissions()"
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50/50 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">admin_panel_settings</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-emerald-700">Phân
+                            quyền</span>
+                        <span class="block text-[11px] text-slate-400 group-hover:text-emerald-500/70">Quản lý quyền
+                            hạn</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-emerald-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+                </button>
+            </div>
 
-        <!-- Divider -->
-        <div class="px-3 py-1">
-            <div class="border-t border-slate-100"></div>
-        </div>
+            <!-- Divider -->
+            <div class="px-3 py-1">
+                <div class="border-t border-slate-100"></div>
+            </div>
 
-        <!-- Danger Zone -->
-        <div class="p-1.5">
-            <button (click)="deleteMenu()"
-                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-red-50 hover:to-rose-50/50 active:scale-[0.98]">
-                <div
-                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100/70 text-red-500 group-hover:bg-red-500 group-hover:text-white transition-all duration-200 group-hover:scale-110 group-hover:rotate-12">
-                    <span class="material-symbols-outlined !text-[18px] !leading-none">delete</span>
-                </div>
-                <div class="flex-1 text-left">
-                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-red-700">Xóa menu</span>
-                    <span class="block text-[11px] text-red-400/80 group-hover:text-red-500">Không thể hoàn tác</span>
-                </div>
-                <span
-                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- User Context Menu - UI/UX Optimized -->
-<div *ngIf="userContextMenu().visible" class="context-menu-container fixed z-[9999]"
-    [style.left.px]="userContextMenu().x" [style.top.px]="userContextMenu().y">
-
-    <!-- Menu Container with Premium Styling -->
-    <div
-        class="bg-white/98 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200/60 ring-1 ring-black/5 overflow-hidden min-w-[240px]">
-
-        <!-- Menu Items Group -->
-        <div class="p-1.5">
-            <!-- Edit User Action -->
-            <button (click)="editUser()"
-                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50/50 active:scale-[0.98]">
-                <div
-                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-100/70 text-violet-600 group-hover:bg-violet-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
-                    <span class="material-symbols-outlined !text-[18px] !leading-none">edit_square</span>
-                </div>
-                <div class="flex-1 text-left">
-                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-violet-700">Chỉnh
-                        sửa</span>
-                    <span class="block text-[11px] text-slate-400 group-hover:text-violet-500/70">Cập nhật thông
-                        tin</span>
-                </div>
-                <span
-                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-violet-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
-            </button>
-
-            <!-- View Details Action -->
-            <button (click)="viewUserDetails()"
-                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50/50 active:scale-[0.98]">
-                <div
-                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100/70 text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
-                    <span class="material-symbols-outlined !text-[18px] !leading-none">visibility</span>
-                </div>
-                <div class="flex-1 text-left">
-                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-blue-700">Xem chi
-                        tiết</span>
-                    <span class="block text-[11px] text-slate-400 group-hover:text-blue-500/70">Thông tin đầy đủ</span>
-                </div>
-                <span
-                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
-            </button>
-
-            <!-- Reset Password Action -->
-            <button (click)="resetUserPassword()"
-                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50/50 active:scale-[0.98]">
-                <div
-                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-100/70 text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
-                    <span class="material-symbols-outlined !text-[18px] !leading-none">lock_reset</span>
-                </div>
-                <div class="flex-1 text-left">
-                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-amber-700">Đặt lại mật
-                        khẩu</span>
-                    <span class="block text-[11px] text-slate-400 group-hover:text-amber-500/70">Reset password</span>
-                </div>
-                <span
-                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-amber-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
-            </button>
-
-            <!-- Permissions Action -->
-            <button (click)="manageUserPermissions()"
-                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50/50 active:scale-[0.98]">
-                <div
-                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
-                    <span class="material-symbols-outlined !text-[18px] !leading-none">admin_panel_settings</span>
-                </div>
-                <div class="flex-1 text-left">
-                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-emerald-700">Phân
-                        quyền</span>
-                    <span class="block text-[11px] text-slate-400 group-hover:text-emerald-500/70">Quản lý quyền
-                        hạn</span>
-                </div>
-                <span
-                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-emerald-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
-            </button>
-        </div>
-
-        <!-- Divider -->
-        <div class="px-3 py-1">
-            <div class="border-t border-slate-100"></div>
-        </div>
-
-        <!-- Danger Zone -->
-        <div class="p-1.5">
-            <button (click)="deactivateUser()"
-                class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-red-50 hover:to-rose-50/50 active:scale-[0.98]">
-                <div
-                    class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100/70 text-red-500 group-hover:bg-red-500 group-hover:text-white transition-all duration-200 group-hover:scale-110 group-hover:rotate-12">
-                    <span class="material-symbols-outlined !text-[18px] !leading-none">block</span>
-                </div>
-                <div class="flex-1 text-left">
-                    <span class="block text-sm font-semibold text-slate-700 group-hover:text-red-700">Vô hiệu hóa</span>
-                    <span class="block text-[11px] text-red-400/80 group-hover:text-red-500">Khóa tài khoản</span>
-                </div>
-                <span
-                    class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
-            </button>
+            <!-- Danger Zone -->
+            <div class="p-1.5">
+                <button (click)="deactivateUser()"
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-red-50 hover:to-rose-50/50 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100/70 text-red-500 group-hover:bg-red-500 group-hover:text-white transition-all duration-200 group-hover:scale-110 group-hover:rotate-12">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">block</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-red-700">Vô hiệu
+                            hóa</span>
+                        <span class="block text-[11px] text-red-400/80 group-hover:text-red-500">Khóa tài khoản</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined !text-[16px] text-slate-300 group-hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all">chevron_right</span>
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Menu Drawer -->
-<app-menu-drawer [isOpen]="isDrawerOpen()" (close)="closeDrawer()" (save)="onSaveMenu($event)">
-</app-menu-drawer>
+    <!-- Permission Context Menu -->
+    <div *ngIf="permissionContextMenu().visible" class="context-menu-container fixed z-[9999]"
+        [style.left.px]="permissionContextMenu().x" [style.top.px]="permissionContextMenu().y">
+        <div
+            class="bg-white/98 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200/60 ring-1 ring-black/5 overflow-hidden min-w-[220px]">
+            <div class="p-1.5">
+                <button (click)="assignPermissions()"
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-primary/5 hover:to-primary/10 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">key</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-primary">Gán
+                            quyền</span>
+                    </div>
+                </button>
+                <button
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100/70 text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">group_add</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-blue-700">Gán người
+                            dùng</span>
+                    </div>
+                </button>
+                <div class="px-3 py-1">
+                    <div class="border-t border-slate-100"></div>
+                </div>
+                <button (click)="editGroup()"
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-slate-50 hover:to-slate-100 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100/70 text-slate-600 group-hover:bg-slate-500 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">edit_note</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-slate-700">Sửa
+                            tên</span>
+                    </div>
+                </button>
+                <button (click)="deleteGroup()"
+                    class="context-menu-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-red-50 hover:to-rose-50/50 active:scale-[0.98]">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100/70 text-red-500 group-hover:bg-red-500 group-hover:text-white transition-all duration-200 group-hover:scale-110 group-hover:rotate-12">
+                        <span class="material-symbols-outlined !text-[18px] !leading-none">delete</span>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <span class="block text-sm font-semibold text-slate-700 group-hover:text-red-700">Xóa</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
 
-<!-- User Drawer -->
-<app-user-drawer [isOpen]="isUserDrawerOpen()" [user]="selectedUserForEdit()" (close)="closeUserDrawer()"
-    (save)="onSaveUser($event)">
-</app-user-drawer>
+    <!-- Menu Drawer -->
+    <app-menu-drawer [isOpen]="isDrawerOpen()" (close)="closeDrawer()" (save)="onSaveMenu($event)">
+    </app-menu-drawer>
 
-<!-- User Detail Drawer -->
-<app-user-detail-drawer [isOpen]="isUserDetailDrawerOpen()" [user]="selectedUserForDetail()"
-    (close)="closeUserDetailDrawer()" (edit)="onEditUserFromDetail($event)">
-</app-user-detail-drawer>
+    <!-- User Drawer -->
+    <app-user-drawer [isOpen]="isUserDrawerOpen()" [user]="selectedUserForEdit()" (close)="closeUserDrawer()"
+        (save)="onSaveUser($event)">
+    </app-user-drawer>
 
-<!-- Dialogs -->
-<app-reset-password-dialog [isOpen]="isResetPasswordOpen()" [user]="selectedUserForAction()"
-    (close)="closeResetPasswordDialog()" (confirm)="onResetPasswordConfirm($event)">
-</app-reset-password-dialog>
+    <!-- User Detail Drawer -->
+    <app-user-detail-drawer [isOpen]="isUserDetailDrawerOpen()" [user]="selectedUserForDetail()"
+        (close)="closeUserDetailDrawer()" (edit)="onEditUserFromDetail($event)">
+    </app-user-detail-drawer>
 
-<app-deactivate-user-dialog [isOpen]="isDeactivateUserOpen()" [user]="selectedUserForAction()"
-    (close)="closeDeactivateUserDialog()" (confirm)="onDeactivateUserConfirm()">
-</app-deactivate-user-dialog>
+    <!-- Dialogs -->
+    <app-reset-password-dialog [isOpen]="isResetPasswordOpen()" [user]="selectedUserForAction()"
+        (close)="closeResetPasswordDialog()" (confirm)="onResetPasswordConfirm($event)">
+    </app-reset-password-dialog>
+
+    <app-deactivate-user-dialog [isOpen]="isDeactivateUserOpen()" [user]="selectedUserForAction()"
+        (close)="closeDeactivateUserDialog()" (confirm)="onDeactivateUserConfirm()">
+    </app-deactivate-user-dialog>
+
+    <!-- Library Sidebar -->
+    <app-permission-sidebar [isOpen]="isLibrarySidebarOpen()" (close)="closeLibrarySidebar()"></app-permission-sidebar>
+
+    <!-- Permission Matrix Drawer -->
+    <app-permission-matrix-drawer [isOpen]="isPermissionMatrixOpen()" [data]="selectedGroupForMatrix()"
+        (close)="closePermissionMatrix()" (save)="onSavePermissionMatrix($event)"></app-permission-matrix-drawer>
+
+    <!-- Delete Permission Group Dialog -->
+    <app-delete-permission-group-dialog [isOpen]="isDeleteGroupDialogOpen()" [group]="selectedGroupForDelete()"
+        (close)="closeDeleteGroupDialog()" (confirm)="onDeleteGroupConfirm()"></app-delete-permission-group-dialog>
+
+    <!-- Edit/Create Permission Group Dialog -->
+    <app-edit-permission-group-dialog [isOpen]="isEditGroupDialogOpen()" [mode]="editGroupMode()"
+        [group]="selectedGroupForEdit()" (close)="closeEditGroupDialog()" (save)="onSaveGroup($event)">
+    </app-edit-permission-group-dialog>

@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Trắc nghiệm Bảo mật & Lập trình</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --udemy-purple: #a435f0;
+            --udemy-dark: #2d2f31;
+            --udemy-gray: #6a6f73;
+            --udemy-light-gray: #f7f9fa;
+            --border-color: #d1d7dc;
+            --success: #1e8e3e;
+            --error: #b32d0f;
+            --warning: #e59819;
+            --focus-glow: rgba(164, 53, 240, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background-color: #fff;
+            color: var(--udemy-dark);
+            line-height: 1.6;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* Header */
+        header {
+            background: var(--udemy-dark);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-area {
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-area svg {
+            fill: white;
+            height: 24px;
+            width: 24px;
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            margin: 0 40px;
+            max-width: 600px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            color: #ccc;
+        }
+
+        .progress-bar-bg {
+            background: #3e4143;
+            height: 6px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: var(--udemy-purple);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timer-badge {
+            background: #3e4143;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid transparent;
+        }
+
+        .timer-badge.warning {
+            color: #ff6b6b;
+            border-color: #ff6b6b;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0.7;
+            }
+        }
+
+        /* Main Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 0;
+            height: calc(100vh - 74px);
+            overflow: hidden;
+        }
+
+        /* Question Area */
+        .quiz-section {
+            background: white;
+            padding: 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-number {
+            font-weight: 700;
+            color: var(--udemy-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .btn-flag {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--udemy-gray);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .btn-flag:hover {
+            color: var(--udemy-dark);
+        }
+
+        .btn-flag.active {
+            color: var(--warning);
+        }
+
+        .btn-flag svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            color: #1c1d1f;
+        }
+
+        .options-list {
+            list-style: none;
+        }
+
+        .option-item {
+            margin-bottom: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 4px;
+            font-weight: 400;
+            position: relative;
+        }
+
+        .option-label:hover {
+            background-color: var(--udemy-light-gray);
+            border-color: var(--udemy-dark);
+        }
+
+        .option-label.selected {
+            border: 2px solid var(--udemy-dark);
+            background-color: var(--udemy-light-gray);
+            padding: 15px;
+        }
+
+        /* -1px padding to compensate border */
+
+        /* Review Mode Styles */
+        .review-mode .option-label {
+            pointer-events: none;
+        }
+
+        .review-mode .option-label.correct {
+            border-color: var(--success);
+            background-color: rgba(30, 142, 62, 0.1);
+        }
+
+        .review-mode .option-label.correct::after {
+            content: "✓ Đáp án đúng";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--success);
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .review-mode .option-label.wrong {
+            border-color: var(--error);
+            background-color: rgba(179, 45, 15, 0.1);
+        }
+
+        .review-mode .option-label.wrong::after {
+            content: "✗ Bạn chọn sai";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--error);
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .option-radio {
+            margin-right: 15px;
+            margin-top: 4px;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--udemy-purple);
+            flex-shrink: 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: #fbfbf8;
+            border-left: 1px solid var(--border-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: hidden;
+        }
+
+        .sidebar-header {
+            margin-bottom: 20px;
+        }
+
+        .sidebar h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .sidebar p {
+            font-size: 0.85rem;
+            color: var(--udemy-gray);
+        }
+
+        .question-grid-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 5px;
+        }
+
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .q-dot {
+            aspect-ratio: 1;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 4px;
+            background: white;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .q-dot:hover {
+            border-color: var(--udemy-dark);
+        }
+
+        .q-dot.active {
+            border: 2px solid var(--udemy-purple);
+            color: var(--udemy-purple);
+            font-weight: bold;
+        }
+
+        .q-dot.answered {
+            background: var(--udemy-dark);
+            color: white;
+            border-color: var(--udemy-dark);
+        }
+
+        .q-dot.flagged::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 8px;
+            height: 8px;
+            background: var(--warning);
+            border-radius: 50%;
+            border: 1px solid white;
+        }
+
+        /* Sidebar in Review Mode */
+        .q-dot.review-correct {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .q-dot.review-wrong {
+            background: var(--error);
+            color: white;
+            border-color: var(--error);
+        }
+
+        /* Footer Nav */
+        .footer-nav {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: 1px solid var(--udemy-dark);
+            background: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background: var(--udemy-light-gray);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button.primary {
+            background: var(--udemy-dark);
+            color: white;
+        }
+
+        button.primary:hover {
+            background: #3e4143;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .btn-text-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Result Screen */
+        #result-screen {
+            text-align: center;
+            display: none;
+            padding: 60px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--udemy-dark);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--udemy-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .score-circle-lg {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: conic-gradient(var(--udemy-purple) 0%, #e0e0e0 0%);
+            margin: 0 auto 30px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-inner {
+            width: 160px;
+            height: 160px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-percent {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--udemy-dark);
+        }
+
+        .score-fraction {
+            color: var(--udemy-gray);
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+                height: auto;
+                overflow: visible;
+            }
+
+            .sidebar {
+                border-left: none;
+                border-top: 1px solid var(--border-color);
+                order: 2;
+                height: auto;
+            }
+
+            .question-grid {
+                grid-template-columns: repeat(10, 1fr);
+            }
+
+            header {
+                padding: 10px 15px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .progress-container {
+                margin: 0 10px;
+                order: 3;
+                width: 100%;
+                max-width: none;
+            }
+
+            .logo-area {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .timer-badge {
+                margin-left: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .question-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .footer-nav {
+                flex-direction: column-reverse;
+                gap: 15px;
+            }
+
+            .footer-nav button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-area">
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+            </svg>
+            DevQuiz
+        </div>
+        <div class="progress-container">
+            <div class="progress-info">
+                <span id="progress-text">0/60 hoàn thành</span>
+                <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+        </div>
+        <div class="timer-badge" id="timer">
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor">
+                <path
+                    d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8 8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+            </svg>
+            <span id="timer-text">45:00</span>
+        </div>
+    </header>
+
+    <div class="container" id="main-container">
+        <main class="quiz-section fade-in" id="quiz-view">
+            <div class="question-header">
+                <div class="question-number" id="q-idx">CÂU HỎI 1</div>
+                <button class="btn-flag" id="btn-flag" onclick="toggleFlag()"
+                    title="Đánh dấu câu hỏi này để xem lại sau">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+                    </svg>
+                    Gắn cờ
+                </button>
+            </div>
+
+            <div id="q-content">
+                <div class="question-text" id="q-text">Loading...</div>
+                <div class="options-list" id="options"></div>
+            </div>
+
+            <div class="footer-nav">
+                <button id="prev-btn" onclick="changeQuestion(-1)" class="btn-text-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+                    </svg>
+                    Trước
+                </button>
+                <button id="next-btn" class="primary btn-text-icon" onclick="changeQuestion(1)">
+                    Sau
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                    </svg>
+                </button>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Danh sách câu hỏi</h3>
+                <p>Chọn câu hỏi để chuyển nhanh</p>
+            </div>
+            <div class="question-grid-container">
+                <div class="question-grid" id="q-grid"></div>
+            </div>
+            <button class="primary" style="width: 100%; margin-top: auto;" onclick="submitQuiz()">Nộp bài</button>
+        </aside>
+    </div>
+
+    <div id="result-screen">
+        <h1>KẾT QUẢ BÀI THI</h1>
+
+        <div class="score-circle-lg" id="score-circle-bg">
+            <div class="score-inner">
+                <div class="score-percent" id="res-percent">0%</div>
+                <div class="score-fraction" id="res-fraction">0/0</div>
+            </div>
+        </div>
+
+        <div class="result-stats">
+            <div class="stat-item">
+                <div class="stat-val" style="color:var(--success)" id="res-correct">0</div>
+                <div class="stat-label">Đúng</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-val" style="color:var(--error)" id="res-wrong">0</div>
+                <div class="stat-label">Sai</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-val" style="color:var(--warning)" id="res-unanswered">0</div>
+                <div class="stat-label">Bỏ trống</div>
+            </div>
+        </div>
+
+        <p id="result-message" style="font-size: 1.1rem; margin-bottom: 30px;"></p>
+
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <button onclick="reviewQuiz()" class="btn-text-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                    <path
+                        d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                </svg>
+                Xem lại bài làm
+            </button>
+            <button class="primary btn-text-icon" onclick="resetQuiz()">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                    <path
+                        d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+                </svg>
+                Làm lại bài thi
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const questionsData = [
+            { q: "Trong cơ chế Role-based, vai trò nào thường có toàn quyền trong hệ thống?", a: ["Học sinh", "Thầy cô", "Admin hệ thống", "Khách (Guest)"], c: 2 },
+            { q: "JWT là viết tắt của cụm từ nào?", a: ["JSON Web Token", "Java Web Token", "Joint Web Token", "JSON Web Title"], c: 0 },
+            { q: "Một chuỗi JWT gồm bao nhiêu phần chính?", a: ["2 phần", "3 phần", "4 phần", "5 phần"], c: 1 },
+            { q: "Các phần của JWT được phân tách với nhau bằng dấu gì?", a: ["Dấu phẩy (,)", "Dấu gạch ngang (-)", "Dấu chấm (.)", "Dấu hai chấm (:)"], c: 2 },
+            { q: "Thành phần \"Header\" trong JWT chứa thông tin gì?", a: ["Dữ liệu người dùng", "Chữ ký bảo mật", "Loại token và thuật toán băm", "Thời gian hết hạn"], c: 2 },
+            { q: "\"Payload\" trong JWT còn được gọi là gì?", a: ["Header", "Claims", "Signature", "Secret Key"], c: 1 },
+            { q: "Đâu là mục đích chính của phần \"Signature\" trong JWT?", a: ["Mã hóa dữ liệu người dùng", "Chứa thông tin phân quyền", "Đảm bảo tính toàn vẹn của token", "Giảm kích thước token"], c: 2 },
+            { q: "Thời hạn sống (lifetime) thông thường của một Access Token trong hệ thống được đề cập là bao lâu?", a: ["5 phút", "1 giờ", "24 giờ", "Vĩnh viễn"], c: 0 },
+            { q: "Giới hạn ký tự tối đa cho một Token để tránh quá tải payload thường là bao nhiêu?", a: ["1024 ký tự", "2048 ký tự", "4096 ký tự", "Không giới hạn"], c: 1 },
+            { q: "Để xác thực một token có phải do hệ thống mình tạo ra hay không, người ta dùng gì?", a: ["Tên đăng nhập", "Chữ ký (chuỗi private key)", "Địa chỉ IP", "Mã hash của mật khẩu"], c: 1 },
+            { q: "Trong mô hình Stateless của JWT, lợi thế lớn nhất là gì?", a: ["Dễ dàng lưu trữ mật khẩu", "Giúp loại bỏ việc đồng bộ Session giữa các Server", "Tăng tính bảo mật cho Frontend", "Không cần dùng đến Database"], c: 1 },
+            { q: "Đâu là ưu điểm của việc lưu trữ Token trong HttpOnly Cookie?", a: ["Dễ dàng truy cập bằng Javascript", "Chống lại tấn công XSS", "Không cần xử lý CSRF", "Tăng tốc độ load trang"], c: 1 },
+            { q: "Nhược điểm của việc lưu trữ Token trong LocalStorage là gì?", a: ["Khó triển khai", "Không hỗ trợ Mobile", "Dễ bị đánh cắp bởi script độc hại (XSS)", "Dung lượng lưu trữ quá nhỏ"], c: 2 },
+            { q: "\"Refresh Token Rotation\" được sử dụng để làm gì?", a: ["Thay đổi mật khẩu người dùng định kỳ", "Cấp lại một cặp token mới và vô hiệu hóa token cũ mỗi khi dùng Refresh Token", "Xoay vòng các server xác thực", "Tăng kích thước payload của JWT"], c: 1 },
+            { q: "Thời gian sống của Refresh Token thường là bao lâu theo tài liệu?", a: ["15 phút", "1 giờ", "7 ngày", "1 tháng"], c: 2 },
+            { q: "Authentication (AuthN) trả lời cho câu hỏi nào?", a: ["\"Bạn được phép làm gì?\"", "\"Bạn là ai?\"", "\"Bạn ở đâu?\"", "\"Bạn dùng thiết bị gì?\""], c: 1 },
+            { q: "Authorization (AuthZ) tập trung vào vấn đề gì?", a: ["Xác thực danh tính", "Phân quyền (\"Bạn được phép làm gì?\")", "Đăng ký tài khoản", "Thu thập dữ liệu người dùng"], c: 1 },
+            { q: "OAuth 2.0 được định nghĩa là một chuẩn gì?", a: ["Chuẩn xác thực (Authentication)", "Chuẩn ủy quyền (Delegated Authorization)", "Chuẩn mã hóa dữ liệu", "Chuẩn thiết kế Database"], c: 1 },
+            { q: "Trong OAuth 2.0, \"Resource Owner\" là ai?", a: ["Ứng dụng yêu cầu truy cập", "Server chứa dữ liệu thực tế", "Người dùng cuối (Chủ sở hữu dữ liệu)", "Server xác thực"], c: 2 },
+            { q: "Luồng (Flow) nào được coi là an toàn nhất cho ứng dụng Web/Mobile trong OAuth 2.0?", a: ["Implicit Flow", "Password Flow", "Authorization Code Flow", "Client Credentials Flow"], c: 2 },
+            { q: "OIDC (OpenID Connect) là một lớp bảo mật nằm trên giao thức nào?", a: ["SAML 2.0", "HTTP", "OAuth 2.0", "TCP/IP"], c: 2 },
+            { q: "OIDC trả về thêm loại token nào so với OAuth 2.0 thông thường?", a: ["Access Token", "Refresh Token", "ID Token", "Secret Token"], c: 2 },
+            { q: "Thuật toán ký JWT nào là thuật toán đối xứng (Symmetric)?", a: ["RS256", "HS256", "EdDSA", "ES256"], c: 1 },
+            { q: "Thuật toán RS256 sử dụng cặp khóa nào để ký và xác thực?", a: ["Một Secret Key duy nhất", "Private Key để ký, Public Key để xác thực", "Username và Password", "Khóa vân tay"], c: 1 },
+            { q: "SAML 2.0 thường sử dụng định dạng dữ liệu nào để trao đổi?", a: ["JSON", "YAML", "XML-Based", "Plain Text"], c: 2 },
+            { q: "Để chống tấn công Clickjacking, ta sử dụng Header bảo mật nào?", a: ["Content-Security-Policy", "X-Frame-Options", "Strict-Transport-Security", "Authorization"], c: 1 },
+            { q: "Hashing (Băm) khác Encryption (Mã hóa) ở điểm cơ bản nào?", a: ["Hashing là 1 chiều, Encryption là 2 chiều", "Hashing luôn chậm hơn", "Encryption không cần khóa", "Hashing có thể giải mã ngược lại"], c: 0 },
+            { q: "Thư viện nào trong Go thường được dùng để băm mật khẩu?", a: ["aes-gcm", "bcrypt", "jwt-go", "gin-gonic"], c: 1 },
+            { q: "WebAuthn và Passkeys hướng tới một tương lai xác thực như thế nào?", a: ["Sử dụng nhiều mật khẩu hơn", "Không mật khẩu (Passwordless)", "Chỉ dùng qua Email", "Sử dụng mã vạch"], c: 1 },
+            { q: "API là viết tắt của cụm từ nào?", a: ["Application Program Information", "Application Programming Interface", "Advanced Program Interface", "Application Protocol Integration"], c: 1 },
+            { q: "Kiểu dữ liệu JSON là tập hợp của bộ gì?", a: ["Các hàm xử lý", "Bộ Key-Value", "Các bảng dữ liệu", "Các câu lệnh SQL"], c: 1 },
+            { q: "Cấu trúc của một API URL đầy đủ bao gồm?", a: ["Protocol + Domain + Endpoint", "Username + Password", "Database + Table", "Header + Body"], c: 0 },
+            { q: "Phương thức (Method) HTTP nào thường dùng để tạo mới dữ liệu?", a: ["GET", "PUT", "POST", "DELETE"], c: 2 },
+            { q: "Phương thức HTTP nào không có Request Body (Payload)?", a: ["POST", "PUT", "GET", "PATCH"], c: 2 },
+            { q: "Giao thức HTTPS khác HTTP ở điểm nào?", a: ["Tốc độ nhanh hơn", "Có mã hóa trên đường truyền kèm chứng chỉ SSL", "Chỉ dùng cho máy tính", "Không cần tên miền"], c: 1 },
+            { q: "Status Code \"200 OK\" có nghĩa là gì?", a: ["Lỗi phía Client", "Lỗi phía Server", "Yêu cầu thành công", "Không tìm thấy trang"], c: 2 },
+            { q: "Status Code \"400 Bad Request\" xảy ra khi nào?", a: ["Server bị treo", "Dữ liệu gửi lên từ Client không hợp lệ", "Client chưa đăng nhập", "Server không kết nối được Database"], c: 1 },
+            { q: "Status Code \"500 Internal Server Error\" đại diện cho lỗi từ phía nào?", a: ["Client", "Người dùng", "Server", "Nhà cung cấp Internet"], c: 2 },
+            { q: "Trong MongoDB, thuật ngữ \"Collection\" tương ứng với khái niệm nào trong SQL?", a: ["Row", "Database", "Table", "Column"], c: 2 },
+            { q: "\"Document\" trong MongoDB tương ứng với khái niệm nào trong SQL?", a: ["Table", "Row", "Schema", "Index"], c: 1 },
+            { q: "Khóa chính mặc định trong mỗi Document của MongoDB là gì?", a: ["primary_id", "_id", "code", "uuid"], c: 1 },
+            { q: "Kiểu dữ liệu của khóa chính \"_id\" trong MongoDB thường là gì?", a: ["String", "Integer", "ObjectId", "Boolean"], c: 2 },
+            { q: "NoSQL (như MongoDB) có đặc điểm chính là gì?", a: ["Dữ liệu luôn có cấu trúc cố định", "Dữ liệu không có cấu trúc cố định, linh hoạt", "Chỉ chạy trên Windows", "Không hỗ trợ lưu trữ JSON"], c: 1 },
+            { q: "Chuỗi kết nối (URI) mặc định của MongoDB trên máy cục bộ là gì?", a: ["http://localhost:8080", "mongodb://localhost:27017", "sql://localhost:3306", "redis://localhost:6379"], c: 1 },
+            { q: "Base64 thường được dùng để làm gì trong truyền tải dữ liệu?", a: ["Nén dữ liệu", "Biểu diễn dữ liệu nhị phân (như ảnh) dưới dạng chuỗi ký tự text", "Tăng tốc độ internet", "Thay thế cho JSON"], c: 1 },
+            { q: "Trong ngôn ngữ Go, \"Slice\" là gì?", a: ["Một mảng có kích thước cố định", "Một mảng động", "Một kiểu dữ liệu số nguyên", "Một hàm xử lý chuỗi"], c: 1 },
+            { q: "\"Struct\" trong Go dùng để làm gì?", a: ["Để gom nhóm các trường dữ liệu có kiểu khác nhau", "Để thực hiện vòng lặp", "Để khai báo một hằng số", "Để kết nối mạng"], c: 0 },
+            { q: "\"Pointer\" (Con trỏ) trong Go dùng để làm gì?", a: ["Để in dữ liệu ra màn hình", "Tham chiếu đến địa chỉ bộ nhớ của một biến", "Để xóa một file", "Để định nghĩa một kiểu số mới"], c: 1 },
+            { q: "Framework nào được sử dụng trong tài liệu để xây dựng API bằng Go?", a: ["Echo", "Fiber", "Gin Gonic", "Revel"], c: 2 },
+            { q: "Ý nghĩa của địa chỉ \"0.0.0.0:8080\" khi chạy server là gì?", a: ["Chỉ cho phép truy cập từ máy hiện tại", "Lắng nghe trên tất cả các giao diện mạng khả dụng tại cổng 8080", "Chặn tất cả các kết nối từ bên ngoài", "Server đang bị lỗi địa chỉ IP"], c: 1 },
+            { q: "Tag json:\"name\" trong Struct của Go có tác dụng gì?", a: ["Đặt tên cột trong Database SQL", "Định nghĩa tên trường khi gửi/nhận dữ liệu qua HTTP API dưới dạng JSON", "Mã hóa trường đó thành mật khẩu", "Chặn không cho xem dữ liệu"], c: 1 },
+            { q: "Tag bson:\"name\" trong Struct của Go có tác dụng gì?", a: ["Tương tự JSON nhưng dùng cho hiển thị website", "Định nghĩa tên trường khi lưu trữ hoặc truy vấn trong MongoDB", "Để định dạng ngày tháng", "Không có tác dụng gì"], c: 1 },
+            { q: "Hàm context.WithTimeout trong Go thường được dùng khi nào?", a: ["Khi muốn chương trình chạy mãi mãi", "Thiết lập thời gian chờ tối đa cho một thao tác (như kết nối DB)", "Để tăng tốc độ xử lý CPU", "Để hiển thị đồng hồ hệ thống"], c: 1 },
+            { q: "Lệnh nào dùng để thêm thư viện bên ngoài vào dự án Go?", a: ["go run", "go build", "go get", "go fmt"], c: 2 },
+            { q: "Trong Go, hàm nào là hàm khởi chạy đầu tiên của một chương trình?", a: ["func init()", "func start()", "func main()", "func run()"], c: 2 },
+            { q: "Để đảm bảo an toàn, ta KHÔNG bao giờ nên lưu thông tin gì trong JWT?", a: ["UserID", "Role", "Mật khẩu (Password)", "Tên người dùng"], c: 2 },
+            { q: "Trong HTML, thẻ nào thường dùng để tạo các khối và trang trí bằng CSS?", a: ["<span>", "<div>", "<a>", "<p>"], c: 1 },
+            { q: "Ngôn ngữ Javascript (JS) đóng vai trò gì trong Frontend?", a: ["Chịu trách nhiệm màu sắc, font chữ", "Tạo cấu trúc trang web", "Tương tác dữ liệu và tạo hiệu ứng animation", "Lưu trữ Database"], c: 2 },
+            { q: "CSS chịu trách nhiệm cho việc gì trên website?", a: ["Xử lý logic nghiệp vụ", "Giao diện, màu sắc, font chữ, hình ảnh", "Kết nối tới Server", "Quản lý tài khoản người dùng"], c: 1 },
+            { q: "Để code Go an toàn, một trong những nguyên tắc quan trọng là?", a: ["Hardcode các chuỗi bí mật (Secret) trực tiếp vào code", "Không bao giờ kiểm tra lỗi (Error handling)", "Validate input (kiểm tra dữ liệu đầu vào)", "Sử dụng quyền Root cho mọi thao tác"], c: 2 }
+        ];
+
+        const QUIZ_TIME = 45 * 60; // 45 minutes in seconds
+        const STORAGE_KEY = 'quiz_state_v1';
+
+        let state = {
+            currentIdx: 0,
+            answers: new Array(questionsData.length).fill(null),
+            flags: new Array(questionsData.length).fill(false),
+            timeLeft: QUIZ_TIME,
+            isSubmitted: false,
+            isReviewMode: false
+        };
+
+        let timerInterval;
+
+        function init() {
+            loadState();
+            renderSidebar();
+
+            if (state.isSubmitted) {
+                showResultScreen();
+                if (state.isReviewMode) {
+                    document.getElementById('result-screen').style.display = 'none';
+                    document.getElementById('main-container').style.display = 'grid';
+                    renderQuestion();
+                    document.body.classList.add('review-mode');
+                }
+            } else {
+                renderQuestion();
+                startTimer();
+            }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (state.isSubmitted && !state.isReviewMode) return;
+                if (e.key === 'ArrowRight') changeQuestion(1);
+                if (e.key === 'ArrowLeft') changeQuestion(-1);
+                if (e.key === 'f') toggleFlag(); // Shortcut for flag
+            });
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    // Basic validation
+                    if (parsed.answers.length === questionsData.length) {
+                        state = parsed;
+                    }
+                } catch (e) {
+                    console.error("Invalid save state", e);
+                }
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            updateTimerDisplay(); // Initial show
+            timerInterval = setInterval(() => {
+                if (state.timeLeft > 0) {
+                    state.timeLeft--;
+                    updateTimerDisplay();
+                    if (state.timeLeft % 5 === 0) saveState(); // Save every 5s
+                } else {
+                    clearInterval(timerInterval);
+                    submitQuiz(true);
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(state.timeLeft / 60);
+            const s = state.timeLeft % 60;
+            const display = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            const timerEl = document.getElementById('timer-text');
+            timerEl.innerText = display;
+
+            // Warning style when < 5 mins
+            if (state.timeLeft < 300) {
+                document.getElementById('timer').classList.add('warning');
+            } else {
+                document.getElementById('timer').classList.remove('warning');
+            }
+        }
+
+        function renderQuestion() {
+            const q = questionsData[state.currentIdx];
+
+            // Update header
+            document.getElementById('q-idx').innerText = `CÂU HỎI ${state.currentIdx + 1}`;
+            document.getElementById('q-text').innerText = q.q;
+
+            const flagBtn = document.getElementById('btn-flag');
+            if (state.flags[state.currentIdx]) {
+                flagBtn.classList.add('active');
+                flagBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg> Đã gắn cờ`;
+            } else {
+                flagBtn.classList.remove('active');
+                flagBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg> Gắn cờ`;
+            }
+
+            // Render Options
+            const container = document.getElementById('options');
+            container.innerHTML = '';
+
+            q.a.forEach((opt, i) => {
+                const li = document.createElement('li');
+                li.className = 'option-item';
+
+                const label = document.createElement('label');
+                label.className = 'option-label';
+
+                // Selection state
+                if (state.answers[state.currentIdx] === i) label.classList.add('selected');
+
+                // Review mode styling
+                if (state.isReviewMode) {
+                    if (i === q.c) label.classList.add('correct');
+                    else if (state.answers[state.currentIdx] === i) label.classList.add('wrong');
+                }
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'answer';
+                radio.className = 'option-radio';
+                radio.value = i;
+                radio.checked = state.answers[state.currentIdx] === i;
+                radio.disabled = state.isReviewMode; // Disable in review
+                radio.onchange = () => selectAnswer(i);
+
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(`${String.fromCharCode(65 + i)}. ${opt}`));
+                li.appendChild(label);
+                container.appendChild(li);
+            });
+
+            // Sidebar Active State
+            document.querySelectorAll('.q-dot').forEach((d, i) => {
+                if (i === state.currentIdx) d.classList.add('active');
+                else d.classList.remove('active');
+            });
+
+            // Buttons
+            document.getElementById('prev-btn').disabled = state.currentIdx === 0;
+            document.getElementById('next-btn').innerHTML = state.currentIdx === questionsData.length - 1
+                ? `Nộp bài <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>`
+                : `Sau <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>`;
+
+            // Animation
+            const quizView = document.getElementById('quiz-view');
+            quizView.classList.remove('fade-in');
+            void quizView.offsetWidth; // trigger reflow
+            quizView.classList.add('fade-in');
+        }
+
+        function renderSidebar() {
+            const grid = document.getElementById('q-grid');
+            grid.innerHTML = '';
+            questionsData.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'q-dot';
+                dot.id = `dot-${i}`;
+                dot.innerText = i + 1;
+
+                if (state.answers[i] !== null) dot.classList.add('answered');
+                if (state.flags[i]) dot.classList.add('flagged');
+
+                // Review mode colors
+                if (state.isReviewMode) {
+                    if (state.answers[i] === questionsData[i].c) dot.classList.add('review-correct');
+                    else if (state.answers[i] !== null) dot.classList.add('review-wrong');
+                }
+
+                dot.onclick = () => jumpToQuestion(i);
+                grid.appendChild(dot);
+            });
+            updateProgress();
+        }
+
+        function selectAnswer(i) {
+            if (state.isReviewMode) return;
+            state.answers[state.currentIdx] = i;
+            saveState();
+            renderSidebar(); // Update answered status
+
+            // Visual update without full re-render for smoothness
+            document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+            // Find the input's parent label and add selected
+            const inputs = document.getElementsByName('answer');
+            if (inputs[i]) inputs[i].parentElement.classList.add('selected');
+        }
+
+        function toggleFlag() {
+            state.flags[state.currentIdx] = !state.flags[state.currentIdx];
+            saveState();
+            renderSidebar();
+            renderQuestion(); // Update flag button
+        }
+
+        function changeQuestion(step) {
+            const newIdx = state.currentIdx + step;
+            if (newIdx >= 0 && newIdx < questionsData.length) {
+                state.currentIdx = newIdx;
+                saveState();
+                renderQuestion();
+            } else if (newIdx === questionsData.length && !state.isSubmitted && step === 1) {
+                submitQuiz(); // Next on last question triggers submit
+            }
+        }
+
+        function jumpToQuestion(i) {
+            state.currentIdx = i;
+            saveState();
+            renderQuestion();
+        }
+
+        function updateProgress() {
+            const answeredCount = state.answers.filter(a => a !== null).length;
+            const percent = Math.round((answeredCount / questionsData.length) * 100);
+            document.getElementById('progress-fill').style.width = `${percent}%`;
+            document.getElementById('progress-percent').innerText = `${percent}%`;
+            document.getElementById('progress-text').innerText = `${answeredCount}/${questionsData.length} hoàn thành`;
+        }
+
+        function submitQuiz(force = false) {
+            if (!force && !confirm("Bạn có chắc chắn muốn nộp bài?")) return;
+
+            clearInterval(timerInterval);
+            state.isSubmitted = true;
+            saveState();
+            showResultScreen();
+        }
+
+        function showResultScreen() {
+            document.getElementById('main-container').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            document.body.classList.remove('review-mode'); // Should not be in review mode yet
+
+            let correct = 0, wrong = 0, unanswered = 0;
+            state.answers.forEach((ans, i) => {
+                if (ans === null) unanswered++;
+                else if (ans === questionsData[i].c) correct++;
+                else wrong++;
+            });
+
+            const percent = Math.round((correct / questionsData.length) * 100);
+            document.getElementById('res-percent').innerText = `${percent}%`;
+            document.getElementById('res-fraction').innerText = `${correct}/${questionsData.length}`;
+
+            // Update circle gradient
+            document.getElementById('score-circle-bg').style.background =
+                `conic-gradient(var(--udemy-purple) ${percent}%, #e0e0e0 ${percent}%)`;
+
+            document.getElementById('res-correct').innerText = correct;
+            document.getElementById('res-wrong').innerText = wrong;
+            document.getElementById('res-unanswered').innerText = unanswered;
+
+            let msg = "";
+            if (percent >= 80) msg = "Tuyệt vời! Bạn đã nắm vững kiến thức.";
+            else if (percent >= 50) msg = "Khá tốt, nhưng cần ôn tập thêm một số phần.";
+            else msg = "Bạn cần dành thêm thời gian đọc lại tài liệu nhé!";
+            document.getElementById('result-message').innerText = msg;
+
+            window.scrollTo(0, 0);
+        }
+
+        function reviewQuiz() {
+            state.isReviewMode = true;
+            state.currentIdx = 0;
+            document.body.classList.add('review-mode');
+            document.getElementById('result-screen').style.display = 'none';
+            document.getElementById('main-container').style.display = 'grid';
+            renderSidebar(); // Update colors
+            renderQuestion();
+        }
+
+        function resetQuiz() {
+            if (confirm("Làm lại sẽ xóa toàn bộ tiến độ. Bạn có chắc không?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        }
+
+        // Start
+        init();
+
+    </script>
+
+</body>
+
+</html>

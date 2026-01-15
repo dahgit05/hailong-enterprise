@@ -5,6 +5,10 @@ import { UserDrawerComponent } from './components/user-drawer/user-drawer.compon
 import { UserDetailDrawerComponent } from './components/user-detail-drawer/user-detail-drawer.component';
 import { ResetPasswordDialogComponent } from './components/reset-password-dialog/reset-password-dialog.component';
 import { DeactivateUserDialogComponent } from './components/deactivate-user-dialog/deactivate-user-dialog.component';
+import { PermissionSidebarComponent } from './components/permission-sidebar/permission-sidebar.component';
+import { PermissionMatrixDrawerComponent } from './components/permission-matrix-drawer/permission-matrix-drawer.component';
+import { DeletePermissionGroupDialogComponent } from './components/delete-permission-group-dialog/delete-permission-group-dialog.component';
+import { EditPermissionGroupDialogComponent } from './components/edit-permission-group-dialog/edit-permission-group-dialog.component';
 
 interface AppModule {
     id: string;
@@ -37,7 +41,7 @@ interface User {
 @Component({
     selector: 'app-menu-management',
     standalone: true,
-    imports: [CommonModule, MenuDrawerComponent, UserDrawerComponent, UserDetailDrawerComponent, ResetPasswordDialogComponent, DeactivateUserDialogComponent],
+    imports: [CommonModule, MenuDrawerComponent, UserDrawerComponent, UserDetailDrawerComponent, ResetPasswordDialogComponent, DeactivateUserDialogComponent, PermissionSidebarComponent, PermissionMatrixDrawerComponent, DeletePermissionGroupDialogComponent, EditPermissionGroupDialogComponent],
     templateUrl: './menu-management.component.html',
     host: {
         'class': 'flex flex-col flex-1 h-full overflow-hidden'
@@ -183,6 +187,146 @@ export class MenuManagementComponent {
         this.appModules.forEach(app => app.active = app.id === appId);
     }
 
+    /** Permission Groups */
+    permissionGroups = [
+        { id: 'admin', name: 'Administrator', description: 'Toàn quyền kiểm soát hệ thống Admin Hub và các ứng dụng vệ tinh.', icon: 'admin_panel_settings', iconBg: 'bg-primary/10', iconColor: 'text-primary dark:text-emerald-400', permissionsCount: 124, membersCount: 3 },
+        { id: 'inventory', name: 'Quản lý kho', description: 'Theo dõi tồn kho, xuất nhập vật tư và phê duyệt yêu cầu cấp phát.', icon: 'inventory', iconBg: 'bg-orange-100', iconColor: 'text-orange-600', permissionsCount: 42, membersCount: 12 },
+        { id: 'tech', name: 'Kỹ thuật viên', description: 'Vận hành máy móc, xem dữ liệu IoT và báo cáo sự cố kỹ thuật.', icon: 'engineering', iconBg: 'bg-blue-100', iconColor: 'text-blue-600', permissionsCount: 18, membersCount: 45 },
+        { id: 'hrm', name: 'Nhân sự HRM', description: 'Quản lý hồ sơ, tính lương và đánh giá hiệu suất nhân viên.', icon: 'person_search', iconBg: 'bg-emerald-100', iconColor: 'text-emerald-600', permissionsCount: 56, membersCount: 5 },
+        { id: 'security', name: 'An ninh Nội bộ', description: 'Giám sát truy cập, kiểm tra nhật ký và quản lý thẻ ra vào nhà máy.', icon: 'security', iconBg: 'bg-purple-100', iconColor: 'text-purple-600', permissionsCount: 32, membersCount: 8 },
+    ];
+
+    /** Library Sidebar State */
+    isLibrarySidebarOpen = signal(false);
+
+    toggleLibrarySidebar(): void {
+        this.isLibrarySidebarOpen.update(v => !v);
+    }
+
+    closeLibrarySidebar(): void {
+        this.isLibrarySidebarOpen.set(false);
+    }
+
+    /** Permission Context Menu State */
+    permissionContextMenu = signal<{ visible: boolean; x: number; y: number; group: any }>({
+        visible: false,
+        x: 0,
+        y: 0,
+        group: null
+    });
+
+    onPermissionContextMenu(event: MouseEvent, group: any): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.permissionContextMenu.set({
+            visible: true,
+            x: event.clientX,
+            y: event.clientY,
+            group: group
+        });
+    }
+
+    closePermissionContextMenu(): void {
+        this.permissionContextMenu.set({
+            visible: false,
+            x: 0,
+            y: 0,
+            group: null
+        });
+    }
+
+    /** Permission Matrix Drawer State */
+    isPermissionMatrixOpen = signal(false);
+    selectedGroupForMatrix = signal<any>(null);
+
+    openPermissionMatrix(group: any): void {
+        this.selectedGroupForMatrix.set(group);
+        this.isPermissionMatrixOpen.set(true);
+    }
+
+    closePermissionMatrix(): void {
+        this.isPermissionMatrixOpen.set(false);
+        this.selectedGroupForMatrix.set(null);
+    }
+
+    onSavePermissionMatrix(data: any): void {
+        console.log('Save permissions:', data);
+        this.closePermissionMatrix();
+    }
+
+    assignPermissions(): void {
+        const group = this.permissionContextMenu().group;
+        if (group) {
+            this.openPermissionMatrix(group);
+        }
+        this.closePermissionContextMenu();
+    }
+
+    /** Delete Permission Group Dialog State */
+    isDeleteGroupDialogOpen = signal(false);
+    selectedGroupForDelete = signal<any>(null);
+
+    openDeleteGroupDialog(group: any): void {
+        this.selectedGroupForDelete.set(group);
+        this.isDeleteGroupDialogOpen.set(true);
+    }
+
+    closeDeleteGroupDialog(): void {
+        this.isDeleteGroupDialogOpen.set(false);
+        this.selectedGroupForDelete.set(null);
+    }
+
+    onDeleteGroupConfirm(): void {
+        const groupToDelete = this.selectedGroupForDelete();
+        console.log('Deleting group:', groupToDelete);
+        this.closeDeleteGroupDialog();
+        // Here you would typically refresh the list
+    }
+
+    deleteGroup(): void {
+        const group = this.permissionContextMenu().group;
+        if (group) {
+            this.openDeleteGroupDialog(group);
+        }
+        this.closePermissionContextMenu();
+    }
+
+    /** Edit/Create Permission Group Dialog State */
+    isEditGroupDialogOpen = signal(false);
+    editGroupMode = signal<'create' | 'edit'>('create');
+    selectedGroupForEdit = signal<any>(null);
+
+    openCreateGroupDialog(): void {
+        this.editGroupMode.set('create');
+        this.selectedGroupForEdit.set(null);
+        this.isEditGroupDialogOpen.set(true);
+    }
+
+    openEditGroupDialog(group: any): void {
+        this.editGroupMode.set('edit');
+        this.selectedGroupForEdit.set(group);
+        this.isEditGroupDialogOpen.set(true);
+    }
+
+    closeEditGroupDialog(): void {
+        this.isEditGroupDialogOpen.set(false);
+        this.selectedGroupForEdit.set(null);
+    }
+
+    onSaveGroup(event: { mode: string, data: any }): void {
+        console.log('Save Group:', event);
+        this.closeEditGroupDialog();
+        // Here you would API call to create or update
+    }
+
+    editGroup(): void {
+        const group = this.permissionContextMenu().group;
+        if (group) {
+            this.openEditGroupDialog(group);
+        }
+        this.closePermissionContextMenu();
+    }
+
     /** Set active tab */
     setActiveTab(tab: 'menu' | 'users' | 'permissions'): void {
         this.activeTab.set(tab);
@@ -219,6 +363,9 @@ export class MenuManagementComponent {
         }
         if (this.userContextMenu().visible) {
             this.closeUserContextMenu();
+        }
+        if (this.permissionContextMenu().visible) {
+            this.closePermissionContextMenu();
         }
     }
 

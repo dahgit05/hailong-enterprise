@@ -1,0 +1,40 @@
+<div *ngIf="isOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <!-- Backdrop with blur -->
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md transition-all" (click)="onClose()"></div>
+
+    <!-- Modal Content -->
+    <div
+        class="bg-white dark:bg-slate-900 w-full max-w-[480px] rounded-3xl md:rounded-4xl shadow-2xl shadow-slate-950/20 border border-white/20 dark:border-slate-800 overflow-hidden transform scale-100 transition-all duration-300 relative z-10 animate-fade-in-up">
+        <div class="p-10 flex flex-col items-center text-center">
+            <div
+                class="w-24 h-24 bg-red-50 dark:bg-red-950/30 text-red-500 rounded-full flex items-center justify-center mb-8 ring-8 ring-red-50/50 dark:ring-red-950/10">
+                <span class="material-symbols-outlined text-6xl font-light">report_problem</span>
+            </div>
+            <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tight">Xác nhận xóa nhóm
+                quyền?</h2>
+            <p class="text-slate-500 dark:text-slate-400 leading-relaxed mb-10 max-w-sm">
+                Hành động này <span class="text-red-500 font-bold uppercase tracking-tight">không thể hoàn tác</span>.
+                Nhóm <span class="text-slate-900 dark:text-slate-200 font-bold">[{{ group?.name || 'Nhóm quyền'
+                    }}]</span> sẽ bị gỡ bỏ khỏi <span
+                    class="text-slate-900 dark:text-slate-200 font-bold underline decoration-slate-300">{{
+                    group?.memberCount || '0' }} người dùng</span> liên quan.
+            </p>
+            <div class="flex items-center gap-3 w-full">
+                <button (click)="onClose()"
+                    class="flex-1 py-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-sm rounded-2xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all uppercase tracking-widest">
+                    Hủy
+                </button>
+                <button (click)="onConfirm()"
+                    class="flex-[1.5] py-4 bg-red-600 text-white font-bold text-sm rounded-2xl shadow-lg shadow-red-500/30 hover:bg-red-700 hover:shadow-red-500/40 active:scale-[0.98] transition-all uppercase tracking-widest">
+                    Xác nhận xóa
+                </button>
+            </div>
+        </div>
+        <div
+            class="bg-slate-50 dark:bg-slate-800/50 py-3 px-10 flex items-center justify-center gap-2 border-t border-slate-100 dark:border-slate-800">
+            <span class="material-symbols-outlined text-slate-400 text-sm">security</span>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Yêu cầu đặc quyền quản trị
+                viên</span>
+        </div>
+    </div>
+</div>
