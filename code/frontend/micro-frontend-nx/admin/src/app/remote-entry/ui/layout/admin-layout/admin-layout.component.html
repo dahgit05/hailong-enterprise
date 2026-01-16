@@ -1,15 +1,15 @@
 <div
     class="flex h-screen bg-background dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans antialiased overflow-hidden transition-colors duration-300">
-    <div class="absolute top-4 right-6 z-50">
+    <div class="absolute top-5 right-4 lg:top-10 lg:right-10 z-50">
         <button (click)="toggleTheme()"
-            class="p-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 transition-all shadow-sm">
-            <span class="material-symbols-outlined block dark:hidden">dark_mode</span>
-            <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+            class="p-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm text-slate-700 dark:text-slate-200 rounded-full border border-slate-200/50 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm opacity-40 hover:opacity-100 hover:scale-110">
+            <span class="material-symbols-outlined block dark:hidden !text-[20px]">dark_mode</span>
+            <span class="material-symbols-outlined hidden dark:block !text-[20px]">light_mode</span>
         </button>
     </div>
     <app-admin-sidebar></app-admin-sidebar>
     <!-- Main content - add top padding on mobile for fixed header -->
-    <main class="flex-1 flex flex-col h-full overflow-hidden transition-all duration-300 pt-14 md:pt-0">
+    <main class="flex-1 flex flex-col h-full overflow-hidden transition-all duration-300">
         <!-- Container for router outlet - takes full height and manages overflow -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <router-outlet></router-outlet>

@@ -29,6 +29,9 @@ export class AdminSidebarComponent {
         { icon: 'shield_person', route: '/admin/security', tooltip: 'Bảo mật' },
     ];
 
+    /** User menu open state */
+    isUserMenuOpen = signal<boolean>(false);
+
     constructor() {
         // Restore state from localStorage
         const savedState = localStorage.getItem('sidebarExpanded');
@@ -75,11 +78,49 @@ export class AdminSidebarComponent {
         }
     }
 
+    /** Toggle user menu */
+    toggleUserMenu(event?: MouseEvent): void {
+        event?.stopPropagation();
+        this.isUserMenuOpen.update(v => !v);
+    }
+
+    /** Close user menu */
+    closeUserMenu(): void {
+        this.isUserMenuOpen.set(false);
+    }
+
+    // Actions
+    logout(): void {
+        console.log('Logout clicked');
+        this.closeUserMenu();
+    }
+
+    changePassword(): void {
+        console.log('Change password clicked');
+        this.closeUserMenu();
+    }
+
+    openSettings(): void {
+        console.log('Open settings clicked');
+        this.closeUserMenu();
+    }
+
     /** Close on Escape key */
     @HostListener('document:keydown.escape')
     onEscapeKey(): void {
         if (this.isMobileOpen()) {
             this.closeMobileSidebar();
+        }
+        if (this.isUserMenuOpen()) {
+            this.closeUserMenu();
+        }
+    }
+
+    /** Close user menu on click outside */
+    @HostListener('document:click')
+    onDocumentClick(): void {
+        if (this.isUserMenuOpen()) {
+            this.closeUserMenu();
         }
     }
 }

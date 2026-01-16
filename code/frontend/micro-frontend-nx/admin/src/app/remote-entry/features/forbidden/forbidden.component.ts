@@ -46,4 +46,10 @@ export class ForbiddenComponent {
             localStorage.setItem('theme', 'dark');
         }
     }
+
+    /** Request access - placeholder */
+    requestAccess(): void {
+        console.log('Request access clicked - Feature coming soon');
+        // TODO: Implement access request functionality
+    }
 }

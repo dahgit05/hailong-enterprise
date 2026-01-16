@@ -24,4 +24,10 @@ export class PermissionSidebarComponent {
     onClose() {
         this.close.emit();
     }
+
+    /** Create new permission - placeholder */
+    createNewPermission(): void {
+        console.log('Create new permission clicked - Feature coming soon');
+        // TODO: Implement create permission functionality
+    }
 }

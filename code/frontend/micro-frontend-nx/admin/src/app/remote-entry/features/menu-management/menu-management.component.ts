@@ -187,6 +187,24 @@ export class MenuManagementComponent {
         this.appModules.forEach(app => app.active = app.id === appId);
     }
 
+    /** Export report - placeholder */
+    exportReport(): void {
+        console.log('Export report clicked - Feature coming soon');
+        // TODO: Implement export functionality
+    }
+
+    /** Sync system - placeholder */
+    syncSystem(): void {
+        console.log('Sync system clicked - Feature coming soon');
+        // TODO: Implement sync functionality
+    }
+
+    /** Search change handler */
+    onSearchChange(searchTerm: string): void {
+        console.log('Search term:', searchTerm);
+        // TODO: Implement search/filter logic
+    }
+
     /** Permission Groups */
     permissionGroups = [
         { id: 'admin', name: 'Administrator', description: 'Toàn quyền kiểm soát hệ thống Admin Hub và các ứng dụng vệ tinh.', icon: 'admin_panel_settings', iconBg: 'bg-primary/10', iconColor: 'text-primary dark:text-emerald-400', permissionsCount: 124, membersCount: 3 },
