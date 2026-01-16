@@ -2,29 +2,32 @@
 <div class="flex flex-col h-full overflow-hidden">
 
     <!-- Fixed Header Section -->
-    <div class="px-4 sm:px-6 lg:px-10 pt-4 sm:pt-6 lg:pt-10 pb-6 max-w-7xl mx-auto w-full shrink-0 bg-background">
+    <div
+        class="px-4 sm:px-6 lg:px-10 pt-4 sm:pt-6 lg:pt-10 pb-6 max-w-7xl mx-auto w-full shrink-0 bg-background dark:bg-slate-900 transition-colors">
         <!-- Header -->
         <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-8">
             <div>
                 <div
-                    class="flex items-center gap-2 text-slate-400 text-xs font-semibold uppercase tracking-[0.2em] mb-3">
+                    class="flex items-center gap-2 text-slate-400 dark:text-slate-500 text-xs font-semibold uppercase tracking-[0.2em] mb-3">
                     <span>Hệ thống</span>
                     <span class="material-symbols-outlined !text-[12px]">chevron_right</span>
-                    <span class="text-primary/70">Cấu hình</span>
+                    <span class="text-primary/70 dark:text-primary-400/70">Cấu hình</span>
                 </div>
-                <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 mb-2">Admin Hub</h1>
-                <p class="text-slate-400 font-medium text-sm lg:text-base">Thiết lập cấu trúc hệ thống Industrial
+                <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">Admin
+                    Hub</h1>
+                <p class="text-slate-400 dark:text-slate-500 font-medium text-sm lg:text-base">Thiết lập cấu trúc hệ
+                    thống Industrial
                     Premium
                     2026</p>
             </div>
             <div class="flex items-center gap-3 lg:gap-4">
                 <button *ngIf="activeTab() === 'permissions'" (click)="toggleLibrarySidebar()"
-                    class="flex items-center gap-2 lg:gap-2.5 px-4 lg:px-6 py-2.5 lg:py-3 bg-white dark:bg-slate-800 text-primary dark:text-emerald-400 rounded-xl font-bold text-xs lg:text-[13px] border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all">
+                    class="flex items-center gap-2 lg:gap-2.5 px-4 lg:px-6 py-2.5 lg:py-3 bg-white dark:bg-slate-800 text-primary dark:text-primary-400 rounded-xl font-bold text-xs lg:text-[13px] border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all">
                     <span class="material-symbols-outlined !text-[18px] lg:!text-[20px]">inventory_2</span>
                     <span class="hidden sm:inline">Kho quyền hạn</span>
                 </button>
                 <button
-                    class="flex items-center gap-2 lg:gap-2.5 px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl bg-white border border-slate-100 font-bold text-xs lg:text-[13px] text-slate-600 hover:bg-slate-50 transition-all shadow-sm">
+                    class="flex items-center gap-2 lg:gap-2.5 px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 font-bold text-xs lg:text-[13px] text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm">
                     <span class="material-symbols-outlined !text-[18px] lg:!text-[20px]">file_download</span>
                     <span class="hidden sm:inline">Xuất báo cáo</span>
                 </button>
@@ -40,7 +43,7 @@
         <div class="mb-10 grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
             <button *ngFor="let app of appModules; let i = index" (click)="selectApp(app.id)"
                 class="group flex flex-col p-5 lg:p-6 rounded-2xl lg:rounded-3xl border-none transition-all duration-300 text-left relative overflow-hidden"
-                [ngClass]="app.active ? 'bg-primary shadow-xl shadow-primary/20' : 'bg-white shadow-ultra-soft hover:shadow-premium'">
+                [ngClass]="app.active ? 'bg-primary shadow-xl shadow-primary/20' : 'bg-white dark:bg-slate-800 shadow-ultra-soft hover:shadow-premium dark:shadow-none dark:ring-1 dark:ring-slate-700/50'">
 
                 <!-- Decorative background icon (visible when active) -->
                 <div *ngIf="app.active" class="absolute top-0 right-0 p-4 opacity-10">
@@ -55,12 +58,14 @@
                 </div>
 
                 <!-- Title -->
-                <p class="text-sm lg:text-base font-bold mb-1" [ngClass]="app.active ? 'text-white' : 'text-slate-900'">
+                <p class="text-sm lg:text-base font-bold mb-1"
+                    [ngClass]="app.active ? 'text-white' : 'text-slate-900 dark:text-white'">
                     {{ app.name }}
                 </p>
 
                 <!-- Description -->
-                <p class="text-xs leading-relaxed" [ngClass]="app.active ? 'text-white/70' : 'text-slate-400'">
+                <p class="text-xs leading-relaxed"
+                    [ngClass]="app.active ? 'text-white/70' : 'text-slate-400 dark:text-slate-500'">
                     {{ app.description }}
                 </p>
             </button>
@@ -68,22 +73,26 @@
 
         <!-- Tabs and Search -->
         <div
-            class="flex flex-col lg:flex-row lg:items-center justify-between border-b border-slate-100 pb-0.5 gap-4 lg:gap-0">
+            class="flex flex-col lg:flex-row lg:items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-0.5 gap-4 lg:gap-0">
             <div class="flex gap-6 lg:gap-10 overflow-x-auto">
                 <button (click)="setActiveTab('menu')"
                     class="pb-4 text-xs lg:text-sm font-semibold tracking-wide transition-colors whitespace-nowrap"
                     [class.font-bold]="activeTab() === 'menu'" [class.text-primary]="activeTab() === 'menu'"
                     [class.border-b-2]="activeTab() === 'menu'" [class.border-primary]="activeTab() === 'menu'"
-                    [class.text-slate-400]="activeTab() !== 'menu'"
-                    [class.hover:text-slate-600]="activeTab() !== 'menu'">
+                    [class.text-slate-400]="activeTab() !== 'menu'" [class.dark:text-white]="activeTab() === 'menu'"
+                    [class.dark:text-slate-500]="activeTab() !== 'menu'"
+                    [class.hover:text-slate-600]="activeTab() !== 'menu'"
+                    [class.dark:hover:text-slate-300]="activeTab() !== 'menu'">
                     MENU HỆ THỐNG
                 </button>
                 <button (click)="setActiveTab('users')"
                     class="pb-4 text-xs lg:text-sm font-semibold tracking-wide transition-colors whitespace-nowrap"
                     [class.font-bold]="activeTab() === 'users'" [class.text-primary]="activeTab() === 'users'"
                     [class.border-b-2]="activeTab() === 'users'" [class.border-primary]="activeTab() === 'users'"
-                    [class.text-slate-400]="activeTab() !== 'users'"
-                    [class.hover:text-slate-600]="activeTab() !== 'users'">
+                    [class.text-slate-400]="activeTab() !== 'users'" [class.dark:text-white]="activeTab() === 'users'"
+                    [class.dark:text-slate-500]="activeTab() !== 'users'"
+                    [class.hover:text-slate-600]="activeTab() !== 'users'"
+                    [class.dark:hover:text-slate-300]="activeTab() !== 'users'">
                     NGƯỜI DÙNG
                 </button>
                 <button (click)="setActiveTab('permissions')"
@@ -93,16 +102,19 @@
                     [class.border-b-2]="activeTab() === 'permissions'"
                     [class.border-primary]="activeTab() === 'permissions'"
                     [class.text-slate-400]="activeTab() !== 'permissions'"
-                    [class.hover:text-slate-600]="activeTab() !== 'permissions'">
+                    [class.dark:text-white]="activeTab() === 'permissions'"
+                    [class.dark:text-slate-500]="activeTab() !== 'permissions'"
+                    [class.hover:text-slate-600]="activeTab() !== 'permissions'"
+                    [class.dark:hover:text-slate-300]="activeTab() !== 'permissions'">
                     PHÂN QUYỀN
                 </button>
             </div>
             <div class="flex items-center gap-3 lg:gap-4 mb-3 lg:mb-3">
                 <div class="relative flex-1 lg:flex-none">
                     <span
-                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 !text-[18px]">search</span>
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 !text-[18px]">search</span>
                     <input
-                        class="w-full lg:w-64 pl-10 pr-4 py-2 bg-slate-50 border-none rounded-xl text-xs focus:ring-1 focus:ring-primary/20 outline-none"
+                        class="w-full lg:w-64 pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-xs dark:text-white focus:ring-1 focus:ring-primary/20 outline-none placeholder:text-slate-400 dark:placeholder:text-slate-600"
                         [placeholder]="activeTab() === 'users' ? 'Tìm kiếm người dùng...' : 'Tìm kiếm menu...'"
                         type="text" />
                 </div>
@@ -126,10 +138,11 @@
                     <!-- Tree Branch Container -->
                     <div class="tree-branch" [class.tree-branch-last]="isLast && !hasChildren(item.id)">
                         <!-- Parent Menu Item -->
-                        <div class="card-menu-item flex items-center gap-3 lg:gap-5 cursor-pointer transition-all duration-200"
+                        <div class="card-menu-item flex items-center gap-3 lg:gap-5 cursor-pointer transition-all duration-200 dark:hover:bg-slate-800/50 rounded-xl"
                             [class.ring-2]="isSelected(item.id)" [class.ring-primary]="isSelected(item.id)"
-                            [class.bg-primary/5]="isSelected(item.id)" [class.shadow-premium]="isSelected(item.id)"
-                            (click)="selectMenuItem(item.id)" (contextmenu)="onContextMenu($event, item)">
+                            [class.bg-primary/5]="isSelected(item.id)" [class.dark:bg-primary/10]="isSelected(item.id)"
+                            [class.shadow-premium]="isSelected(item.id)" (click)="selectMenuItem(item.id)"
+                            (contextmenu)="onContextMenu($event, item)">
 
                             <!-- Expand/Collapse Arrow -->
                             <button *ngIf="hasChildren(item.id)" (click)="toggleExpand(item.id, $event)"
@@ -145,7 +158,9 @@
                             <div class="size-10 lg:size-11 rounded-xl flex items-center justify-center shrink-0 transition-colors"
                                 [class.bg-primary]="isSelected(item.id)" [class.text-white]="isSelected(item.id)"
                                 [class.bg-slate-50]="!isSelected(item.id)"
-                                [class.text-slate-500]="!isSelected(item.id)">
+                                [class.dark:bg-slate-800]="!isSelected(item.id)"
+                                [class.text-slate-500]="!isSelected(item.id)"
+                                [class.dark:text-slate-400]="!isSelected(item.id)">
                                 <span class="material-symbols-outlined !text-[20px] lg:!text-[22px]">{{ item.icon
                                     }}</span>
                             </div>
@@ -154,12 +169,14 @@
                             <div class="flex-1 min-w-0">
                                 <h4 class="text-[14px] lg:text-[15px] font-extrabold truncate transition-colors"
                                     [class.text-primary]="isSelected(item.id)"
-                                    [class.text-slate-900]="!isSelected(item.id)">
+                                    [class.text-slate-900]="!isSelected(item.id)"
+                                    [class.dark:text-white]="!isSelected(item.id)">
                                     {{ item.name }}
                                 </h4>
                                 <p class="text-[10px] lg:text-[11px] font-medium tracking-wide uppercase mt-0.5 truncate transition-colors"
                                     [class.text-primary/60]="isSelected(item.id)"
-                                    [class.text-slate-400]="!isSelected(item.id)">
+                                    [class.text-slate-400]="!isSelected(item.id)"
+                                    [class.dark:text-slate-500]="!isSelected(item.id)">
                                     {{ item.path }}
                                 </p>
                             </div>
@@ -169,11 +186,14 @@
                                 <div class="text-center hidden sm:block">
                                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-0.5">
                                         Thứ tự</p>
-                                    <p class="text-sm font-semibold text-slate-700">{{ formatOrder(item.order) }}</p>
+                                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{
+                                        formatOrder(item.order) }}</p>
                                 </div>
                                 <div class="size-8 rounded-full flex items-center justify-center"
-                                    [class.bg-emerald-50]="item.visible" [class.text-emerald-600]="item.visible"
-                                    [class.bg-slate-100]="!item.visible" [class.text-slate-400]="!item.visible">
+                                    [class.bg-emerald-50]="item.visible" [class.dark:bg-emerald-500/10]="item.visible"
+                                    [class.text-emerald-600]="item.visible" [class.dark:text-emerald-400]="item.visible"
+                                    [class.bg-slate-100]="!item.visible" [class.dark:bg-slate-800]="!item.visible"
+                                    [class.text-slate-400]="!item.visible" [class.dark:text-slate-600]="!item.visible">
                                     <span class="material-symbols-outlined !text-[18px]" [class.fill-1]="item.visible">
                                         {{ item.visible ? 'check_circle' : 'visibility_off' }}
                                     </span>
@@ -185,12 +205,14 @@
                         <div *ngIf="hasChildren(item.id) && isExpanded(item.id)"
                             class="tree-children ml-8 lg:ml-12 mt-2 space-y-2 relative">
                             <!-- Vertical Line -->
-                            <div class="tree-vertical-line"></div>
+                            <div class="tree-vertical-line dark:border-l-slate-800"></div>
 
                             <div *ngFor="let child of getChildItems(item.id); let isLastChild = last"
-                                class="tree-node-child card-menu-item flex items-center gap-3 lg:gap-4 py-3 lg:py-4 px-4 lg:px-5 cursor-pointer transition-all duration-200"
+                                class="tree-node-child card-menu-item flex items-center gap-3 lg:gap-4 py-3 lg:py-4 px-4 lg:px-5 cursor-pointer transition-all duration-200 dark:hover:bg-slate-800/50 rounded-xl"
                                 [class.ring-2]="isSelected(child.id)" [class.ring-primary/50]="isSelected(child.id)"
-                                [class.bg-primary/5]="isSelected(child.id)" [class.border-l-2]="isSelected(child.id)"
+                                [class.bg-primary/5]="isSelected(child.id)"
+                                [class.dark:bg-primary/10]="isSelected(child.id)"
+                                [class.border-l-2]="isSelected(child.id)"
                                 [class.border-primary/30]="isSelected(child.id)" (click)="selectMenuItem(child.id)"
                                 (contextmenu)="onContextMenu($event, child)">
 
@@ -199,7 +221,9 @@
                                     [class.bg-primary/10]="isSelected(child.id)"
                                     [class.text-primary]="isSelected(child.id)"
                                     [class.bg-slate-50]="!isSelected(child.id)"
-                                    [class.text-slate-400]="!isSelected(child.id)">
+                                    [class.dark:bg-slate-800]="!isSelected(child.id)"
+                                    [class.text-slate-400]="!isSelected(child.id)"
+                                    [class.dark:text-slate-500]="!isSelected(child.id)">
                                     <span class="material-symbols-outlined !text-[18px] lg:!text-[20px]">{{ child.icon
                                         }}</span>
                                 </div>
@@ -209,12 +233,14 @@
                                     <h4 class="text-[13px] lg:text-[14px] font-semibold truncate transition-colors"
                                         [class.text-primary]="isSelected(child.id)"
                                         [class.font-bold]="isSelected(child.id)"
-                                        [class.text-slate-700]="!isSelected(child.id)">
+                                        [class.text-slate-700]="!isSelected(child.id)"
+                                        [class.dark:text-slate-300]="!isSelected(child.id)">
                                         {{ child.name }}
                                     </h4>
                                     <p class="text-[10px] lg:text-[11px] font-medium tracking-wide uppercase mt-0.5 truncate"
                                         [class.text-primary/50]="isSelected(child.id)"
-                                        [class.text-slate-400]="!isSelected(child.id)">
+                                        [class.text-slate-400]="!isSelected(child.id)"
+                                        [class.dark:text-slate-500]="!isSelected(child.id)">
                                         {{ child.path }}
                                     </p>
                                 </div>
@@ -222,11 +248,11 @@
                                 <!-- Order & Drag Handle -->
                                 <div class="flex items-center gap-4 lg:gap-6 shrink-0">
                                     <div class="text-center hidden sm:block">
-                                        <p class="text-[9px] font-bold text-slate-300 uppercase">{{
+                                        <p class="text-[9px] font-bold text-slate-300 dark:text-slate-600 uppercase">{{
                                             formatOrder(child.order) }}</p>
                                     </div>
                                     <span
-                                        class="material-symbols-outlined text-slate-200 !text-[16px] cursor-grab hover:text-slate-400 transition-colors">
+                                        class="material-symbols-outlined text-slate-200 dark:text-slate-700 !text-[16px] cursor-grab hover:text-slate-400 dark:hover:text-slate-500 transition-colors">
                                         drag_indicator
                                     </span>
                                 </div>
@@ -240,9 +266,10 @@
             <div *ngIf="activeTab() === 'users'" class="space-y-4 px-1 md:px-2">
                 <!-- User Cards - Dynamic -->
                 <div *ngFor="let user of users; let i = index"
-                    class="card-menu-item flex items-center gap-3 lg:gap-5 cursor-pointer transition-all duration-200"
+                    class="card-menu-item flex items-center gap-3 lg:gap-5 cursor-pointer transition-all duration-200 dark:hover:bg-slate-800/50 rounded-xl"
                     [class.ring-2]="i === 0" [class.ring-primary]="i === 0" [class.bg-primary/5]="i === 0"
-                    [class.shadow-premium]="i === 0" [class.opacity-60]="user.status === 'inactive'"
+                    [class.dark:bg-primary/10]="i === 0" [class.shadow-premium]="i === 0"
+                    [class.opacity-60]="user.status === 'inactive'"
                     [class.hover:opacity-100]="user.status === 'inactive'"
                     (contextmenu)="onUserContextMenu($event, user)">
 
@@ -251,7 +278,7 @@
                         <img [alt]="user.name" class="size-10 lg:size-11 rounded-xl object-cover shadow-sm"
                             [class.grayscale]="user.status === 'inactive'" [src]="user.avatar" />
                         <div *ngIf="user.online"
-                            class="absolute -top-1 -right-1 bg-emerald-500 size-3 rounded-full border-2 border-white">
+                            class="absolute -top-1 -right-1 bg-emerald-500 size-3 rounded-full border-2 border-white dark:border-slate-800">
                         </div>
                     </div>
 
@@ -261,15 +288,18 @@
                             <h4 class="text-[14px] lg:text-[15px] font-extrabold truncate"
                                 [class.text-primary]="i === 0"
                                 [class.text-slate-900]="i !== 0 && user.status === 'active'"
-                                [class.text-slate-600]="user.status === 'inactive'">
+                                [class.dark:text-white]="i !== 0 && user.status === 'active'"
+                                [class.text-slate-600]="user.status === 'inactive'"
+                                [class.dark:text-slate-400]="user.status === 'inactive'">
                                 {{ user.name }}
                             </h4>
                             <span
-                                class="text-[9px] font-bold px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded uppercase tracking-wider">{{
+                                class="text-[9px] font-bold px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded uppercase tracking-wider">{{
                                 user.id }}</span>
                         </div>
                         <p class="text-[10px] lg:text-[11px] font-medium tracking-wide mt-0.5 truncate"
-                            [class.text-primary/60]="i === 0" [class.text-slate-400]="i !== 0">
+                            [class.text-primary/60]="i === 0" [class.text-slate-400]="i !== 0"
+                            [class.dark:text-slate-500]="i !== 0">
                             {{ user.email }}
                         </p>
                     </div>
@@ -280,14 +310,19 @@
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-0.5">Điện thoại
                             </p>
                             <p class="text-sm font-semibold" [class.text-slate-700]="user.status === 'active'"
-                                [class.text-slate-500]="user.status === 'inactive'">
+                                [class.dark:text-slate-300]="user.status === 'active'"
+                                [class.text-slate-500]="user.status === 'inactive'"
+                                [class.dark:text-slate-500]="user.status === 'inactive'">
                                 {{ user.phone }}
                             </p>
                         </div>
                         <div class="size-8 rounded-full flex items-center justify-center"
                             [class.bg-emerald-50]="user.status === 'active'"
+                            [class.dark:bg-emerald-500/10]="user.status === 'active'"
                             [class.text-emerald-600]="user.status === 'active'"
+                            [class.dark:text-emerald-400]="user.status === 'active'"
                             [class.bg-slate-100]="user.status === 'inactive'"
+                            [class.dark:bg-slate-800]="user.status === 'inactive'"
                             [class.text-slate-400]="user.status === 'inactive'">
                             <span class="material-symbols-outlined !text-[18px]"
                                 [class.fill-1]="user.status === 'active'">
@@ -298,10 +333,8 @@
                 </div>
             </div>
 
-            <!-- Permissions Tab Content -->
+            <!-- Permissions Tab Content (already has some dark classes, but reviewing) -->
             <div *ngIf="activeTab() === 'permissions'" class="space-y-8 pb-10">
-
-
                 <!-- Permission Groups Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     <div *ngFor="let group of permissionGroups"
@@ -318,7 +351,8 @@
                             </button>
                         </div>
                         <h4 class="font-bold text-slate-800 dark:text-white mb-2">{{ group.name }}</h4>
-                        <p class="text-[12px] text-slate-400 leading-relaxed mb-6 line-clamp-2">{{ group.description }}
+                        <p class="text-[12px] text-slate-400 dark:text-slate-500 leading-relaxed mb-6 line-clamp-2">{{
+                            group.description }}
                         </p>
 
                         <div class="pt-4 border-t border-slate-50 dark:border-slate-800 flex items-center gap-4">
@@ -351,29 +385,30 @@
         </div>
 
         <!-- Fixed Footer with Pagination (outside scroll area) -->
-        <div class="px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto w-full shrink-0 bg-background border-t border-slate-100">
+        <div
+            class="px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto w-full shrink-0 bg-background dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 transition-colors">
             <!-- Pagination for Users Tab -->
             <div *ngIf="activeTab() === 'users'" class="py-6 flex items-center justify-between">
                 <p class="text-sm font-medium text-slate-500">
-                    Hiển thị <span class="text-slate-900 font-bold">1 - 10</span> trong số <span
-                        class="text-slate-900 font-bold">1,248</span> người dùng
+                    Hiển thị <span class="text-slate-900 dark:text-white font-bold">1 - 10</span> trong số <span
+                        class="text-slate-900 dark:text-white font-bold">1,248</span> người dùng
                 </p>
                 <div class="flex items-center gap-2">
                     <button
-                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:bg-slate-50 transition-all">
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
                         <span class="material-symbols-outlined !text-[20px]">chevron_left</span>
                     </button>
                     <button
                         class="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20">1</button>
                     <button
-                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 font-bold transition-all">2</button>
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 dark:text-slate-400 hover:border-slate-200 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 font-bold transition-all">2</button>
                     <button
-                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 font-bold transition-all">3</button>
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 dark:text-slate-400 hover:border-slate-200 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 font-bold transition-all">3</button>
                     <span class="text-slate-400 px-2">...</span>
                     <button
-                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 font-bold transition-all">42</button>
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent text-slate-500 dark:text-slate-400 hover:border-slate-200 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 font-bold transition-all">42</button>
                     <button
-                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:bg-slate-50 transition-all">
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
                         <span class="material-symbols-outlined !text-[20px]">chevron_right</span>
                     </button>
                 </div>
@@ -381,7 +416,7 @@
 
             <!-- Footer Info -->
             <div
-                class="py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between text-slate-400 text-[10px] lg:text-[11px] font-medium uppercase tracking-[0.1em] gap-2 border-t border-slate-100">
+                class="py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between text-slate-400 dark:text-slate-500 text-[10px] lg:text-[11px] font-medium uppercase tracking-[0.1em] gap-2 border-t border-slate-100 dark:border-slate-800">
                 <div class="flex items-center gap-3">
                     <span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span class="flex items-center gap-1.5">

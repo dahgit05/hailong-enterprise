@@ -8,8 +8,12 @@ export const remoteRoutes: Route[] = [
         component: AdminLayoutComponent,
         children: [
             { path: '', loadComponent: () => import('./features/menu-management/menu-management.component').then(m => m.MenuManagementComponent) },
+            { path: 'coming-soon', loadComponent: () => import('./features/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent) },
+            { path: 'not-found', loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent) },
+            { path: 'forbidden', loadComponent: () => import('./features/forbidden/forbidden.component').then(m => m.ForbiddenComponent) },
             { path: 'logs', loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) },
-            { path: 'security', loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) }
+            { path: 'security', loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) },
+            { path: '**', redirectTo: 'not-found' }
         ]
     }
 ];

@@ -2,13 +2,14 @@
 <div class="mb-10">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <button
-            class="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-xl transition-all hover:border-slate-300 group text-left">
-            <div class="size-10 rounded-lg bg-orange-50 flex items-center justify-center text-orange-600">
+            class="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl transition-all hover:border-slate-300 dark:hover:border-slate-600 group text-left">
+            <div
+                class="size-10 rounded-lg bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-600 dark:text-orange-400">
                 <span class="material-symbols-outlined !text-[24px]">badge</span>
             </div>
             <div>
-                <p class="text-sm font-bold text-slate-900">Nhân sự (HRM)</p>
-                <p class="text-[11px] text-slate-400">Nhân sự & Tiền lương</p>
+                <p class="text-sm font-bold text-slate-900 dark:text-white">Nhân sự (HRM)</p>
+                <p class="text-[11px] text-slate-400 dark:text-slate-500">Nhân sự & Tiền lương</p>
             </div>
         </button>
         <button class="flex items-center gap-4 p-4 app-active border rounded-xl transition-all text-left">
@@ -16,30 +17,34 @@
                 <span class="material-symbols-outlined !text-[24px]">precision_manufacturing</span>
             </div>
             <div>
-                <p class="text-sm font-bold text-primary">Máy móc</p>
-                <p class="text-[11px] text-primary/60">Tài sản & IoT</p>
+                <p class="text-sm font-bold text-primary dark:text-white">Máy móc</p>
+                <p class="text-[11px] text-primary/60 dark:text-white/70">Tài sản & IoT</p>
             </div>
         </button>
         <button
-            class="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-xl transition-all hover:border-slate-300 group text-left">
-            <div class="size-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+            class="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl transition-all hover:border-slate-300 dark:hover:border-slate-600 group text-left">
+            <div
+                class="size-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400">
                 <span class="material-symbols-outlined !text-[24px]">domain</span>
             </div>
             <div>
-                <p class="text-sm font-bold text-slate-900">Nhà máy</p>
-                <p class="text-[11px] text-slate-400">Sản xuất & Vận hành</p>
+                <p class="text-sm font-bold text-slate-900 dark:text-white">Nhà máy</p>
+                <p class="text-[11px] text-slate-400 dark:text-slate-500">Sản xuất & Vận hành</p>
             </div>
         </button>
     </div>
 </div>
 
 <!-- Tabs -->
-<div class="mb-6 border-b border-slate-200 flex items-center justify-between">
+<div class="mb-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
     <div class="flex gap-8">
-        <button class="pb-3 text-sm tab-active flex items-center gap-2">Menu</button>
-        <button class="pb-3 text-sm font-medium text-slate-400 hover:text-slate-600 transition-colors">Người
+        <button
+            class="pb-3 text-sm tab-active flex items-center gap-2 text-primary dark:text-white border-primary dark:border-white">Menu</button>
+        <button
+            class="pb-3 text-sm font-medium text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">Người
             dùng</button>
-        <button class="pb-3 text-sm font-medium text-slate-400 hover:text-slate-600 transition-colors">Phân
+        <button
+            class="pb-3 text-sm font-medium text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">Phân
             quyền</button>
     </div>
     <button
@@ -50,10 +55,11 @@
 </div>
 
 <!-- Menu Table -->
-<div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+<div
+    class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden shadow-sm">
     <!-- Table Header -->
     <div
-        class="grid grid-cols-12 gap-4 px-6 py-3 bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+        class="grid grid-cols-12 gap-4 px-6 py-3 bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
         <div class="col-span-5">Tên Menu</div>
         <div class="col-span-3">Đường dẫn (Path)</div>
         <div class="col-span-2">Thứ tự</div>
@@ -61,104 +67,129 @@
     </div>
 
     <!-- Menu Row 1 -->
-    <div class="row-hover grid grid-cols-12 items-center gap-4 px-6 py-4 border-b border-slate-100">
+    <div
+        class="row-hover grid grid-cols-12 items-center gap-4 px-6 py-4 border-b border-slate-100 dark:border-slate-700/50">
         <div class="col-span-5 flex items-center gap-3">
-            <span class="material-symbols-outlined text-slate-400 !text-[20px]">space_dashboard</span>
-            <span class="text-sm font-bold text-slate-900">Bảng điều khiển</span>
+            <span
+                class="material-symbols-outlined text-slate-400 dark:text-slate-500 !text-[20px]">space_dashboard</span>
+            <span class="text-sm font-bold text-slate-900 dark:text-white">Bảng điều khiển</span>
         </div>
         <div class="col-span-3">
-            <code class="text-[12px] text-slate-500 bg-slate-50 px-2 py-0.5 rounded">/dashboard</code>
+            <code
+                class="text-[12px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-700/50 px-2 py-0.5 rounded">/dashboard</code>
         </div>
-        <div class="col-span-2 text-sm text-slate-600">01</div>
+        <div class="col-span-2 text-sm text-slate-600 dark:text-slate-400">01</div>
         <div class="col-span-2 flex justify-end gap-1">
-            <button class="p-1.5 text-slate-400 hover:text-primary hover:bg-slate-100 rounded-md transition-all">
+            <button
+                class="p-1.5 text-slate-400 hover:text-primary dark:hover:text-primary-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md transition-all">
                 <span class="material-symbols-outlined !text-[18px]">edit</span>
             </button>
-            <button class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-all">
+            <button
+                class="p-1.5 text-slate-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-md transition-all">
                 <span class="material-symbols-outlined !text-[18px]">delete</span>
             </button>
         </div>
     </div>
 
     <!-- Menu Row 2 (Parent) -->
-    <div class="row-hover grid grid-cols-12 items-center gap-4 px-6 py-4 border-b border-slate-100 bg-slate-50/20">
+    <div
+        class="row-hover grid grid-cols-12 items-center gap-4 px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-slate-50/20 dark:bg-slate-800/20">
         <div class="col-span-5 flex items-center gap-3">
-            <span class="material-symbols-outlined text-slate-400 !text-[20px]">settings_accessibility</span>
-            <span class="text-sm font-bold text-slate-900">Bảo trì</span>
+            <span
+                class="material-symbols-outlined text-slate-400 dark:text-slate-500 !text-[20px]">settings_accessibility</span>
+            <span class="text-sm font-bold text-slate-900 dark:text-white">Bảo trì</span>
         </div>
         <div class="col-span-3">
-            <code class="text-[12px] text-slate-500 bg-slate-50 px-2 py-0.5 rounded">/maintenance</code>
+            <code
+                class="text-[12px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-700/50 px-2 py-0.5 rounded">/maintenance</code>
         </div>
-        <div class="col-span-2 text-sm text-slate-600">02</div>
+        <div class="col-span-2 text-sm text-slate-600 dark:text-slate-400">02</div>
         <div class="col-span-2 flex justify-end gap-1">
-            <button class="p-1.5 text-slate-400 hover:text-primary hover:bg-slate-100 rounded-md transition-all">
+            <button
+                class="p-1.5 text-slate-400 hover:text-primary dark:hover:text-primary-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md transition-all">
                 <span class="material-symbols-outlined !text-[18px]">edit</span>
             </button>
-            <button class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-all">
+            <button
+                class="p-1.5 text-slate-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-md transition-all">
                 <span class="material-symbols-outlined !text-[18px]">delete</span>
             </button>
         </div>
     </div>
 
     <!-- Menu Row 3 (Child) -->
-    <div class="row-hover grid grid-cols-12 items-center gap-4 px-6 py-4 border-b border-slate-100 relative">
+    <div
+        class="row-hover grid grid-cols-12 items-center gap-4 px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 relative">
         <div class="col-span-5 flex items-center gap-3 pl-8 relative">
-            <div class="absolute left-4 top-[-20px] bottom-1/2 w-3 border-l border-b border-slate-200 rounded-bl-lg">
+            <div
+                class="absolute left-4 top-[-20px] bottom-1/2 w-3 border-l border-b border-slate-200 dark:border-slate-700 rounded-bl-lg">
             </div>
-            <span class="material-symbols-outlined text-slate-300 !text-[18px]">list_alt</span>
-            <span class="text-sm font-medium text-slate-700">Danh sách thiết bị</span>
+            <span class="material-symbols-outlined text-slate-300 dark:text-slate-600 !text-[18px]">list_alt</span>
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Danh sách thiết bị</span>
         </div>
         <div class="col-span-3">
-            <code class="text-[12px] text-slate-500 bg-slate-50 px-2 py-0.5 rounded">/maintenance/assets</code>
+            <code
+                class="text-[12px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-700/50 px-2 py-0.5 rounded">/maintenance/assets</code>
         </div>
-        <div class="col-span-2 text-sm text-slate-500">01</div>
+        <div class="col-span-2 text-sm text-slate-500 dark:text-slate-400">01</div>
         <div class="col-span-2 flex justify-end gap-1">
-            <button class="p-1.5 text-slate-400 hover:text-primary hover:bg-slate-100 rounded-md transition-all">
+            <button
+                class="p-1.5 text-slate-400 hover:text-primary dark:hover:text-primary-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md transition-all">
                 <span class="material-symbols-outlined !text-[18px]">edit</span>
             </button>
-            <button class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-all">
+            <button
+                class="p-1.5 text-slate-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-md transition-all">
                 <span class="material-symbols-outlined !text-[18px]">delete</span>
             </button>
         </div>
     </div>
 
     <!-- Menu Row 4 (Child) -->
-    <div class="row-hover grid grid-cols-12 items-center gap-4 px-6 py-4 border-b border-slate-100 relative">
+    <div
+        class="row-hover grid grid-cols-12 items-center gap-4 px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 relative">
         <div class="col-span-5 flex items-center gap-3 pl-8 relative">
-            <div class="absolute left-4 top-[-20px] bottom-1/2 w-3 border-l border-b border-slate-200 rounded-bl-lg">
+            <div
+                class="absolute left-4 top-[-20px] bottom-1/2 w-3 border-l border-b border-slate-200 dark:border-slate-700 rounded-bl-lg">
             </div>
-            <span class="material-symbols-outlined text-slate-300 !text-[18px]">calendar_month</span>
-            <span class="text-sm font-medium text-slate-700">Lịch bảo trì</span>
+            <span
+                class="material-symbols-outlined text-slate-300 dark:text-slate-600 !text-[18px]">calendar_month</span>
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Lịch bảo trì</span>
         </div>
         <div class="col-span-3">
-            <code class="text-[12px] text-slate-500 bg-slate-50 px-2 py-0.5 rounded">/maintenance/schedule</code>
+            <code
+                class="text-[12px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-700/50 px-2 py-0.5 rounded">/maintenance/schedule</code>
         </div>
-        <div class="col-span-2 text-sm text-slate-500">02</div>
+        <div class="col-span-2 text-sm text-slate-500 dark:text-slate-400">02</div>
         <div class="col-span-2 flex justify-end gap-1">
-            <button class="p-1.5 text-slate-400 hover:text-primary hover:bg-slate-100 rounded-md transition-all">
+            <button
+                class="p-1.5 text-slate-400 hover:text-primary dark:hover:text-primary-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md transition-all">
                 <span class="material-symbols-outlined !text-[18px]">edit</span>
             </button>
-            <button class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-all">
+            <button
+                class="p-1.5 text-slate-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-md transition-all">
                 <span class="material-symbols-outlined !text-[18px]">delete</span>
             </button>
         </div>
     </div>
 
     <!-- Menu Row 5 -->
-    <div class="row-hover grid grid-cols-12 items-center gap-4 px-6 py-4 border-b border-slate-100">
+    <div
+        class="row-hover grid grid-cols-12 items-center gap-4 px-6 py-4 border-b border-slate-100 dark:border-slate-700/50">
         <div class="col-span-5 flex items-center gap-3">
-            <span class="material-symbols-outlined text-slate-400 !text-[20px]">monitoring</span>
-            <span class="text-sm font-bold text-slate-900">Báo cáo & Thống kê</span>
+            <span class="material-symbols-outlined text-slate-400 dark:text-slate-500 !text-[20px]">monitoring</span>
+            <span class="text-sm font-bold text-slate-900 dark:text-white">Báo cáo & Thống kê</span>
         </div>
         <div class="col-span-3">
-            <code class="text-[12px] text-slate-500 bg-slate-50 px-2 py-0.5 rounded">/reports</code>
+            <code
+                class="text-[12px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-700/50 px-2 py-0.5 rounded">/reports</code>
         </div>
-        <div class="col-span-2 text-sm text-slate-600">03</div>
+        <div class="col-span-2 text-sm text-slate-600 dark:text-slate-400">03</div>
         <div class="col-span-2 flex justify-end gap-1">
-            <button class="p-1.5 text-slate-400 hover:text-primary hover:bg-slate-100 rounded-md transition-all">
+            <button
+                class="p-1.5 text-slate-400 hover:text-primary dark:hover:text-primary-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md transition-all">
                 <span class="material-symbols-outlined !text-[18px]">edit</span>
             </button>
-            <button class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-all">
+            <button
+                class="p-1.5 text-slate-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-md transition-all">
                 <span class="material-symbols-outlined !text-[18px]">delete</span>
             </button>
         </div>

@@ -1,0 +1,79 @@
+<div
+    class="relative w-full h-full flex flex-col items-center justify-center p-10 overflow-hidden bg-background-light dark:bg-background-dark transition-colors duration-300">
+    <div class="absolute inset-0 warehouse-grid opacity-60 z-0"></div>
+    <div class="absolute top-20 right-20 opacity-10 dark:opacity-5">
+        <span class="material-symbols-outlined text-[300px] text-slate-900 dark:text-white">inventory_2</span>
+    </div>
+
+    <div class="relative z-10 flex flex-col items-center text-center max-w-2xl">
+        <div class="relative mb-12">
+            <div class="flex items-center justify-center gap-4 mb-4">
+                <div class="relative">
+                    <h1 class="text-[180px] font-black leading-none stencil-text">4</h1>
+                </div>
+                <div class="relative flex items-center justify-center">
+                    <div
+                        class="w-40 h-40 bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-200 dark:border-slate-800 shadow-2xl relative overflow-hidden p-4 grid grid-cols-4 gap-2">
+                        <div class="bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+                        <div class="bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+                        <div class="bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+                        <div class="bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+                        <div class="bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+                        <div
+                            class="bg-red-50 dark:bg-red-900/20 rounded-md flex items-center justify-center border-2 border-dashed border-red-500/50">
+                            <span class="material-symbols-outlined text-red-500 font-black text-4xl">close</span>
+                        </div>
+                        <div class="bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+                        <div class="bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+                        <div class="bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+                        <div class="bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+                        <div class="bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+                        <div class="bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <h1 class="text-[180px] font-black leading-none stencil-text">4</h1>
+                </div>
+            </div>
+            <div class="absolute -left-12 top-1/2 w-8 h-2 bg-slate-300 dark:bg-slate-700 rounded-full"></div>
+            <div class="absolute -right-12 top-1/2 w-8 h-2 bg-slate-300 dark:bg-slate-700 rounded-full"></div>
+        </div>
+
+        <div class="space-y-4 mb-10">
+            <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Đường dẫn không tồn tại
+            </h2>
+            <p class="text-lg text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                Có vẻ như trang bạn tìm kiếm đã được di chuyển hoặc không khả dụng.<br />
+                Vui lòng kiểm tra lại địa chỉ hoặc quay lại trung tâm điều hành.
+            </p>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button routerLink="/"
+                class="group flex items-center gap-3 px-8 py-4 bg-primary text-white font-bold text-base rounded-2xl shadow-xl shadow-primary/25 hover:scale-[1.03] active:scale-95 transition-all">
+                <span
+                    class="material-symbols-outlined text-xl group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                Về trang Tổng quan
+            </button>
+            <button (click)="toggleTheme()"
+                class="p-4 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-2xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 transition-all">
+                <span class="material-symbols-outlined block dark:hidden">dark_mode</span>
+                <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+            </button>
+        </div>
+    </div>
+
+    <div
+        class="absolute bottom-8 left-10 right-10 flex justify-between items-center text-[11px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest z-10">
+        <div class="flex items-center gap-6">
+            <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Error Code:
+                0x404_NOT_FOUND</span>
+            <span>Ref: 2026_INDUSTRIAL_HUB</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span>© 2026 Admin Hub</span>
+            <span class="text-primary/40 dark:text-emerald-500/40">Premium Industrial Edition</span>
+        </div>
+    </div>
+</div>

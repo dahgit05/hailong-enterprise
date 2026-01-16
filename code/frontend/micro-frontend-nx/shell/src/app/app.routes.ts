@@ -29,6 +29,10 @@ export const appRoutes: Route[] = [
         pathMatch: 'full',
         redirectTo: 'factory',
       },
+      {
+        path: '**',
+        redirectTo: 'admin/not-found',
+      },
     ],
   },
 ];

@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 @Component({
   imports: [CommonModule, RouterModule],
   selector: 'app-admin-entry',
-  templateUrl: './entry.html',
-  styleUrl: './entry.scss',
+  template: '<router-outlet></router-outlet>',
 })
 export class RemoteEntry { }
