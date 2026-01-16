@@ -7,6 +7,11 @@ export const appRoutes: Route[] = [
     path: 'admin',
     loadChildren: () => import('admin/Routes').then((m) => m!.remoteRoutes),
   },
+  // Login route - standalone page
+  {
+    path: 'login',
+    loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent),
+  },
   // Main layout routes - shared by factory, hrm, machine
   {
     path: '',

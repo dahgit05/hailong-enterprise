@@ -1,0 +1,131 @@
+<div class="max-w-4xl mx-auto">
+    <header class="mb-10">
+        <nav class="flex text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-2">
+            <span>Cấu hình</span>
+            <span class="mx-2">/</span>
+            <span class="text-slate-800 dark:text-slate-200">Nhật ký hệ thống</span>
+        </nav>
+        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Cấu hình Nhật ký 2026</h2>
+        <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm leading-relaxed">Quản lý chính sách lưu trữ, mức độ
+            ghi log và giám sát tài nguyên của hệ thống Xây lắp Hải Long.</p>
+    </header>
+    <div class="grid gap-8">
+        <section
+            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <div
+                class="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/20 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary dark:text-emerald-500 text-xl">folder_managed</span>
+                <h3 class="font-bold text-slate-900 dark:text-white">Chính sách Lưu trữ</h3>
+            </div>
+            <div class="p-8 space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+                    <div class="space-y-3">
+                        <label
+                            class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Thời
+                            gian lưu trữ nhật ký</label>
+                        <select [(ngModel)]="retentionPeriod"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium p-3 focus:ring-primary focus:border-primary transition-all text-slate-900 dark:text-white outline-none">
+                            <option value="30">Lưu trữ trong 30 ngày</option>
+                            <option value="90">Lưu trữ trong 90 ngày</option>
+                            <option value="180">Lưu trữ trong 180 ngày (Mặc định)</option>
+                        </select>
+                    </div>
+                    <div
+                        class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl h-[52px]">
+                        <span class="text-sm font-bold text-slate-900 dark:text-white">Tự động dọn dẹp</span>
+                        <label class="switch">
+                            <input type="checkbox" [checked]="autoCleanup()" (change)="toggleAutoCleanup()" />
+                            <span class="slider-toggle"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section
+            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <div
+                class="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/20 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary dark:text-emerald-500 text-xl">reorder</span>
+                <h3 class="font-bold text-slate-900 dark:text-white">Mức độ ghi nhật ký</h3>
+            </div>
+            <div class="p-8">
+                <div class="space-y-4">
+                    <label
+                        class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Chọn
+                        cấp độ chi tiết (Logging Level)</label>
+                    <div class="segmented-control">
+                        <button [class.active]="logLevel() === 'DEBUG'" (click)="setLogLevel('DEBUG')">DEBUG</button>
+                        <button [class.active]="logLevel() === 'INFO'" (click)="setLogLevel('INFO')">INFO</button>
+                        <button [class.active]="logLevel() === 'WARN'" (click)="setLogLevel('WARN')">WARN</button>
+                        <button [class.active]="logLevel() === 'ERROR'" (click)="setLogLevel('ERROR')">ERROR</button>
+                    </div>
+                    <p class="text-[11px] text-slate-500 font-medium italic">Ghi lại toàn bộ tiến trình hệ thống để phục
+                        vụ công tác giám sát chi tiết.</p>
+                </div>
+            </div>
+        </section>
+        <section
+            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <div
+                class="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/20 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary dark:text-emerald-500 text-xl">monitoring</span>
+                <h3 class="font-bold text-slate-900 dark:text-white">Giám sát tài nguyên</h3>
+            </div>
+            <div class="p-8 space-y-8">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <label
+                            class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tần
+                            suất lấy mẫu CPU/RAM</label>
+                        <span
+                            class="text-xs font-bold text-primary dark:text-emerald-500 px-3 py-1 bg-primary/10 dark:bg-emerald-500/10 rounded-full">{{sampleRate()}}
+                            giây / lần</span>
+                    </div>
+                    <input [(ngModel)]="sampleRate" class="cursor-pointer" max="60" min="1" type="range" />
+                    <div class="flex justify-between text-[10px] text-slate-400 font-bold">
+                        <span>1s (Tốc độ cao)</span>
+                        <span>60s (Tiết kiệm)</span>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center justify-between p-5 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-10 h-10 bg-primary/10 dark:bg-emerald-500/10 text-primary dark:text-emerald-500 rounded-xl flex items-center justify-center">
+                            <span class="material-symbols-outlined">api</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900 dark:text-white">Ghi log hiệu năng API</p>
+                            <p class="text-[11px] text-slate-500">Phân tích thời gian phản hồi của từng endpoint</p>
+                        </div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" [checked]="apiPerfLog()" (change)="toggleApiPerfLog()" />
+                        <span class="slider-toggle"></span>
+                    </label>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="mt-12 flex items-center justify-end gap-4 pb-16">
+        <button (click)="reset()"
+            class="px-6 py-3 text-sm font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">Thiết
+            lập lại</button>
+        <button (click)="save()"
+            class="px-10 py-3.5 bg-primary dark:bg-emerald-600 text-white text-sm font-bold rounded-xl shadow-xl shadow-primary/20 dark:shadow-emerald-500/20 hover:shadow-2xl hover:-translate-y-0.5 transition-all active:scale-[0.98]">
+            Cập nhật cấu hình nhật ký
+        </button>
+    </div>
+</div>
+
+<!-- Floating FABs -->
+<div class="fixed bottom-8 right-8 flex flex-col gap-3 z-30">
+    <button
+        class="w-14 h-14 bg-white dark:bg-slate-800 text-slate-400 shadow-xl rounded-2xl flex items-center justify-center hover:text-primary dark:hover:text-emerald-500 transition-all border border-slate-100 dark:border-slate-700 group">
+        <span class="material-symbols-outlined transition-transform group-hover:scale-110">help_outline</span>
+    </button>
+    <button (click)="save()"
+        class="w-14 h-14 bg-primary dark:bg-emerald-600 text-white shadow-2xl shadow-primary/30 dark:shadow-emerald-500/30 rounded-2xl flex items-center justify-center hover:scale-105 transition-all group">
+        <span class="material-symbols-outlined transition-transform group-hover:rotate-12">save</span>
+    </button>
+</div>

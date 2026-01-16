@@ -1,0 +1,226 @@
+<div class="max-w-4xl mx-auto">
+    <header class="mb-10">
+        <nav class="flex text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-2">
+            <span>Cấu hình</span>
+            <span class="mx-2">/</span>
+            <span class="text-slate-800 dark:text-slate-200">Bảo mật & Truy cập</span>
+        </nav>
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Cài đặt Bảo mật</h2>
+                <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm leading-relaxed">Quản lý chính sách mật khẩu,
+                    xác thực 2 lớp và kiểm soát hạ tầng truy cập mạng 2026.</p>
+            </div>
+            <div
+                class="flex items-center gap-2 px-4 py-2 bg-primary/10 dark:bg-emerald-500/10 text-primary dark:text-emerald-500 rounded-full">
+                <span class="material-symbols-outlined text-sm">verified_user</span>
+                <span class="text-[11px] font-bold uppercase tracking-wider">Trạng thái: An toàn</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="grid gap-6">
+        <!-- Password Policy -->
+        <section
+            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <div
+                class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/30">
+                <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary dark:text-emerald-500 text-xl">password</span>
+                    Chính sách mật khẩu
+                </h3>
+            </div>
+            <div class="p-8 space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Độ
+                            dài tối thiểu (Ký tự)</label>
+                        <input [(ngModel)]="passwordLength"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium p-3 focus:ring-primary/20 dark:focus:ring-emerald-500/20 text-slate-900 dark:text-white outline-none"
+                            min="8" type="number" />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Thời
+                            hạn đổi mật khẩu</label>
+                        <select [(ngModel)]="passwordExpiry"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold p-3 text-slate-700 dark:text-slate-200 outline-none">
+                            <option value="30">30 ngày (Khuyến nghị bảo mật)</option>
+                            <option value="60">60 ngày</option>
+                            <option value="90">90 ngày</option>
+                            <option value="0">Không bao giờ hết hạn</option>
+                        </select>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-10 h-10 bg-primary/10 dark:bg-emerald-500/10 text-primary dark:text-emerald-500 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined">data_object</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900 dark:text-white">Yêu cầu ký tự đặc biệt</p>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Mật khẩu phải chứa ít nhất 1 ký tự
+                                đặc biệt (!@#$%...)</p>
+                        </div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" [checked]="specialCharRequired()" (change)="toggleSpecialChar()" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2FA -->
+        <section
+            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <div
+                class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/30">
+                <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <span
+                        class="material-symbols-outlined text-primary dark:text-emerald-500 text-xl">authenticator</span>
+                    Xác thực đa yếu tố (2FA)
+                </h3>
+                <label class="switch">
+                    <input type="checkbox" [checked]="enable2FA()" (change)="toggle2FA()" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="p-8">
+                <label
+                    class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-4">Phương
+                    thức xác thực mặc định</label>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div (click)="setAuthMethod('email')" class="p-4 border-2 rounded-2xl cursor-pointer transition-all"
+                        [class.border-primary]="defaultAuthMethod() === 'email'"
+                        [class.bg-primary-5]="defaultAuthMethod() === 'email'"
+                        [class.dark:border-emerald-500]="defaultAuthMethod() === 'email'"
+                        [class.dark:bg-emerald-500-10]="defaultAuthMethod() === 'email'"
+                        [class.border-slate-200]="defaultAuthMethod() !== 'email'"
+                        [class.dark:border-slate-700]="defaultAuthMethod() !== 'email'">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="material-symbols-outlined text-primary dark:text-emerald-500">mail</span>
+                            <span *ngIf="defaultAuthMethod() === 'email'"
+                                class="material-symbols-outlined text-primary dark:text-emerald-500 text-sm">check_circle</span>
+                        </div>
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">Email OTP</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Gửi mã qua email công vụ</p>
+                    </div>
+                    <div (click)="setAuthMethod('app')"
+                        class="p-4 border-2 rounded-2xl cursor-pointer transition-all hover:border-primary/50"
+                        [class.border-primary]="defaultAuthMethod() === 'app'"
+                        [class.bg-primary-5]="defaultAuthMethod() === 'app'"
+                        [class.dark:border-emerald-500]="defaultAuthMethod() === 'app'"
+                        [class.dark:bg-emerald-500-10]="defaultAuthMethod() === 'app'"
+                        [class.border-slate-200]="defaultAuthMethod() !== 'app'"
+                        [class.dark:border-slate-700]="defaultAuthMethod() !== 'app'">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="material-symbols-outlined text-slate-400">phonelink_lock</span>
+                            <span *ngIf="defaultAuthMethod() === 'app'"
+                                class="material-symbols-outlined text-primary dark:text-emerald-500 text-sm">check_circle</span>
+                        </div>
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">Authenticator App</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Google/Microsoft Auth</p>
+                    </div>
+                    <div (click)="setAuthMethod('sso')"
+                        class="p-4 border-2 rounded-2xl cursor-pointer transition-all hover:border-primary/50"
+                        [class.border-primary]="defaultAuthMethod() === 'sso'"
+                        [class.bg-primary-5]="defaultAuthMethod() === 'sso'"
+                        [class.dark:border-emerald-500]="defaultAuthMethod() === 'sso'"
+                        [class.dark:bg-emerald-500-10]="defaultAuthMethod() === 'sso'"
+                        [class.border-slate-200]="defaultAuthMethod() !== 'sso'"
+                        [class.dark:border-slate-700]="defaultAuthMethod() !== 'sso'">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="material-symbols-outlined text-slate-400">key</span>
+                            <span *ngIf="defaultAuthMethod() === 'sso'"
+                                class="material-symbols-outlined text-primary dark:text-emerald-500 text-sm">check_circle</span>
+                        </div>
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">SSO Integration</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Sử dụng tài khoản nội bộ</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Access Control -->
+        <section
+            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <div
+                class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/30">
+                <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <span
+                        class="material-symbols-outlined text-primary dark:text-emerald-500 text-xl">admin_panel_settings</span>
+                    Kiểm soát truy cập
+                </h3>
+            </div>
+            <div class="p-8 space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <label
+                                class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">IP
+                                Whitelist</label>
+                            <span class="text-[10px] text-emerald-600 font-bold">An toàn</span>
+                        </div>
+                        <textarea [(ngModel)]="ipWhitelist"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-mono p-3 min-h-[120px] focus:ring-primary/20 dark:focus:ring-emerald-500/20 text-slate-900 dark:text-white outline-none"
+                            placeholder="Nhập danh sách IP (mỗi dòng 1 IP)..."></textarea>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <label
+                                class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">IP
+                                Blacklist</label>
+                            <span class="text-[10px] text-red-500 font-bold uppercase">Cảnh báo</span>
+                        </div>
+                        <textarea [(ngModel)]="ipBlacklist"
+                            class="w-full bg-red-50/30 dark:bg-red-900/10 border-red-100 dark:border-red-900/30 rounded-xl text-sm font-mono p-3 min-h-[120px] text-red-800 dark:text-red-400 focus:ring-red-500/20 outline-none"
+                            placeholder="Danh sách IP bị cấm..."></textarea>
+                    </div>
+                </div>
+                <div class="max-w-md">
+                    <label
+                        class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Giới
+                        hạn số lần đăng nhập sai</label>
+                    <div class="flex items-center gap-4">
+                        <input [(ngModel)]="loginAttempts"
+                            class="w-24 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold p-3 text-center text-slate-900 dark:text-white outline-none"
+                            type="number" />
+                        <span class="text-sm text-slate-500">lần (Tài khoản sẽ bị khóa trong 30 phút sau khi đạt giới
+                            hạn)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-10 flex items-center justify-end gap-3 pb-12">
+        <button (click)="reset()"
+            class="px-6 py-3 text-sm font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors">Hủy
+            thay đổi</button>
+        <button (click)="save()"
+            class="px-8 py-3 bg-primary dark:bg-emerald-600 text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/20 dark:shadow-emerald-500/20 hover:scale-[1.02] transition-all active:scale-[0.98] flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">shield</span>
+            Cập nhật bảo mật
+        </button>
+    </div>
+</div>
+
+<!-- Floating Action Buttons -->
+<div class="fixed bottom-8 right-8 flex flex-col gap-3 z-30">
+    <button
+        class="w-12 h-12 bg-white dark:bg-slate-800 text-slate-400 shadow-xl rounded-2xl flex items-center justify-center hover:text-primary dark:hover:text-emerald-500 transition-all border border-slate-100 dark:border-slate-700 group relative">
+        <span class="material-symbols-outlined">help_outline</span>
+        <span
+            class="absolute right-14 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Trợ
+            giúp</span>
+    </button>
+    <button (click)="save()"
+        class="w-12 h-12 bg-primary dark:bg-emerald-600 text-white shadow-xl shadow-primary/30 dark:shadow-emerald-500/30 rounded-2xl flex items-center justify-center hover:scale-105 transition-all">
+        <span class="material-symbols-outlined">save</span>
+    </button>
+</div>

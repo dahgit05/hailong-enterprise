@@ -1,6 +1,7 @@
 import { Component, signal, effect, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ChangePasswordDialogComponent } from '../../../features/menu-management/components/change-password-dialog/change-password-dialog.component';
 
 interface NavItem {
     icon: string;
@@ -11,7 +12,7 @@ interface NavItem {
 @Component({
     selector: 'app-admin-sidebar',
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule, ChangePasswordDialogComponent],
     templateUrl: './sidebar.component.html',
 })
 export class AdminSidebarComponent {
@@ -31,6 +32,9 @@ export class AdminSidebarComponent {
 
     /** User menu open state */
     isUserMenuOpen = signal<boolean>(false);
+
+    /** Change password dialog state */
+    isChangePasswordOpen = signal<boolean>(false);
 
     constructor() {
         // Restore state from localStorage
@@ -96,8 +100,13 @@ export class AdminSidebarComponent {
     }
 
     changePassword(): void {
-        console.log('Change password clicked');
+        console.log('Open Change password dialog');
         this.closeUserMenu();
+        this.isChangePasswordOpen.set(true);
+    }
+
+    closeChangePassword(): void {
+        this.isChangePasswordOpen.set(false);
     }
 
     openSettings(): void {

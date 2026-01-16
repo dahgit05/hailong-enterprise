@@ -1,0 +1,235 @@
+<div class="max-w-4xl mx-auto">
+    <header class="mb-10">
+        <nav class="flex text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-2">
+            <span>Cấu hình</span>
+            <span class="mx-2">/</span>
+            <span class="text-slate-800 dark:text-slate-200">Hệ thống</span>
+        </nav>
+        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Cấu hình Hệ thống Chi tiết
+            2026</h2>
+        <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm leading-relaxed">Tinh chỉnh chuyên sâu các tham số vận
+            hành, ngôn ngữ và môi trường thực thi của Admin Hub.</p>
+    </header>
+
+    <div class="grid gap-8">
+        <!-- Identity & Language -->
+        <section
+            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <div
+                class="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/20 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary dark:text-emerald-500 text-xl">language</span>
+                <h3 class="font-bold text-slate-900 dark:text-white">Nhận diện & Ngôn ngữ</h3>
+            </div>
+            <div class="p-8 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label
+                            class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tên
+                            hệ thống</label>
+                        <input [(ngModel)]="systemName"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium p-3 focus:ring-primary dark:focus:ring-emerald-500 focus:border-primary dark:focus:border-emerald-500 text-slate-900 dark:text-white transition-all outline-none"
+                            type="text" />
+                    </div>
+                    <div class="space-y-2">
+                        <label
+                            class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Favicon</label>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-11 h-11 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center border border-slate-200 dark:border-slate-700 overflow-hidden">
+                                <span class="material-symbols-outlined text-slate-400">deployed_code</span>
+                            </div>
+                            <button
+                                class="px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-all">Tải
+                                lên .ico</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label
+                            class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Múi
+                            giờ (Timezone)</label>
+                        <select [(ngModel)]="timezone"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium p-3 focus:ring-primary dark:focus:ring-emerald-500 text-slate-900 dark:text-white outline-none">
+                            <option value="GMT+7">(GMT+07:00) Bangkok, Hanoi, Jakarta</option>
+                            <option value="GMT+8">(GMT+08:00) Beijing, Singapore</option>
+                            <option value="GMT+0">(GMT+00:00) Western Europe Time</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label
+                            class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ngôn
+                            ngữ mặc định</label>
+                        <select [(ngModel)]="language"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium p-3 focus:ring-primary dark:focus:ring-emerald-500 text-slate-900 dark:text-white outline-none">
+                            <option value="vi">Tiếng Việt (Vietnamese)</option>
+                            <option value="en">English (US)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="space-y-3 pt-2">
+                    <label
+                        class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Định
+                        dạng ngày giờ</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <label
+                            class="flex items-center gap-3 p-3 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+                            [class.border-primary]="dateFormat() === 'DD/MM/YYYY'"
+                            [class.dark:border-emerald-500]="dateFormat() === 'DD/MM/YYYY'">
+                            <input type="radio" name="dateformat" [value]="'DD/MM/YYYY'" [(ngModel)]="dateFormat"
+                                class="text-primary dark:text-emerald-500 focus:ring-primary dark:focus:ring-emerald-500 border-gray-300 dark:border-gray-600" />
+                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">DD/MM/YYYY</span>
+                        </label>
+                        <label
+                            class="flex items-center gap-3 p-3 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+                            [class.border-primary]="dateFormat() === 'MM/DD/YYYY'"
+                            [class.dark:border-emerald-500]="dateFormat() === 'MM/DD/YYYY'">
+                            <input type="radio" name="dateformat" [value]="'MM/DD/YYYY'" [(ngModel)]="dateFormat"
+                                class="text-primary dark:text-emerald-500 focus:ring-primary dark:focus:ring-emerald-500 border-gray-300 dark:border-gray-600" />
+                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">MM/DD/YYYY</span>
+                        </label>
+                        <label
+                            class="flex items-center gap-3 p-3 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+                            [class.border-primary]="dateFormat() === 'YYYY-MM-DD'"
+                            [class.dark:border-emerald-500]="dateFormat() === 'YYYY-MM-DD'">
+                            <input type="radio" name="dateformat" [value]="'YYYY-MM-DD'" [(ngModel)]="dateFormat"
+                                class="text-primary dark:text-emerald-500 focus:ring-primary dark:focus:ring-emerald-500 border-gray-300 dark:border-gray-600" />
+                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">YYYY-MM-DD</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Execution Environment -->
+        <section
+            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <div
+                class="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/20 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary dark:text-emerald-500 text-xl">terminal</span>
+                <h3 class="font-bold text-slate-900 dark:text-white">Môi trường thực thi</h3>
+            </div>
+            <div class="p-8 space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-2">
+                        <label
+                            class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Chế
+                            độ vận hành</label>
+                        <select [(ngModel)]="envMode"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold p-3 text-primary dark:text-emerald-500 focus:ring-primary dark:focus:ring-emerald-500 outline-none">
+                            <option value="PROD">PROD - Production</option>
+                            <option value="UAT">UAT - Testing</option>
+                            <option value="DEV">DEV - Development</option>
+                        </select>
+                    </div>
+                    <div
+                        class="flex items-center justify-between p-4 bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30 rounded-2xl">
+                        <div>
+                            <p class="text-sm font-bold text-amber-900 dark:text-amber-400">Debug Mode</p>
+                            <p class="text-[11px] text-amber-700/70 dark:text-amber-500/70 font-medium">Chỉ bật khi cần
+                                kiểm lỗi hệ thống</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" [checked]="debugMode()" (change)="toggleDebugMode()" />
+                            <span class="slider-toggle"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <label
+                                class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Thời
+                                gian Timeout (ms)</label>
+                            <span
+                                class="text-xs font-bold text-primary dark:text-emerald-500 px-2 py-0.5 bg-primary/10 dark:bg-emerald-500/10 rounded">{{
+                                timeout() }}ms</span>
+                        </div>
+                        <input [(ngModel)]="timeout"
+                            class="cursor-pointer w-full accent-primary dark:accent-emerald-500" max="10000" min="500"
+                            type="range" />
+                    </div>
+                    <div class="space-y-2">
+                        <label
+                            class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Giới
+                            hạn Request (mỗi phút)</label>
+                        <div class="relative">
+                            <input [(ngModel)]="requestLimit"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium p-3 pr-12 focus:ring-primary dark:focus:ring-emerald-500 text-slate-900 dark:text-white transition-all outline-none"
+                                type="number" />
+                            <span
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 uppercase">REQ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cache Configuration -->
+        <section
+            class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+            <div
+                class="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/20 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary dark:text-emerald-500 text-xl">sync</span>
+                <h3 class="font-bold text-slate-900 dark:text-white">Cấu hình Cache</h3>
+            </div>
+            <div class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div
+                        class="flex items-center justify-between p-5 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-10 h-10 bg-primary/10 dark:bg-emerald-500/10 text-primary dark:text-emerald-500 rounded-xl flex items-center justify-center">
+                                <span class="material-symbols-outlined">bolt</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-900 dark:text-white">Sử dụng Redis</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400">Kích hoạt phân phối cache tập
+                                    trung</p>
+                            </div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" [checked]="useRedis()" (change)="toggleRedis()" />
+                            <span class="slider-toggle"></span>
+                        </label>
+                    </div>
+                    <div class="space-y-2">
+                        <label
+                            class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">TTL
+                            mặc định (giây)</label>
+                        <div class="relative">
+                            <input [(ngModel)]="ttl"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium p-3 pr-12 focus:ring-primary dark:focus:ring-emerald-500 text-slate-900 dark:text-white transition-all outline-none"
+                                type="number" />
+                            <span
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 uppercase">SEC</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-12 flex items-center justify-end gap-4 pb-16">
+        <button (click)="reset()"
+            class="px-6 py-3 text-sm font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">Khôi
+            phục mặc định</button>
+        <button (click)="save()"
+            class="px-10 py-3.5 bg-primary dark:bg-emerald-600 text-white text-sm font-bold rounded-xl shadow-xl shadow-primary/20 dark:shadow-emerald-500/20 hover:shadow-2xl hover:-translate-y-0.5 transition-all active:scale-[0.98]">
+            Lưu thay đổi hệ thống
+        </button>
+    </div>
+</div>
+
+<!-- Floating Action Buttons -->
+<div class="fixed bottom-8 right-8 flex flex-col gap-3 z-30">
+    <button
+        class="w-14 h-14 bg-white dark:bg-slate-800 text-slate-400 shadow-xl rounded-2xl flex items-center justify-center hover:text-primary dark:hover:text-emerald-500 transition-all border border-slate-100 dark:border-slate-700 group">
+        <span class="material-symbols-outlined transition-transform group-hover:scale-110">help_outline</span>
+    </button>
+    <button (click)="save()"
+        class="w-14 h-14 bg-primary dark:bg-emerald-600 text-white shadow-2xl shadow-primary/30 dark:shadow-emerald-500/30 rounded-2xl flex items-center justify-center hover:scale-105 transition-all group">
+        <span class="material-symbols-outlined transition-transform group-hover:rotate-12">save</span>
+    </button>
+</div>

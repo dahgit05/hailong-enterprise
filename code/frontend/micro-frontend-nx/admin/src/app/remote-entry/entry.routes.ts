@@ -13,6 +13,17 @@ export const remoteRoutes: Route[] = [
             { path: 'forbidden', loadComponent: () => import('./features/forbidden/forbidden.component').then(m => m.ForbiddenComponent) },
             { path: 'logs', loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) },
             { path: 'security', loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) },
+            {
+                path: 'settings',
+                loadComponent: () => import('./features/settings/settings-layout.component').then(m => m.SettingsLayoutComponent),
+                children: [
+                    { path: '', redirectTo: 'system', pathMatch: 'full' },
+                    { path: 'system', loadComponent: () => import('./features/settings/system/system.component').then(m => m.SystemComponent) },
+                    { path: 'security', loadComponent: () => import('./features/settings/security/security.component').then(m => m.SecurityComponent) },
+                    { path: 'notification', loadComponent: () => import('./features/settings/notification/notification.component').then(m => m.NotificationComponent) },
+                    { path: 'log', loadComponent: () => import('./features/settings/log/log.component').then(m => m.LogComponent) }
+                ]
+            },
             { path: '**', redirectTo: 'not-found' }
         ]
     }
